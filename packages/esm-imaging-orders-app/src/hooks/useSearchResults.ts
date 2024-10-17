@@ -32,7 +32,7 @@ export function useSearchResults(data: Result[], searchString: string) {
     }
 
     return flattenedData;
-  }, [searchString, data]);
+  }, [searchString, flattenedData]);
 
   return searchResults;
 }

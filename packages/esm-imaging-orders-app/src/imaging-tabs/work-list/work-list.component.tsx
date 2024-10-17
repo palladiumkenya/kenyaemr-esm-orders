@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton } from '@carbon/react';
 import styles from './work-list.scss';
-import Overlay from '../../components/overlay/overlay.component';
 import { useOrdersWorklist } from '../../hooks/useOrdersWorklist';
 import { WorklistProps } from '../common/grouped-imaging-types';
 import GroupedOrdersTable from '../common/grouped-orders-table.component';
@@ -38,7 +37,6 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             title={t('workList', 'Work List')}
           />
         </div>
-        <Overlay />
       </>
     );
   }

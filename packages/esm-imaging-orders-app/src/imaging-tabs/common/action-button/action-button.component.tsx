@@ -4,8 +4,6 @@ import { Button } from '@carbon/react';
 import { showModal, launchWorkspace } from '@openmrs/esm-framework';
 import { Order } from '@openmrs/esm-patient-common-lib';
 import OrderActionExtension from './order-action-extension.component';
-import { launchOverlay } from '../../../components/overlay/hook';
-import ProcedureReportForm from '../../../results/result-form.component';
 import { Result } from '../../work-list/work-list.resource';
 
 interface ActionButtonProps {

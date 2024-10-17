@@ -2,7 +2,6 @@ import React from 'react';
 import { DataTableSkeleton } from '@carbon/react';
 import { useOrdersWorklist } from '../../hooks/useOrdersWorklist';
 import styles from '../test-ordered/tests-ordered.scss';
-import Overlay from '../../components/overlay/overlay.component';
 import GroupedOrdersTable from '../common/grouped-orders-table.component';
 import { useTranslation } from 'react-i18next';
 interface NotDoneProps {
@@ -35,7 +34,6 @@ export const OrdersNotDone: React.FC<NotDoneProps> = ({ fulfillerStatus }) => {
             title={t('ordersNotDone', 'Orders Not Done')}
           />
         </div>
-        <Overlay />
       </>
     );
   }
