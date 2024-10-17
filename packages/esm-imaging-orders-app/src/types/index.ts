@@ -1,4 +1,4 @@
-import { type OrderBasketItem } from "@openmrs/esm-patient-common-lib";
+import { type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
 
 export interface Concept {
   uuid: string;

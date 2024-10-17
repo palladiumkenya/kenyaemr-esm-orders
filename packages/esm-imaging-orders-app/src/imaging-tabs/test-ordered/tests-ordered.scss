@@ -2,12 +2,12 @@
 @import '~@openmrs/esm-styleguide/src/vars';
 
 .rejectOrders {
-    &:hover{
-        background-color: colors.$red-70-hover;
-        color: colors.$white;
-    }
+  &:hover {
+    background-color: colors.$red-70-hover;
+    color: colors.$white;
+  }
 }
 
 .single-line-display {
-    white-space: nowrap;
-  }
+  white-space: nowrap;
+}

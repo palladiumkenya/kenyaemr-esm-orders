@@ -1,32 +1,20 @@
-import React from "react";
-import {
-  Button,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  Tile,
-} from "@carbon/react";
-import { useTranslation } from "react-i18next";
-import styles from "../radiology-instructions/radiology-instructions.scss";
-import { Result } from "../../work-list/work-list.resource";
+import React from 'react';
+import { Button, ModalBody, ModalFooter, ModalHeader, Tile } from '@carbon/react';
+import { useTranslation } from 'react-i18next';
+import styles from '../radiology-instructions/radiology-instructions.scss';
+import { Result } from '../../work-list/work-list.resource';
 
 interface RadiologyRejectReasonModalProps {
   order: Result;
   closeModal: () => void;
 }
 
-const RadiologyRejectReasonModal: React.FC<RadiologyRejectReasonModalProps> = ({
-  order,
-  closeModal,
-}) => {
+const RadiologyRejectReasonModal: React.FC<RadiologyRejectReasonModalProps> = ({ order, closeModal }) => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <ModalHeader
-        closeModal={closeModal}
-        title={t("reasonNotDone", "Reason Not Done")}
-      />
+      <ModalHeader closeModal={closeModal} title={t('reasonNotDone', 'Reason Not Done')} />
       <ModalBody>
         <div className={styles.modalBody}>
           <section className={styles.section}>
@@ -42,7 +30,7 @@ const RadiologyRejectReasonModal: React.FC<RadiologyRejectReasonModalProps> = ({
       </ModalBody>
       <ModalFooter>
         <Button kind="secondary" onClick={closeModal}>
-          {t("cancel", "Cancel")}
+          {t('cancel', 'Cancel')}
         </Button>
       </ModalFooter>
     </div>

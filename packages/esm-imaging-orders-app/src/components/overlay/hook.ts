@@ -1,5 +1,5 @@
-import { getGlobalStore } from "@openmrs/esm-framework";
-import { useEffect, useState } from "react";
+import { getGlobalStore } from '@openmrs/esm-framework';
+import { useEffect, useState } from 'react';
 
 interface OverlayStore {
   isOverlayOpen: boolean;
@@ -7,10 +7,10 @@ interface OverlayStore {
   header: string;
 }
 
-const initialState = { isOverlayOpen: false, component: null, header: "" };
+const initialState = { isOverlayOpen: false, component: null, header: '' };
 
 const getOverlayStore = () => {
-  return getGlobalStore("radiology", initialState);
+  return getGlobalStore('radiology', initialState);
 };
 
 export const launchOverlay = (headerTitle: string, componentToRender) => {

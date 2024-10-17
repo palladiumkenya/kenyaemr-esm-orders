@@ -1,6 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import "~@openmrs/esm-styleguide/src/vars";
+@import '~@openmrs/esm-styleguide/src/vars';
 
 title {
   width: 6.938rem;
@@ -73,7 +73,7 @@ title {
     padding-top: 0 !important;
   }
 
-  tbody>tr>:nth-child(2) {
+  tbody > tr > :nth-child(2) {
     white-space: nowrap;
   }
 
@@ -172,17 +172,16 @@ title {
   td {
     padding: 0.5rem;
 
-    >div {
+    > div {
       max-height: max-content !important;
       background-color: $ui-02;
     }
   }
 
-  th[colspan] td[colspan]>div:first-child {
+  th[colspan] td[colspan] > div:first-child {
     padding: 0 1rem;
   }
 }
-
 
 .tileContainer {
   background-color: $ui-02;

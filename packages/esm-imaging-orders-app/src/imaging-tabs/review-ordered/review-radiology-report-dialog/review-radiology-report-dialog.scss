@@ -1,14 +1,15 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
 
-.textAreaInput {}
+.textAreaInput {
+}
 
 .infoSection {
   margin-bottom: 2rem;
-
 }
 
-.modalBody {}
+.modalBody {
+}
 
 :global(.cds--tooltip-trigger__wrapper) {
   // visibility: hidden;

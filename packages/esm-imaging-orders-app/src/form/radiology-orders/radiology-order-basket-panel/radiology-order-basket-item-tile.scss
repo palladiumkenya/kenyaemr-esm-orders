@@ -21,14 +21,14 @@
 
 .label {
   display: inline-block;
-  @include type.type-style("label-01");
+  @include type.type-style('label-01');
   margin-bottom: 0.5rem;
 }
 
 .orderActionNewLabel {
   @extend .label;
   color: black;
-  background-color: #C4F4CC;
+  background-color: #c4f4cc;
   padding: 0 0.25rem;
 }
 
@@ -61,7 +61,7 @@
 }
 
 .name {
-  @include type.type-style("heading-compact-01");
+  @include type.type-style('heading-compact-01');
   color: black;
 }
 

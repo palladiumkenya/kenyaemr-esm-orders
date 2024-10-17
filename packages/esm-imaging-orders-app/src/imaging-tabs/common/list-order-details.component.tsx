@@ -35,8 +35,12 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = (props) => {
               {props.actions
                 .sort((a, b) => {
                   // Replace 'property' with the actual property you want to sort by
-                  if (a.order < b.order) return -1;
-                  if (a.order > b.order) return 1;
+                  if (a.order < b.order) {
+                    return -1;
+                  }
+                  if (a.order > b.order) {
+                    return 1;
+                  }
                   return 0;
                 })
                 .map((action) => (

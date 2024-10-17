@@ -1,15 +1,9 @@
-import { useEffect, useMemo } from "react";
-import useSWRImmutable from "swr/immutable";
-import fuzzy from "fuzzy";
-import {
-  type FetchResponse,
-  openmrsFetch,
-  useConfig,
-  restBaseUrl,
-  reportError,
-} from "@openmrs/esm-framework";
-import { type Concept } from "../../../types";
-import { type RadiologyConfig } from "../../../config-schema";
+import { useEffect, useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import fuzzy from 'fuzzy';
+import { type FetchResponse, openmrsFetch, useConfig, restBaseUrl, reportError } from '@openmrs/esm-framework';
+import { type Concept } from '../../../types';
+import { type RadiologyConfig } from '../../../config-schema';
 
 type ConceptResult = FetchResponse<Concept>;
 type ConceptResults = FetchResponse<{ setMembers: Array<Concept> }>;
@@ -29,9 +23,7 @@ function openmrsFetchMultiple(urls: Array<string>) {
   // SWR has an RFC for `useSWRList`:
   // https://github.com/vercel/swr/discussions/1988
   // If that ever is implemented we should switch to using that.
-  return Promise.all(
-    urls.map((url) => openmrsFetch<{ results: Array<Concept> }>(url))
-  );
+  return Promise.all(urls.map((url) => openmrsFetch<{ results: Array<Concept> }>(url)));
 }
 
 function useRadiologyConceptsSWR(labOrderableConcepts?: Array<string>) {
@@ -46,11 +38,13 @@ function useRadiologyConceptsSWR(labOrderableConcepts?: Array<string>) {
       shouldRetryOnError(err) {
         return err instanceof Response;
       },
-    }
+    },
   );
 
   const results = useMemo(() => {
-    if (isLoading || error) return null;
+    if (isLoading || error) {
+      return null;
+    }
     return labOrderableConcepts
       ? (data as Array<ConceptResult>)?.flatMap((d) => d.data.setMembers)
       : (data as ConceptResults)?.data.setMembers ?? ([] as Concept[]);
@@ -63,12 +57,10 @@ function useRadiologyConceptsSWR(labOrderableConcepts?: Array<string>) {
   };
 }
 
-export function useRadiologyTypes(searchTerm = ""): UseRadiologyType {
+export function useRadiologyTypes(searchTerm = ''): UseRadiologyType {
   const { labOrderableConcepts } = useConfig<RadiologyConfig>().orders;
 
-  const { data, isLoading, error } = useRadiologyConceptsSWR(
-    labOrderableConcepts.length ? labOrderableConcepts : null
-  );
+  const { data, isLoading, error } = useRadiologyConceptsSWR(labOrderableConcepts.length ? labOrderableConcepts : null);
 
   useEffect(() => {
     if (error) {
@@ -85,9 +77,7 @@ export function useRadiologyTypes(searchTerm = ""): UseRadiologyType {
 
   const filteredTestTypes = useMemo(() => {
     return searchTerm && !isLoading && !error
-      ? fuzzy
-          .filter(searchTerm, testConcepts, { extract: (c) => c.label })
-          .map((result) => result.original)
+      ? fuzzy.filter(searchTerm, testConcepts, { extract: (c) => c.label }).map((result) => result.original)
       : testConcepts;
   }, [testConcepts, searchTerm, isLoading, error]);
 

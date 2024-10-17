@@ -1,12 +1,7 @@
-import {
-  FetchResponse,
-  openmrsFetch,
-  restBaseUrl,
-  useConfig,
-} from "@openmrs/esm-framework";
-import { useMemo } from "react";
-import useSWR from "swr";
-import useSWRImmutable from "swr/immutable";
+import { FetchResponse, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { useMemo } from 'react';
+import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 
 export interface QueueRoomsResponse {
   uuid: string;
@@ -89,16 +84,11 @@ export interface ParentLocation {
 // get queue rooms
 export function useQueueRoomLocations(currentQueueLocation: string) {
   const apiUrl = `${restBaseUrl}/location/${currentQueueLocation}?v=full`;
-  const { data, error, isLoading } = useSWR<{ data: QueueRoomsResponse }>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, error, isLoading } = useSWR<{ data: QueueRoomsResponse }>(apiUrl, openmrsFetch);
 
   const queueRoomLocations = useMemo(
-    () =>
-      data?.data?.parentLocation?.childLocations?.map((response) => response) ??
-      [],
-    [data?.data?.parentLocation?.childLocations]
+    () => data?.data?.parentLocation?.childLocations?.map((response) => response) ?? [],
+    [data?.data?.parentLocation?.childLocations],
   );
   return {
     queueRoomLocations: queueRoomLocations ? queueRoomLocations : [],
@@ -112,10 +102,7 @@ export function useReferralLocations() {
   const config = useConfig();
   const { laboratoryReferalDestinationUuid } = config;
   const apiUrl = `${restBaseUrl}/concept/${laboratoryReferalDestinationUuid}`;
-  const { data, isLoading } = useSWRImmutable<FetchResponse>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, isLoading } = useSWRImmutable<FetchResponse>(apiUrl, openmrsFetch);
 
   return {
     referrals: data ? data?.data?.answers : [],
@@ -127,9 +114,9 @@ export function useReferralLocations() {
 export async function updateOrder(uuid: string, body: any) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/order/${uuid}/fulfillerdetails`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: body,
@@ -140,9 +127,9 @@ export async function updateOrder(uuid: string, body: any) {
 export async function updateProdedure(uuid: string, body: any) {
   const abortController = new AbortController();
   return openmrsFetch(`${restBaseUrl}/procedure/${uuid}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: body,

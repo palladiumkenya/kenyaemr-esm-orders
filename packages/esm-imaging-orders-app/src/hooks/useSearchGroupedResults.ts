@@ -1,20 +1,17 @@
-import { useMemo } from "react";
-import { GroupedOrders } from "../imaging-tabs/common/grouped-imaging-types";
+import { useMemo } from 'react';
+import { GroupedOrders } from '../imaging-tabs/common/grouped-imaging-types';
 
-export function useSearchGroupedResults(
-  data: Array<GroupedOrders>,
-  searchString: string
-) {
+export function useSearchGroupedResults(data: Array<GroupedOrders>, searchString: string) {
   const searchResults = useMemo(() => {
-    if (searchString && searchString.trim() !== "") {
+    if (searchString && searchString.trim() !== '') {
       // Normalize the search string to lowercase
       const lowerSearchString = searchString.toLowerCase();
       return data.filter((orderGroup) =>
         orderGroup.orders.some(
           (order) =>
             order.orderNumber.toLowerCase().includes(lowerSearchString) ||
-            order.patient.display.toLowerCase().includes(lowerSearchString)
-        )
+            order.patient.display.toLowerCase().includes(lowerSearchString),
+        ),
       );
     }
 

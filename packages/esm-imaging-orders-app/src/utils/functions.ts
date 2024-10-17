@@ -1,5 +1,5 @@
-import { openmrsFetch } from "@openmrs/esm-framework";
-import useSWR from "swr";
+import { openmrsFetch } from '@openmrs/esm-framework';
+import useSWR from 'swr';
 
 export const trimVisitNumber = (visitNumber: string) => {
   if (!visitNumber) {
@@ -15,37 +15,30 @@ export const formatWaitTime = (waitTime: string, t) => {
   const minutes = (hours - rhours) * 60;
   const rminutes = Math.round(minutes);
   if (rhours > 0) {
-    return (
-      rhours +
-      " " +
-      `${t("hoursAnd", "hours and ")}` +
-      rminutes +
-      " " +
-      `${t("minutes", "minutes")}`
-    );
+    return rhours + ' ' + `${t('hoursAnd', 'hours and ')}` + rminutes + ' ' + `${t('minutes', 'minutes')}`;
   } else {
-    return rminutes + " " + `${t("minutes", "minutes")}`;
+    return rminutes + ' ' + `${t('minutes', 'minutes')}`;
   }
 };
 
 export const getTagColor = (waitTime: string) => {
   const num = parseInt(waitTime);
   if (num <= 30) {
-    return "green";
+    return 'green';
   } else if (num > 30 && num <= 45) {
-    return "orange";
+    return 'orange';
   } else {
-    return "red";
+    return 'red';
   }
 };
 
 export const getStatusColor = (fulfillerStatus: string) => {
-  if (fulfillerStatus === "COMPLETED") {
-    return "green";
-  } else if (fulfillerStatus === "IN_PROGRESS") {
-    return "orange";
+  if (fulfillerStatus === 'COMPLETED') {
+    return 'green';
+  } else if (fulfillerStatus === 'IN_PROGRESS') {
+    return 'orange';
   } else {
-    return "red";
+    return 'red';
   }
 };
 export interface PatientResource {
@@ -234,10 +227,7 @@ export interface Creator {
 
 export function useGetPatientByUuid(uuid: string) {
   const apiUrl = `/ws/rest/v1/patient/${uuid}?v=full`;
-  const { data, error, isLoading } = useSWR<{ data: PatientResource }, Error>(
-    apiUrl,
-    openmrsFetch
-  );
+  const { data, error, isLoading } = useSWR<{ data: PatientResource }, Error>(apiUrl, openmrsFetch);
   return {
     patient: data?.data,
     isLoading,
@@ -245,4 +235,4 @@ export function useGetPatientByUuid(uuid: string) {
   };
 }
 
-export const BLEEDING_SITE = "162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+export const BLEEDING_SITE = '162668AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA';

@@ -1,7 +1,7 @@
-import { openmrsFetch, restBaseUrl } from "@openmrs/esm-framework";
-import { useMemo } from "react";
-import useSWRImmutable from "swr/immutable";
-import { type DurationUnit, type OrderFrequency } from "../../types";
+import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
+import { useMemo } from 'react';
+import useSWRImmutable from 'swr/immutable';
+import { type DurationUnit, type OrderFrequency } from '../../types';
 
 export interface CommonConfigProps {
   uuid: string;
@@ -21,10 +21,10 @@ export function useOrderConfig(): {
     orderFrequencies: Array<OrderFrequency>;
   };
 } {
-  const { data, error, isLoading } = useSWRImmutable<
-    { data: OrderConfig },
-    Error
-  >(`${restBaseUrl}/orderentryconfig`, openmrsFetch);
+  const { data, error, isLoading } = useSWRImmutable<{ data: OrderConfig }, Error>(
+    `${restBaseUrl}/orderentryconfig`,
+    openmrsFetch,
+  );
 
   const results = useMemo(
     () => ({
@@ -33,17 +33,15 @@ export function useOrderConfig(): {
           valueCoded: uuid,
           value: display,
         })),
-        orderFrequencies: data?.data?.orderFrequencies?.map(
-          ({ uuid, display }) => ({
-            valueCoded: uuid,
-            value: display,
-          })
-        ),
+        orderFrequencies: data?.data?.orderFrequencies?.map(({ uuid, display }) => ({
+          valueCoded: uuid,
+          value: display,
+        })),
       },
       isLoading,
       error,
     }),
-    [data, error, isLoading]
+    [data, error, isLoading],
   );
 
   return results;

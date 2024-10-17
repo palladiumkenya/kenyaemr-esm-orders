@@ -1,6 +1,6 @@
-import { openmrsFetch } from "@openmrs/esm-framework";
-import useSWR from "swr";
-import { updateOrder } from "../imaging-tabs/test-ordered/pick-radiology-order/add-to-worklist-dialog.resource";
+import { openmrsFetch } from '@openmrs/esm-framework';
+import useSWR from 'swr';
+import { updateOrder } from '../imaging-tabs/test-ordered/pick-radiology-order/add-to-worklist-dialog.resource';
 
 export interface ConceptResponse {
   uuid: string;
@@ -307,7 +307,7 @@ export async function GetOrderConceptByUuid(uuid: string) {
   const abortController = new AbortController();
   return openmrsFetch(`/ws/rest/v1/concept/${uuid}?v=full`, {
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
   });
@@ -316,10 +316,10 @@ export async function GetOrderConceptByUuid(uuid: string) {
 export function useGetOrderConceptByUuid(uuid: string) {
   const apiUrl = `/ws/rest/v1/concept/${uuid}?v=custom:(uuid,display,name,datatype,set,answers,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units,setMembers:(uuid,display,answers,datatype,hiNormal,hiAbsolute,hiCritical,lowNormal,lowAbsolute,lowCritical,units))`;
 
-  const { data, error, isLoading, isValidating, mutate } = useSWR<
-    { data: ConceptResponse },
-    Error
-  >(apiUrl, openmrsFetch);
+  const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: ConceptResponse }, Error>(
+    apiUrl,
+    openmrsFetch,
+  );
   return {
     concept: data?.data,
     isLoading,
@@ -332,9 +332,9 @@ export function useGetOrderConceptByUuid(uuid: string) {
 export async function UpdateEncounter(uuid: string, payload: any) {
   const abortController = new AbortController();
   return openmrsFetch(`/ws/rest/v1/encounter/${uuid}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: payload,
@@ -344,9 +344,9 @@ export async function UpdateEncounter(uuid: string, payload: any) {
 export async function saveProcedureReport(reportPayload) {
   const abortController = new AbortController();
   const updateResults = await openmrsFetch(`/ws/rest/v1/procedure`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     signal: abortController.signal,
     body: reportPayload,
@@ -354,7 +354,7 @@ export async function saveProcedureReport(reportPayload) {
 
   if (updateResults.status === 201 || updateResults.status === 200) {
     return await updateOrder(reportPayload.procedureOrder, {
-      fulfillerStatus: "COMPLETED",
+      fulfillerStatus: 'COMPLETED',
     });
   }
 }

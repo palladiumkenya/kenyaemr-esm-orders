@@ -17,8 +17,8 @@
   white-space: pre-wrap;
 }
 
-.modalBody{
-  :global(.cds--tooltip-trigger__wrapper){
+.modalBody {
+  :global(.cds--tooltip-trigger__wrapper) {
     visibility: hidden;
   }
 }

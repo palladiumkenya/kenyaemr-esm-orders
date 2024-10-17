@@ -1,23 +1,18 @@
-import useSWR from "swr";
-import {
-  type FetchResponse,
-  openmrsFetch,
-  restBaseUrl,
-  showSnackbar,
-} from "@openmrs/esm-framework";
-import type { OrderPost } from "@openmrs/esm-patient-common-lib";
-import useSWRImmutable from "swr/immutable";
-import { type RadiologyOrderBasketItem } from "../../types";
+import useSWR from 'swr';
+import { type FetchResponse, openmrsFetch, restBaseUrl, showSnackbar } from '@openmrs/esm-framework';
+import type { OrderPost } from '@openmrs/esm-patient-common-lib';
+import useSWRImmutable from 'swr/immutable';
+import { type RadiologyOrderBasketItem } from '../../types';
 
-export const careSettingUuid = "6f0c9a92-6f24-11e3-af88-005056821db0";
+export const careSettingUuid = '6f0c9a92-6f24-11e3-af88-005056821db0';
 
 export function useOrderReasons(conceptUuids: Array<string>) {
   const shouldFetch = conceptUuids && conceptUuids.length > 0;
   const url = shouldFetch ? getConceptReferenceUrls(conceptUuids) : null;
-  const { data, error, isLoading } = useSWRImmutable<
-    FetchResponse<ConceptResponse>,
-    Error
-  >(shouldFetch ? `${restBaseUrl}/${url[0]}` : null, openmrsFetch);
+  const { data, error, isLoading } = useSWRImmutable<FetchResponse<ConceptResponse>, Error>(
+    shouldFetch ? `${restBaseUrl}/${url[0]}` : null,
+    openmrsFetch,
+  );
 
   const ob = data?.data;
   const orderReasons = ob
@@ -31,7 +26,7 @@ export function useOrderReasons(conceptUuids: Array<string>) {
     showSnackbar({
       title: error.name,
       subtitle: error.message,
-      kind: "error",
+      kind: 'error',
     });
   }
 
@@ -48,13 +43,13 @@ export interface RadiologyOrderPost extends OrderPost {
 export function prepRadiologyOrderPostData(
   order: RadiologyOrderBasketItem,
   patientUuid: string,
-  encounterUuid: string
+  encounterUuid: string,
 ): RadiologyOrderPost {
   let payload = {};
-  if (order.action === "NEW" || order.action === "RENEW") {
+  if (order.action === 'NEW' || order.action === 'RENEW') {
     payload = {
-      action: "NEW",
-      type: "procedureorder",
+      action: 'NEW',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: careSettingUuid,
       orderer: order.orderer,
@@ -67,14 +62,14 @@ export function prepRadiologyOrderPostData(
       bodySite: order.bodySite,
       urgency: order.urgency,
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate;
     }
     return payload;
-  } else if (order.action === "REVISE") {
+  } else if (order.action === 'REVISE') {
     payload = {
-      action: "REVISE",
-      type: "procedureorder",
+      action: 'REVISE',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: order.careSetting,
       orderer: order.orderer,
@@ -86,14 +81,14 @@ export function prepRadiologyOrderPostData(
       laterality: order.laterality,
       bodySite: order.bodySite,
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate;
     }
     return payload;
-  } else if (order.action === "DISCONTINUE") {
+  } else if (order.action === 'DISCONTINUE') {
     payload = {
-      action: "DISCONTINUE",
-      type: "procedureorder",
+      action: 'DISCONTINUE',
+      type: 'procedureorder',
       patient: patientUuid,
       careSetting: order.careSetting,
       orderer: order.orderer,
@@ -104,8 +99,8 @@ export function prepRadiologyOrderPostData(
       laterality: order.laterality,
       bodySite: order.bodySite,
     };
-    if (order.urgency === "ON_SCHEDULED_DATE") {
-      payload["scheduledDate"] = order.scheduleDate;
+    if (order.urgency === 'ON_SCHEDULED_DATE') {
+      payload['scheduledDate'] = order.scheduleDate;
     }
     return payload;
   } else {
@@ -119,18 +114,13 @@ export function getConceptReferenceUrls(conceptUuids: Array<string>) {
     accumulator.push(conceptUuids.slice(i, i + chunkSize));
   }
 
-  return accumulator.map(
-    (partition) =>
-      `conceptreferences?references=${partition.join(
-        ","
-      )}&v=custom:(uuid,display)`
-  );
+  return accumulator.map((partition) => `conceptreferences?references=${partition.join(',')}&v=custom:(uuid,display)`);
 }
 
 export type PostDataPrepLabOrderFunction = (
   order: RadiologyOrderBasketItem,
   patientUuid: string,
-  encounterUuid: string
+  encounterUuid: string,
 ) => OrderPost;
 
 export interface ConceptAnswers {
