@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.openmrs.org/routes.schema.json",
+  "backendDependencies": {
+    "fhir2": ">=1.2",
+    "webservices.rest": "^2.24.0"
+  },
+  "extensions": [
+    {
+      "name": "medical-supply-order-panel",
+      "component": "medicalSupplyOrderPanel",
+      "slot": "order-basket-slot",
+      "order": 5
+    }
+  
+  ],
+  "workspaces": [
+    {
+      "name": "add-medical-supply-order",
+      "type": "order",
+      "component": "addMedicalSupplyOrderWorkspace",
+      "title": "addMedicalSupplyOrderWorkspaceTitle"
+     
+      
+    }
+  ],
+  "pages": [
+    {
+      "component": "root",
+      "route": "medicalsupply"
+    }
+  ]
+}

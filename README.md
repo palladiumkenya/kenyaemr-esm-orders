@@ -1,12 +1,15 @@
 :wave: *New to our project? Be sure to review the [OpenMRS 3 Frontend Developer Documentation](https://o3-docs.openmrs.org). You may find the [Map of the Project](https://o3-docs.openmrs.org/docs/core-concepts) especially helpful.* :teacher: 
 
-![Node.js CI](https://github.com/palladiumkenya/kenyaemr-esm-3.x/actions/workflows/ci.yml/badge.svg)
+![Node.js CI](https://github.com/palladiumkenya/kenyaemr-esm-orders/actions/workflows/ci.yml/badge.svg)
 
 # KenyaEMR Orders App
 
-This repository contains frontend modules for the KenyaEMR 3.x. These modules relate to patient-flags, versioning and care-panels. The modules within this repository include:
+This repository contains frontend modules for the KenyaEMR 3.x. These modules relate to extension of orders. The modules within this repository include:
 
 - [Imaging Orders](packages/esm-imaging-orders-app/)
+- [Procedure Orders](packages/esm-procedure-orders-app/)
+- [Medical Supply Orders](packages/esm-medical-supply-orders-app/)
+- [Medical Supply Dispensing](packages/esm-medical-supply-dispensing-app/)
 
 ## Setup
 

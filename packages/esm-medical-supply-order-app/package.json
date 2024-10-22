@@ -1,8 +1,8 @@
 {
-  "name": "@kenyaemr/esm-imaging-orders-app",
+  "name": "@kenyaemr/esm-medical-supply-orders-app",
   "version": "4.0.0",
-  "description": "Imaging Orders app for KenyaEMR",
-  "browser": "dist/kenyaemr-esm-imaging-orders-app.js",
+  "description": "Medical Supply Orders app for KenyaEMR",
+  "browser": "dist/kenyaemr-esm-medical-supply-orders-app.js",
   "main": "src/index.ts",
   "source": true,
   "license": "MPL-2.0",
