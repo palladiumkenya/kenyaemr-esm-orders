@@ -1,0 +1,13 @@
+@use '@carbon/layout';
+@use '@carbon/colors';
+
+.dataTable {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid colors.$gray-20;
+
+  & > section {
+    position: relative;
+    margin-bottom: layout.$spacing-01;
+  }
+}

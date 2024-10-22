@@ -1,4 +1,4 @@
-import { openmrsFetch } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 
 export const trimVisitNumber = (visitNumber: string) => {
@@ -41,8 +41,6 @@ export const getStatusColor = (fulfillerStatus: string) => {
     return 'red';
   }
 };
-
-// TODO: Move these types to ./types/index.ts file
 export interface PatientResource {
   uuid: string;
   display: string;
@@ -228,7 +226,7 @@ export interface Creator {
 }
 
 export function useGetPatientByUuid(uuid: string) {
-  const apiUrl = `/ws/rest/v1/patient/${uuid}?v=full`;
+  const apiUrl = `${restBaseUrl}/patient/${uuid}?v=full`;
   const { data, error, isLoading } = useSWR<{ data: PatientResource }, Error>(apiUrl, openmrsFetch);
   return {
     patient: data?.data,
