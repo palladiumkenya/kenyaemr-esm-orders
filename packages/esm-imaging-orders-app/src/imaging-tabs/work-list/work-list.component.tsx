@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton } from '@carbon/react';
 import styles from './work-list.scss';
-import { useOrdersWorklist } from '../../hooks/useOrdersWorklist';
-import { WorklistProps } from '../common/grouped-imaging-types';
-import GroupedOrdersTable from '../common/grouped-orders-table.component';
+import { useOrdersWorkList } from '../../hooks/useOrdersWorklist';
+import { WorkListProps } from '../../shared/ui/common/grouped-imaging-types';
+import GroupedOrdersTable from '../../shared/ui/common/grouped-orders-table.component';
 
-const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
+const WorkList: React.FC<WorkListProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
   const [activatedOnOrAfterDate, setActivatedOnOrAfterDate] = useState('');
 
-  const { workListEntries, isLoading } = useOrdersWorklist(activatedOnOrAfterDate, fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorkList(activatedOnOrAfterDate, fulfillerStatus);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
@@ -30,7 +30,7 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
             actions={[
               { actionName: 'imaging-report-form', order: 1 },
               {
-                actionName: 'reject-radiology-order-dialog',
+                actionName: 'reject-imaging-order-modal',
                 order: 2,
               },
             ]}

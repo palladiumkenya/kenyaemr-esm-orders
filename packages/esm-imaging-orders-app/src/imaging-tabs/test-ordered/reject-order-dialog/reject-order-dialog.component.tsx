@@ -6,15 +6,14 @@ import styles from './reject-order-dialog.scss';
 import { Result } from '../../work-list/work-list.resource';
 import { showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
-import { updateOrder } from '../pick-radiology-order/add-to-worklist-dialog.resource';
-interface RejectOrderDialogProps {
+import { updateOrder } from '../pick-imaging-order/add-to-worklist-dialog.resource';
+interface RejectOrderModalProps {
   order: Result;
   closeModal: () => void;
 }
 
-const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({ order, closeModal }) => {
+const RejectOrderModal: React.FC<RejectOrderModalProps> = ({ order, closeModal }) => {
   const { t } = useTranslation();
-
   const [notes, setNotes] = useState('');
 
   const rejectOrder = async (event) => {
@@ -31,8 +30,9 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({ order, closeModal
           title: t('rejectOrder', 'Rejected Order'),
           kind: 'success',
           subtitle: t(
-            'successfullyrejected',
-            `You have successfully rejected an Order with OrderNumber ${order.orderNumber} `,
+            'successfullyRejected',
+            `You have successfully rejected an Order with OrderNumber {{orderNumber}} `,
+            { orderNumber: order.orderNumber },
           ),
         });
         closeModal();
@@ -54,12 +54,12 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({ order, closeModal
   return (
     <div>
       <Form onSubmit={rejectOrder}>
-        <ModalHeader closeModal={closeModal} title={t('rejectOrder', 'Reject Order')} />
+        <ModalHeader closeModal={closeModal} title={t('rejectImagingOrder', 'Reject Imaging Order')} />
         <ModalBody>
           <div className={styles.modalBody}>
             <section className={styles.section}>
               <h5 className={styles.section}>
-                {order?.accessionNumber} &nbsp; · &nbsp;{order?.fulfillerStatus} &nbsp; · &nbsp;
+                {order?.concept?.display} &nbsp; · &nbsp;{order?.fulfillerStatus ?? '--'} &nbsp; · &nbsp;
                 {order?.orderNumber}
                 &nbsp;
               </h5>
@@ -92,4 +92,4 @@ const RejectOrderDialog: React.FC<RejectOrderDialogProps> = ({ order, closeModal
   );
 };
 
-export default RejectOrderDialog;
+export default RejectOrderModal;

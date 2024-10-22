@@ -12,105 +12,27 @@
       "meta": {
         "name": "imaging-orders",
         "title": "imaging-orders",
-        "slot": "radiology-dashboard-slot"
+        "slot": "imaging-dashboard-slot"
       }
     },
     {
       "component": "root",
-      "name": "radiology-dashboard-root",
-      "slot": "radiology-dashboard-slot"
+      "name": "imaging-dashboard-root",
+      "slot": "imaging-dashboard-slot"
     },
     {
-      "name": "radiology-tests-ordered-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "testOrderedTileComponent",
-      "meta": {
-        "name": "testsOrderedTileSlot",
-        "title": "Ordered tests"
-      }
-    },
-    {
-      "name": "radiology-worklist-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "worklistTileComponent",
-      "meta": {
-        "name": "worklisTileSlot",
-        "title": "Worklist"
-      }
-    },
-    {
-      "name": "radiology-referred-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "referredTileComponent",
-      "meta": {
-        "name": "referredTileSlot",
-        "title": "Referred tests"
-      }
-    },
-    {
-      "name": "radiology-review-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "reviewTileComponent",
-      "meta": {
-        "name": "reviewTileSlot",
-        "title": "Review"
-      }
-    },
-    {
-      "name": "radiology-approved-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "approveTileComponent",
-      "meta": {
-        "name": "approveTileSlot",
-        "title": "Approved"
-      }
-    },
-    {
-      "name": "radiology-notdone-tile-component",
-      "slot": "imaging-tiles-slot",
-      "component": "notDoneTileComponent",
-      "meta": {
-        "name": "notDoneTileSlot",
-        "title": "Not Done"
-      }
-    },
-    {
-      "name": "add-radiology-to-worklist-dialog",
-      "component": "addRadiologyToWorklistDialogComponent"
-    },
-    {
-      "name": "radiology-order-panel",
-      "component": "radiologyOrderPanel",
+      "name": "imaging-order-panel",
+      "component": "imagingOrderPanel",
       "slot": "order-basket-slot",
       "order": 3
-    },
-    {
-      "name": "add-radiology-to-worklist-dialog",
-      "component": "addRadiologyToWorklistDialogComponent"
-    },
-    {
-      "name": "reject-radiology-order-dialog",
-      "component": "rejectOrderDialog"
-    },
-    {
-      "name": "radiology-instructions-modal",
-      "component": "radiologyInstructionsModalComponent"
-    },
-    {
-      "name": "review-radilogy-report-dialog",
-      "component": "reviewRadiologyReportDialog"
-    },
-    {
-      "name": "radiology-reject-reason-modal",
-      "component": "radiologyRejectReasonModalComponent"
     }
   ],
   "workspaces": [
     {
-      "name": "add-radiology-order",
+      "name": "add-imaging-order",
       "type": "order",
-      "component": "addRadiologyOrderWorkspace",
-      "title": "addRadiologyOrderWorkspaceTitle"
+      "component": "addImagingOrderWorkspace",
+      "title": "Add Imaging order"
     },
     {
       "name": "imaging-report-form",
@@ -119,10 +41,18 @@
       "type": "form"
     }
   ],
-  "pages": [
+  "modals": [
     {
-      "component": "root",
-      "route": "radiology"
+      "name": "review-imaging-report-modal",
+      "component": "reviewImagingReportModal"
+    },
+    {
+      "name": "reject-imaging-order-modal",
+      "component": "rejectImagingOrderModal"
+    },
+    {
+      "name": "add-imaging-to-work-list-modal",
+      "component": "addImagingToWorkListModal"
     }
   ]
 }

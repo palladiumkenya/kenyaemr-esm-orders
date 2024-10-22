@@ -4,4 +4,5 @@
 
 This is a frontend module that provides imaging orders functionality. Currently, we support:
 
-- Radiology order
+- Radiology orders
+- Radiology report

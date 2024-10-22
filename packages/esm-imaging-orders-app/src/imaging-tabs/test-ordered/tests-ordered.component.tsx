@@ -1,20 +1,19 @@
 import React from 'react';
 import { DataTableSkeleton } from '@carbon/react';
-import { useOrdersWorklist } from '../../hooks/useOrdersWorklist';
-
-import GroupedOrdersTable from '../common/grouped-orders-table.component';
+import { useOrdersWorkList } from '../../hooks/useOrdersWorklist';
 import { useTranslation } from 'react-i18next';
+import GroupedOrdersTable from '../../shared/ui/common/grouped-orders-table.component';
 
 export const TestsOrdered: React.FC = () => {
   const { t } = useTranslation();
-  const { workListEntries, isLoading } = useOrdersWorklist('', '');
+  const { workListEntries, isLoading } = useOrdersWorkList('', '');
 
   const testOrderAction = [
     {
-      actionName: 'add-radiology-to-worklist-dialog',
+      actionName: 'add-imaging-to-work-list-modal',
       order: 1,
     },
-    { actionName: 'reject-radiology-order-dialog', order: 2 },
+    { actionName: 'reject-imaging-order-modal', order: 2 },
   ];
 
   if (isLoading) {

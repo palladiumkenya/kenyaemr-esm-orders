@@ -1,65 +1,57 @@
-import { openmrsFetch, useConfig } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
+import { useMemo, useCallback } from 'react';
 import { Result } from '../imaging-tabs/work-list/work-list.resource';
-import { RadiologyConfig } from '../config-schema';
+import { ImagingConfig } from '../config-schema';
+import { FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
 
-export function useOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatus: string) {
-  const {
-    orders: { radiologyOrderTypeUuid },
-    radiologyConceptClassUuid,
-  } = useConfig<RadiologyConfig>();
+const createApiUrl = (radiologyOrderTypeUuid: string, activatedOnOrAfterDate: string, fulfillerStatus: string) => {
   const responseFormat =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
   const orderTypeParam = `orderTypes=${radiologyOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
-  const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
+  return `${restBaseUrl}/order?${orderTypeParam}`;
+};
 
-  const { data, error, isLoading, mutate } = useSWR<{ data: { results: Array<Result> } }, Error>(apiUrl, openmrsFetch);
+export function useOrdersWorkList(activatedOnOrAfterDate: string, fulfillerStatus: FulfillerStatus) {
+  const {
+    orders: { radiologyOrderTypeUuid },
+    radiologyConceptClassUuid,
+  } = useConfig<ImagingConfig>();
 
-  const orders = data?.data?.results?.filter((order) => {
-    if (fulfillerStatus === '') {
-      return (
-        order.fulfillerStatus === null &&
-        order.dateStopped === null &&
-        order.action === 'NEW' &&
-        order.concept.conceptClass.uuid === radiologyConceptClassUuid
-      );
-    } else if (fulfillerStatus === 'IN_PROGRESS') {
-      return (
-        order.fulfillerStatus === 'IN_PROGRESS' &&
-        order.dateStopped === null &&
-        order.action !== 'DISCONTINUE' &&
-        order.concept.conceptClass.uuid === radiologyConceptClassUuid
-      );
-    } else if (fulfillerStatus === 'DECLINED') {
-      return (
-        order.fulfillerStatus === 'DECLINED' &&
-        order.dateStopped === null &&
-        order.action !== 'DISCONTINUE' &&
-        order.concept.conceptClass.uuid === radiologyConceptClassUuid
-      );
-    } else if (fulfillerStatus === 'COMPLETED') {
-      return (
-        order.fulfillerStatus === 'COMPLETED' &&
-        order.dateStopped === null &&
-        order.action !== 'DISCONTINUE' &&
-        order.concept.conceptClass.uuid === radiologyConceptClassUuid
-      );
-    } else if (fulfillerStatus === 'EXCEPTION') {
-      return (
-        order.fulfillerStatus === 'EXCEPTION' &&
-        order.dateStopped === null &&
-        order.action !== 'DISCONTINUE' &&
-        order.concept.conceptClass.uuid === radiologyConceptClassUuid
-      );
-    }
-  });
-
-  const sortedOrders = orders?.sort(
-    (a, b) => new Date(a.dateActivated).getTime() - new Date(b.dateActivated).getTime(),
+  const apiUrl = useMemo(
+    () => createApiUrl(radiologyOrderTypeUuid, activatedOnOrAfterDate, fulfillerStatus),
+    [radiologyOrderTypeUuid, activatedOnOrAfterDate, fulfillerStatus],
   );
 
+  const { data, error, isLoading, mutate } = useSWR<{ data: { results: Array<Result> } }>(apiUrl, openmrsFetch);
+
+  const filterOrders = useCallback(
+    (order: Result) => {
+      const baseConditions =
+        order.dateStopped === null && order.concept.conceptClass.uuid === radiologyConceptClassUuid;
+
+      switch (fulfillerStatus) {
+        case '':
+          return baseConditions && order.fulfillerStatus === null && order.action === 'NEW';
+        case 'IN_PROGRESS':
+        case 'DECLINED':
+        case 'COMPLETED':
+        case 'EXCEPTION':
+          return baseConditions && order.fulfillerStatus === fulfillerStatus && order.action !== 'DISCONTINUE';
+        default:
+          return false;
+      }
+    },
+    [radiologyConceptClassUuid, fulfillerStatus],
+  );
+
+  const sortedOrders = useMemo(() => {
+    const filteredOrders = data?.data?.results?.filter(filterOrders) || [];
+    return filteredOrders.sort((a, b) => new Date(a.dateActivated).getTime() - new Date(b.dateActivated).getTime());
+  }, [data, filterOrders]);
+
   return {
-    workListEntries: sortedOrders?.length > 0 ? sortedOrders : [],
+    workListEntries: sortedOrders,
     isLoading,
     isError: error,
     mutate,

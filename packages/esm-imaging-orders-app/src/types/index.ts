@@ -22,7 +22,7 @@ export interface Concept {
   attributes: [];
 }
 
-export interface RadiologyOrderBasketItem extends OrderBasketItem {
+export interface ImagingOrderBasketItem extends OrderBasketItem {
   testType?: {
     label: string;
     conceptUuid: string;
@@ -36,14 +36,14 @@ export interface RadiologyOrderBasketItem extends OrderBasketItem {
   bodySite?: string;
 }
 
-export type OrderFrequency = CommonRadiologyValueCoded;
-export type DurationUnit = CommonRadiologyValueCoded;
+export type OrderFrequency = CommonImagingValueCoded;
+export type DurationUnit = CommonImagingValueCoded;
 
-interface CommonRadiologyProps {
+interface CommonImagingProps {
   value: string;
   default?: boolean;
 }
 
-export interface CommonRadiologyValueCoded extends CommonRadiologyProps {
+export interface CommonImagingValueCoded extends CommonImagingProps {
   valueCoded: string;
 }

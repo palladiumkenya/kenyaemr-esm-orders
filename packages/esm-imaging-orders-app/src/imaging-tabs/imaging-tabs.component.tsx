@@ -1,8 +1,8 @@
 import React from 'react';
 import { TabPanels, TabList, Tabs, Tab, TabPanel } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { useImagingOrderStats } from '../summary-tiles/radiology-summary.resource';
-import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
+import { useImagingOrderStats } from '../shared/imaging.resource';
+import { useOrdersWorkList } from '../hooks/useOrdersWorklist';
 import { TestsOrdered } from './test-ordered/tests-ordered.component';
 import WorkList from './work-list/work-list.component';
 import { ReferredTests } from './referred-test/referred-ordered.component';
@@ -65,7 +65,7 @@ const useOrderCounts = () => {
 };
 
 const useCompletedOrders = () => {
-  const { workListEntries } = useOrdersWorklist('', 'COMPLETED');
+  const { workListEntries } = useOrdersWorkList('', 'COMPLETED');
   const pendingReview = workListEntries.filter((item) =>
     item.procedures?.some((procedure) => procedure.outcome !== 'SUCCESSFUL'),
   );

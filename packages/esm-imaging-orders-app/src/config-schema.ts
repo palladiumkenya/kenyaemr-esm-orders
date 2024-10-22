@@ -39,7 +39,7 @@ interface OrderReason {
   required: boolean;
   orderReasons: Array<string>;
 }
-export type RadiologyConfig = {
+export type ImagingConfig = {
   radiologyConceptSetUuid: string;
   orders: {
     labOrderTypeUuid: string;

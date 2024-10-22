@@ -1,15 +1,16 @@
 import React from 'react';
-import { DataTableSkeleton } from '@carbon/react';
-import { useOrdersWorklist } from '../../hooks/useOrdersWorklist';
-import styles from '../test-ordered/tests-ordered.scss';
-import GroupedOrdersTable from '../common/grouped-orders-table.component';
 import { useTranslation } from 'react-i18next';
+import { DataTableSkeleton } from '@carbon/react';
+import { useOrdersWorkList } from '../../hooks/useOrdersWorklist';
+import { FulfillerStatus } from '../../shared/ui/common/grouped-imaging-types';
+import GroupedOrdersTable from '../../shared/ui/common/grouped-orders-table.component';
+import styles from '../test-ordered/tests-ordered.scss';
 interface NotDoneProps {
-  fulfillerStatus: string;
+  fulfillerStatus: FulfillerStatus;
 }
 export const OrdersNotDone: React.FC<NotDoneProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
-  const { workListEntries, isLoading } = useOrdersWorklist('', fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorkList('', fulfillerStatus);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;
@@ -27,7 +28,7 @@ export const OrdersNotDone: React.FC<NotDoneProps> = ({ fulfillerStatus }) => {
             showOrderType={false}
             actions={[
               {
-                actionName: 'radiology-reject-reason-modal',
+                actionName: 'reject-imaging-order-modal',
                 order: 1,
               },
             ]}

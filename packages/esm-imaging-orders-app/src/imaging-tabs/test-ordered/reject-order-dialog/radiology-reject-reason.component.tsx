@@ -1,27 +1,27 @@
 import React from 'react';
 import { Button, ModalBody, ModalFooter, ModalHeader, Tile } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import styles from '../radiology-instructions/radiology-instructions.scss';
+import styles from './reject-order-dialog.scss';
 import { Result } from '../../work-list/work-list.resource';
 
-interface RadiologyRejectReasonModalProps {
+interface RejectImagingOrderModalProps {
   order: Result;
   closeModal: () => void;
 }
 
-const RadiologyRejectReasonModal: React.FC<RadiologyRejectReasonModalProps> = ({ order, closeModal }) => {
+const RejectImagingOrderModal: React.FC<RejectImagingOrderModalProps> = ({ order, closeModal }) => {
   const { t } = useTranslation();
 
   return (
     <div>
-      <ModalHeader closeModal={closeModal} title={t('reasonNotDone', 'Reason Not Done')} />
+      <ModalHeader closeModal={closeModal} title={t('rejectImagingOrder', 'Reject Imaging Order')} />
       <ModalBody>
         <div className={styles.modalBody}>
           <section className={styles.section}>
             <b />
             <Tile>
               <p>
-                <b>Rejection Reason:</b>
+                <b>{t('rejectionReason', 'Rejection Reason:')}</b>
               </p>
               <p className={styles.instructions}>{order.fulfillerComment}</p>
             </Tile>
@@ -37,4 +37,4 @@ const RadiologyRejectReasonModal: React.FC<RadiologyRejectReasonModalProps> = ({
   );
 };
 
-export default RadiologyRejectReasonModal;
+export default RejectImagingOrderModal;
