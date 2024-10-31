@@ -28,18 +28,6 @@ const PrescriptionExpanded: React.FC<{
         />
       ),
     },
-    // {
-    //   name: t('historyComments', 'History and comments'),
-    //   component: <HistoryAndComments encounterUuid={encounterUuid} patientUuid={patientUuid} />,
-    // },
-    /* {
-      name: t("patientDetails", "Patient details"),
-      component: <PatientDetails patientUuid={patientUuid} />,
-    },*/
-    // {
-    //   name: t("billing", "Billing"),
-    //   component: <div>Billing</div>,
-    // },
   ];
 
   return (
