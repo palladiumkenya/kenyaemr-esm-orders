@@ -42,11 +42,12 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
     if (!isSubmitting) {
       setIsSubmitting(true);
       const abortController = new AbortController();
-      medicationDispense.dispenser = session.currentProvider.uuid;
-      medicationDispense.location = session.sessionLocation.uuid;
-      medicationDispense.dateDispensed = new Date();
-      delete medicationDispense['uuid'];
-      delete medicationDispense['dispensingUnit'];
+      medicationDispensePayload.dispenser = session.currentProvider.uuid;
+      medicationDispensePayload.location = session.sessionLocation.uuid;
+      medicationDispensePayload.dateDispensed = new Date();
+      delete medicationDispensePayload['uuid'];
+      delete medicationDispensePayload['dispensingUnit'];
+      delete medicationDispensePayload['dsiplay'];
       saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
         .then((response) => {
           if (response.ok) {
