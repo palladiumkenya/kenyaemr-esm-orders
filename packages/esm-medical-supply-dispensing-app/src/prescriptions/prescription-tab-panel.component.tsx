@@ -148,7 +148,7 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
                                     (item) => item.id == row.id.split(':')[0],
                                   ).id,
                                   quantityUnits: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
-                                    .drugDispenseUnit.uuid,
+                                    .drugDispenseUnit?.uuid,
                                   concept: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
                                     .concept,
                                 }}
