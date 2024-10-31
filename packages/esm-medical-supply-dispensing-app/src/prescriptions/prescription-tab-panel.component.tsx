@@ -55,6 +55,7 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
       return {
         id: entry?.uuid,
         created: entry?.dateActivated,
+        concept: entry?.concept.uuid,
         patient: {
           name: entry?.patient?.display?.split('-')[1],
           uuid: entry?.patient?.uuid,
@@ -67,6 +68,7 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
         location: null,
         drugDispenseQuantity: entry?.quantity,
         drugDispenseUnit: entry?.quantityUnits,
+        quantityUnits: entry?.quantityUnits?.uuid,
       };
     });
     prescriptionsTableRows.sort((a, b) => (a.created < b.created ? 1 : -1));
@@ -139,6 +141,16 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
                                     .nonDrugItem,
                                   dispensingUnit: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
                                     .drugDispenseUnit,
+                                  encounter: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .encounter,
+                                  patient: row.cells.find((cell) => cell.id.endsWith('patient')).value.uuid,
+                                  medicalSupplyOrder: prescriptionsTableRows.find(
+                                    (item) => item.id == row.id.split(':')[0],
+                                  ).id,
+                                  quantityUnits: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .drugDispenseUnit.uuid,
+                                  concept: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .concept,
                                 }}
                               />
                             </TableExpandedRow>

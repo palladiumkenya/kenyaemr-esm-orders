@@ -12,7 +12,7 @@ import {
   type ValueSet,
 } from '../types';
 
-export function saveMedicationDispense(
+export function saveMedicationSupplyDispense(
   medicationDispense: NonDrugMedicationDispense,
   medicationDispenseStatus: MedicationDispenseStatus,
   abortController: AbortController,
@@ -21,15 +21,14 @@ export function saveMedicationDispense(
   const url = medicationDispense.uuid
     ? `${fhirBaseUrl}/MedicationDispense/${medicationDispense.uuid}`
     : `${fhirBaseUrl}/MedicationDispense`;
-
-  const method = medicationDispense.uuid ? 'PUT' : 'POST';
+  const apiUrl = `/ws/rest/v1/medicalsupplydispense`;
+  const method = 'POST';
 
   medicationDispense.status = medicationDispenseStatus;
-
   // TODO for now we don't support a different prepared and handed over date, so just set the handed over to the prepared date
   // medicationDispense.whenPrepared = medicationDispense.whenHandedOver;
 
-  return openmrsFetch(url, {
+  return openmrsFetch(apiUrl, {
     method: method,
     signal: abortController.signal,
     headers: {

@@ -1,24 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, FormLabel, InlineLoading } from '@carbon/react';
-import { ExtensionSlot, showNotification, showToast, useConfig, usePatient } from '@openmrs/esm-framework';
+import { ExtensionSlot, showNotification, showToast, useConfig, usePatient, useSession } from '@openmrs/esm-framework';
 import { closeOverlay } from '../hooks/useOverlay';
-import {
-  type MedicationDispense,
-  MedicationDispenseStatus,
-  type MedicationRequestBundle,
-  type InventoryItem,
-  NonDrugMedicationDispense,
-} from '../types';
-import {
-  computeNewFulfillerStatusAfterDispenseEvent,
-  getFulfillerStatus,
-  getUuidFromReference,
-  revalidate,
-} from '../utils';
+import { MedicationDispenseStatus, type InventoryItem, NonDrugMedicationDispense } from '../types';
+import { revalidate } from '../utils';
 import { type PharmacyConfig } from '../config-schema';
 import { createStockDispenseRequestPayload, sendStockDispenseRequest } from './stock-dispense/stock.resource';
-import { saveMedicationDispense } from '../medication-dispense/medication-dispense.resource';
+import { saveMedicationSupplyDispense } from '../medication-dispense/medication-dispense.resource';
 import { updateMedicationRequestFulfillerStatus } from '../medication-request/medication-request.resource';
 import MedicationDispenseReview from './medication-dispense-review.component';
 import StockDispense from './stock-dispense/stock-dispense.component';
@@ -35,7 +24,7 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
   const { t } = useTranslation();
   const { patient, isLoading } = usePatient(patientUuid);
   const config = useConfig<PharmacyConfig>();
-
+  const session = useSession();
   // Keep track of inventory item
   const [inventoryItem, setInventoryItem] = useState<InventoryItem>();
 
@@ -53,23 +42,21 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
     if (!isSubmitting) {
       setIsSubmitting(true);
       const abortController = new AbortController();
-      saveMedicationDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
+      medicationDispense.dispenser = session.currentProvider.uuid;
+      medicationDispense.location = session.sessionLocation.uuid;
+      medicationDispense.dateDispensed = new Date();
+      delete medicationDispense['uuid'];
+      delete medicationDispense['dispensingUnit'];
+      saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
         .then((response) => {
-          // if (response.ok) {
-          //   const newFulfillerStatus = computeNewFulfillerStatusAfterDispenseEvent(
-          //     medicationDispensePayload,
-          //     medicationRequestBundle,
-          //     config.dispenseBehavior.restrictTotalQuantityDispensed,
-          //   );
-          //   if (getFulfillerStatus(medicationRequestBundle.request) !== newFulfillerStatus) {
-          //     return updateMedicationRequestFulfillerStatus(
-          //       getUuidFromReference(
-          //         medicationDispensePayload.authorizingPrescription[0].reference, // assumes authorizing prescription exist
-          //       ),
-          //       newFulfillerStatus,
-          //     );
-          //   }
-          // }
+          if (response.ok) {
+            showToast({
+              critical: true,
+              kind: 'success',
+              description: t('medicationDispenseSuccess', 'Medication Dispensed Successfully.'),
+              title: t('dispenseSuccess', 'Dispense Success'),
+            });
+          }
           return response;
         })
         .then((response) => {
@@ -158,8 +145,8 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
   // check is valid on any changes
   // useEffect(checkIsValid, [medicationDispensePayload, quantityRemaining, inventoryItem]);
 
-  const isButtonDisabled = (config.enableStockDispense ? !inventoryItem : false) || !isValid || isSubmitting;
-
+  let isButtonDisabled = (config.enableStockDispense ? !inventoryItem : false) || !isValid || isSubmitting;
+  isButtonDisabled = false;
   const bannerState = useMemo(() => {
     if (patient) {
       return {
@@ -183,14 +170,6 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
         )}
         {/* {patient && <ExtensionSlot name="patient-header-slot" state={bannerState} />} */}
         <section className={styles.formGroup}>
-          <FormLabel>
-            {t(
-              config.dispenseBehavior.allowModifyingPrescription ? 'drugHelpText' : 'drugHelpTextNoEdit',
-              config.dispenseBehavior.allowModifyingPrescription
-                ? 'You may edit the formulation and quantity dispensed here'
-                : 'You may edit quantity dispensed here',
-            )}
-          </FormLabel>
           {medicationDispensePayload ? (
             <div>
               <MedicationDispenseReview

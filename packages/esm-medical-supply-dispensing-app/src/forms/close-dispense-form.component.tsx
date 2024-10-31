@@ -9,7 +9,10 @@ import {
   usePatient,
 } from '@openmrs/esm-framework';
 import { Button, ComboBox, InlineLoading } from '@carbon/react';
-import { saveMedicationDispense, useReasonForCloseValueSet } from '../medication-dispense/medication-dispense.resource';
+import {
+  saveMedicationSupplyDispense,
+  useReasonForCloseValueSet,
+} from '../medication-dispense/medication-dispense.resource';
 import { closeOverlay } from '../hooks/useOverlay';
 import styles from './forms.scss';
 import { updateMedicationRequestFulfillerStatus } from '../medication-request/medication-request.resource';
