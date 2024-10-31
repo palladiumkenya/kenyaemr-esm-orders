@@ -217,17 +217,16 @@ export interface NonDrugMedicationDispense {
   uuid: string;
   patient?: string;
   encounter?: string;
+  quantityUnits?: string;
   dispensingUnit?: NonDrugDispensingUnit;
   quantity?: Number;
   display?: string;
-  instrucions?: string;
   status?: string;
   medicalSupplyOrder?: string;
   concept?: string;
   dateDispensed?: Date;
   statusReason?: string;
   location?: string;
-  encounters?: string;
   dispenser?: string;
 }
 
@@ -466,6 +465,7 @@ export interface PrescriptionsTableRow {
   encounter: string;
   drugDispenseUnit: NonDrugDispensingUnit;
   drugDispenseQuantity: Number;
+  concept: string;
 }
 
 export interface Quantity {

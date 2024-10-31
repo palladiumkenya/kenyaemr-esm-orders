@@ -16,18 +16,10 @@ export function useOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatu
 
   const orders = data?.data?.results?.filter((order) => {
     if (fulfillerStatus === '') {
+      return order.concept.conceptClass.uuid === medicalSupplyOrderConceptClass_UUID;
+    } else if (fulfillerStatus === 'ACTIVE') {
       return (
-        order.fulfillerStatus === null &&
-        order.dateStopped === null &&
-        order.action === 'NEW' &&
-        order.concept.conceptClass.uuid === medicalSupplyOrderConceptClass_UUID
-      );
-    } else if (fulfillerStatus === 'IN_PROGRESS') {
-      return (
-        order.fulfillerStatus === 'IN_PROGRESS' &&
-        order.dateStopped === null &&
-        order.action !== 'DISCONTINUE' &&
-        order.concept.conceptClass.uuid === medicalSupplyOrderConceptClass_UUID
+        order.fulfillerStatus != 'COMPLETED' && order.concept.conceptClass.uuid === medicalSupplyOrderConceptClass_UUID
       );
     }
   });

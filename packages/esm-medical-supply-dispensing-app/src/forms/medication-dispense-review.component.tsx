@@ -147,10 +147,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
             onChange={(e) => {
               updateMedicationDispense({
                 ...medicationDispense,
-                quantity: {
-                  ...medicationDispense.quantity,
-                  value: e.target?.value ? parseFloat(e.target.value) : '',
-                },
+                quantity: e.target?.value ? parseFloat(e.target.value) : medicationDispense.quantity,
               });
             }}
           />
@@ -163,17 +160,14 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
             titleText={t('drugDispensingUnit', 'Dispensing unit')}
             itemToString={(item) => item?.text}
             initialSelectedItem={{
-              id: medicationDispense.dispensingUnit.uuid,
-              text: medicationDispense.dispensingUnit.display,
+              id: medicationDispense.quantityUnits,
+              text: medicationDispense?.dispensingUnit?.display,
             }}
             onChange={({ selectedItem }) => {
               updateMedicationDispense({
                 ...medicationDispense,
                 // note that we specifically recreate doesQuantity to overwrite any unit or system properties that may have been set
-                quantity: {
-                  value: medicationDispense.quantity,
-                  code: selectedItem?.id,
-                },
+                quantityUnits: medicationDispense.quantityUnits,
               });
             }}
             required
@@ -181,13 +175,13 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
         </div>
 
         <TextArea
-          labelText={t('patientInstructions', 'Patient instructions')}
-          value={medicationDispense.instrucions}
+          labelText={t('statusReason', 'Reason/Description')}
+          value={medicationDispense.statusReason}
           maxLength={65535}
           onChange={(e) => {
             updateMedicationDispense({
               ...medicationDispense,
-              instrucions: e.target.value,
+              statusReason: e.target.value,
             });
           }}
         />
@@ -197,10 +191,19 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
           labelText={t('dispenseDate', 'Date of Dispense')}
           minDate={prescriptionDate ? dayjs(prescriptionDate).startOf('day').toDate() : null}
           maxDate={dayjs().toDate()}
-          // value={dayjs(medicationDispense.whenHandedOver).toDate()}
-        ></OpenmrsDatePicker>
+          value={dayjs(medicationDispense.dateDispensed).toDate()}
+          onChange={(input) => {
+            const currentDate = medicationDispense.dateDispensed ? dayjs(medicationDispense.dateDispensed) : null;
+            const selectedDate = dayjs(input);
+            updateMedicationDispense({
+              ...medicationDispense,
+              dateDispensed: currentDate?.isSame(selectedDate, 'day')
+                ? currentDate.toISOString()
+                : selectedDate.toISOString(), // to preserve any time component, only update if the day actually changes
+            });
+          }}></OpenmrsDatePicker>
 
-        {providers && (
+        {/* {providers && (
           <ComboBox
             id="dispenser"
             light={isTablet}
@@ -228,7 +231,7 @@ const MedicationDispenseReview: React.FC<MedicationDispenseReviewProps> = ({
             required
             titleText={t('dispensedBy', 'Dispensed by')}
           />
-        )}
+        )} */}
       </Stack>
     </div>
   );
