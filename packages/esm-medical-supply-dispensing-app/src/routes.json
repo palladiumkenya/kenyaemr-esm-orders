@@ -7,13 +7,6 @@
   
   "extensions": [
     {
-      "name": "medical-supplies-dispensing-link",
-      "slot": "app-menu-slot",
-      "component": "medicalSuppliesDispensingLink",
-      "online": true,
-      "offline": true
-    },
-    {
       "name": "supplyDispensing-dashboard",
       "slot": "medical-supply-dispensing-dashboard-slot",
       "component": "supplyDispensingDashboard",
