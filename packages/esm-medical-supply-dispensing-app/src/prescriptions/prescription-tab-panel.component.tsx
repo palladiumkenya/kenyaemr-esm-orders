@@ -22,7 +22,7 @@ import { formatDatetime, parseDate, useConfig } from '@openmrs/esm-framework';
 import PrescriptionExpanded from './prescription-expanded.component';
 import { type PharmacyConfig } from '../config-schema';
 import styles from './prescriptions.scss';
-import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
+import { useAllOrders } from '../hooks/useOrdersWorklist';
 import { PrescriptionsTableRow } from '../types';
 
 interface PrescriptionTabPanelProps {
@@ -37,24 +37,20 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [nextOffSet, setNextOffSet] = useState(0);
-
-  // const { prescriptionsTableRows, error, isLoading, totalOrders } = usePrescriptionsTable(
-  //   pageSize,
-  //   nextOffSet,
-  //   searchTerm,
-  //   location,
-  //   status,
-  //   config.medicationRequestExpirationPeriodInDays,
-  //   config.refreshInterval,
-  // );
-  const { workListEntries, isLoading, isError } = useOrdersWorklist('', '');
-
+  const { workListEntries: orders, isLoading, isError } = useAllOrders('', '');
+  let orderEntries = [];
+  if (status == 'ACTIVE' && orders.length > 0) {
+    orderEntries = orders.filter((item) => item.fulfillerStatus == null);
+  } else {
+    orderEntries = orders;
+  }
   let prescriptionsTableRows: PrescriptionsTableRow[];
-  if (workListEntries) {
-    prescriptionsTableRows = workListEntries.map((entry) => {
+  if (orderEntries) {
+    prescriptionsTableRows = orderEntries.map((entry) => {
       return {
         id: entry?.uuid,
         created: entry?.dateActivated,
+        concept: entry?.concept.uuid,
         patient: {
           name: entry?.patient?.display?.split('-')[1],
           uuid: entry?.patient?.uuid,
@@ -67,6 +63,7 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
         location: null,
         drugDispenseQuantity: entry?.quantity,
         drugDispenseUnit: entry?.quantityUnits,
+        quantityUnits: entry?.quantityUnits?.uuid,
       };
     });
     prescriptionsTableRows.sort((a, b) => (a.created < b.created ? 1 : -1));
@@ -119,7 +116,9 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
                                   : cell.id.endsWith('patient')
                                   ? cell.value.name
                                   : cell.id.endsWith('status')
-                                  ? t(cell.value)
+                                  ? cell.value
+                                    ? t(cell.value)
+                                    : '--'
                                   : cell.value}
                               </TableCell>
                             ))}
@@ -139,6 +138,19 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
                                     .nonDrugItem,
                                   dispensingUnit: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
                                     .drugDispenseUnit,
+                                  encounter: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .encounter,
+                                  patient: row.cells.find((cell) => cell.id.endsWith('patient')).value.uuid,
+                                  medicalSupplyOrder: prescriptionsTableRows.find(
+                                    (item) => item.id == row.id.split(':')[0],
+                                  ).id,
+                                  quantityUnits: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .drugDispenseUnit?.uuid,
+                                  concept: prescriptionsTableRows.find((item) => item.id == row.id.split(':')[0])
+                                    .concept,
+                                  medicalSupplyOrderStatus: prescriptionsTableRows.find(
+                                    (item) => item.id == row.id.split(':')[0],
+                                  ).status,
                                 }}
                               />
                             </TableExpandedRow>
@@ -170,7 +182,7 @@ const PrescriptionTabPanel: React.FC<PrescriptionTabPanelProps> = ({ searchTerm,
                   page={page}
                   pageSize={pageSize}
                   pageSizes={[10, 20, 30, 40, 50, 100]}
-                  totalItems={workListEntries?.length}
+                  totalItems={orderEntries?.length}
                   onChange={({ page, pageSize }) => {
                     setPage(page);
                     setNextOffSet((page - 1) * pageSize);

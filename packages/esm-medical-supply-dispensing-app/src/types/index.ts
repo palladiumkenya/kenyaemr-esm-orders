@@ -217,18 +217,19 @@ export interface NonDrugMedicationDispense {
   uuid: string;
   patient?: string;
   encounter?: string;
+  quantityUnits?: string;
   dispensingUnit?: NonDrugDispensingUnit;
   quantity?: Number;
   display?: string;
-  instrucions?: string;
   status?: string;
   medicalSupplyOrder?: string;
+  medicalSupplyOrderStatus?: string;
   concept?: string;
   dateDispensed?: Date;
   statusReason?: string;
   location?: string;
-  encounters?: string;
   dispenser?: string;
+  statusReasonCodeableConcept?: string;
 }
 
 export interface MedicationDispense {
@@ -284,7 +285,7 @@ export interface MedicationDispense {
 }
 export enum MedicationDispenseStatus {
   //in_progress = "in-progress",  NOT YET IMPLEMENTED
-  on_hold = 'on-hold',
+  paused = 'paused',
   completed = 'completed',
   declined = 'declined',
 }
@@ -466,6 +467,7 @@ export interface PrescriptionsTableRow {
   encounter: string;
   drugDispenseUnit: NonDrugDispensingUnit;
   drugDispenseQuantity: Number;
+  concept: string;
 }
 
 export interface Quantity {

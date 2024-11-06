@@ -13,7 +13,6 @@ import {
 } from '../types';
 import { computeMedicationRequestCombinedStatus, getConceptCodingDisplay } from '../utils';
 import { PRIVILEGE_CREATE_DISPENSE } from '../constants';
-import { usePatientAllergies, usePrescriptionDetails } from '../medication-request/medication-request.resource';
 import ActionButtons from '../components/action-buttons.component';
 import MedicationEvent from '../components/medication-event.component';
 import styles from './prescription-details.scss';
@@ -31,13 +30,18 @@ const PrescriptionDetails: React.FC<{
       <h5 style={{ paddingTop: '8px', paddingBottom: '8px', fontSize: '0.9rem' }}>{t('prescribed', 'Prescribed')}</h5>
 
       <Tile className={styles.prescriptionTile}>
-        <UserHasAccess privilege={PRIVILEGE_CREATE_DISPENSE}>
-          <ActionButtons
-            patientUuid={patientUuid}
-            encounterUuid={encounterUuid}
-            medicationDispense={medicationDispense}
-          />
-        </UserHasAccess>
+        {!(
+          medicationDispense.medicalSupplyOrderStatus == 'COMPLETED' ||
+          medicationDispense.medicalSupplyOrderStatus == 'DECLINED'
+        ) && (
+          <UserHasAccess privilege={PRIVILEGE_CREATE_DISPENSE}>
+            <ActionButtons
+              patientUuid={patientUuid}
+              encounterUuid={encounterUuid}
+              medicationDispense={medicationDispense}
+            />
+          </UserHasAccess>
+        )}
         <MedicationEvent medicationDispense={medicationDispense} />
       </Tile>
     </div>

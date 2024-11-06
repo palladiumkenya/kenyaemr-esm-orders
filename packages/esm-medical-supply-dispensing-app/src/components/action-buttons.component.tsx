@@ -58,7 +58,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ patientUuid, encounterUui
           onClick={() =>
             launchOverlay(
               t('pausePrescription', 'Pause prescription'),
-              <PauseDispenseForm patientUuid={patientUuid} encounterUuid={encounterUuid} mode="enter" />,
+              <PauseDispenseForm
+                medicationDispense={medicationDispense}
+                patientUuid={patientUuid}
+                encounterUuid={encounterUuid}
+                mode="enter"
+              />,
             )
           }>
           {t('pause', 'Pause')}
@@ -70,7 +75,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ patientUuid, encounterUui
           onClick={() =>
             launchOverlay(
               t('closePrescription', 'Close prescription'),
-              <CloseDispenseForm patientUuid={patientUuid} encounterUuid={encounterUuid} mode="enter" />,
+              <CloseDispenseForm
+                medicationDispense={medicationDispense}
+                patientUuid={patientUuid}
+                encounterUuid={encounterUuid}
+                mode="enter"
+              />,
             )
           }>
           {t('close', 'Close')}

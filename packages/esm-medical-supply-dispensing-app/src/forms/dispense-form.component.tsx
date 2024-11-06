@@ -1,25 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, FormLabel, InlineLoading } from '@carbon/react';
-import { ExtensionSlot, showNotification, showToast, useConfig, usePatient } from '@openmrs/esm-framework';
+import { ExtensionSlot, showNotification, showToast, useConfig, usePatient, useSession } from '@openmrs/esm-framework';
 import { closeOverlay } from '../hooks/useOverlay';
-import {
-  type MedicationDispense,
-  MedicationDispenseStatus,
-  type MedicationRequestBundle,
-  type InventoryItem,
-  NonDrugMedicationDispense,
-} from '../types';
-import {
-  computeNewFulfillerStatusAfterDispenseEvent,
-  getFulfillerStatus,
-  getUuidFromReference,
-  revalidate,
-} from '../utils';
+import { MedicationDispenseStatus, type InventoryItem, NonDrugMedicationDispense } from '../types';
+import { revalidate } from '../utils';
 import { type PharmacyConfig } from '../config-schema';
 import { createStockDispenseRequestPayload, sendStockDispenseRequest } from './stock-dispense/stock.resource';
-import { saveMedicationDispense } from '../medication-dispense/medication-dispense.resource';
-import { updateMedicationRequestFulfillerStatus } from '../medication-request/medication-request.resource';
+import { saveMedicationSupplyDispense } from '../medication-dispense/medication-dispense.resource';
+import { updateSupplyOrderFulfillerStatus } from '../medication-request/medication-request.resource';
 import MedicationDispenseReview from './medication-dispense-review.component';
 import StockDispense from './stock-dispense/stock-dispense.component';
 import styles from './forms.scss';
@@ -35,7 +24,7 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
   const { t } = useTranslation();
   const { patient, isLoading } = usePatient(patientUuid);
   const config = useConfig<PharmacyConfig>();
-
+  const session = useSession();
   // Keep track of inventory item
   const [inventoryItem, setInventoryItem] = useState<InventoryItem>();
 
@@ -53,47 +42,57 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
     if (!isSubmitting) {
       setIsSubmitting(true);
       const abortController = new AbortController();
-      saveMedicationDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
+      medicationDispensePayload.dispenser = session.currentProvider.uuid;
+      medicationDispensePayload.location = session.sessionLocation.uuid;
+      medicationDispensePayload.dateDispensed = new Date();
+      delete medicationDispensePayload['uuid'];
+      delete medicationDispensePayload['dispensingUnit'];
+      delete medicationDispensePayload['dsiplay'];
+      delete medicationDispensePayload['statusReasonCodeableConcept'];
+      delete medicationDispensePayload['medicalSupplyOrderStatus'];
+      saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
         .then((response) => {
-          // if (response.ok) {
-          //   const newFulfillerStatus = computeNewFulfillerStatusAfterDispenseEvent(
-          //     medicationDispensePayload,
-          //     medicationRequestBundle,
-          //     config.dispenseBehavior.restrictTotalQuantityDispensed,
-          //   );
-          //   if (getFulfillerStatus(medicationRequestBundle.request) !== newFulfillerStatus) {
-          //     return updateMedicationRequestFulfillerStatus(
-          //       getUuidFromReference(
-          //         medicationDispensePayload.authorizingPrescription[0].reference, // assumes authorizing prescription exist
-          //       ),
-          //       newFulfillerStatus,
-          //     );
-          //   }
-          // }
+          if (response.ok) {
+            showToast({
+              critical: true,
+              kind: 'success',
+              description: t('nonDrugItemsDispenseSuccess', 'Items Dispensed Successfully.'),
+              title: t('dispenseSuccess', 'Dispense Success'),
+            });
+          }
           return response;
+        })
+        .then((response) => {
+          if (response.status === 201 || response.status === 200) {
+            const body = {
+              // fulfillerComment: '',
+              fulfillerStatus: 'COMPLETED',
+            };
+            return updateSupplyOrderFulfillerStatus(medicationDispensePayload.medicalSupplyOrder, body);
+          }
         })
         .then((response) => {
           const { status } = response;
           if (config.enableStockDispense && (status === 201 || status === 200)) {
-            const stockDispenseRequestPayload = createStockDispenseRequestPayload(
-              inventoryItem,
-              patientUuid,
-              encounterUuid,
-              medicationDispensePayload,
-            );
-            sendStockDispenseRequest(stockDispenseRequestPayload, abortController).then(
-              () => {
-                showToast({
-                  critical: true,
-                  title: t('stockDispensed', 'Stock dispensed'),
-                  kind: 'success',
-                  description: t('stockDispensedSuccessfully', 'Stock dispensed successfully and batch level updated.'),
-                });
-              },
-              (error) => {
-                showToast({ title: 'Stock dispense error', kind: 'error', description: error?.message });
-              },
-            );
+            // const stockDispenseRequestPayload = createStockDispenseRequestPayload(
+            //   inventoryItem,
+            //   patientUuid,
+            //   encounterUuid,
+            //   medicationDispensePayload,
+            // );
+            // sendStockDispenseRequest(stockDispenseRequestPayload, abortController).then(
+            //   () => {
+            //     showToast({
+            //       critical: true,
+            //       title: t('stockDispensed', 'Stock dispensed'),
+            //       kind: 'success',
+            //       description: t('stockDispensedSuccessfully', 'Stock dispensed successfully and batch level updated.'),
+            //     });
+            //   },
+            //   (error) => {
+            //     showToast({ title: 'Stock dispense error', kind: 'error', description: error?.message });
+            //   },
+            // );
           }
           return response;
         })
@@ -158,8 +157,8 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
   // check is valid on any changes
   // useEffect(checkIsValid, [medicationDispensePayload, quantityRemaining, inventoryItem]);
 
-  const isButtonDisabled = (config.enableStockDispense ? !inventoryItem : false) || !isValid || isSubmitting;
-
+  let isButtonDisabled = (config.enableStockDispense ? !inventoryItem : false) || !isValid || isSubmitting;
+  isButtonDisabled = false;
   const bannerState = useMemo(() => {
     if (patient) {
       return {
@@ -181,16 +180,8 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
             status="active"
           />
         )}
-        {/* {patient && <ExtensionSlot name="patient-header-slot" state={bannerState} />} */}
+        {patient && <ExtensionSlot name="patient-header-slot" state={bannerState} />}
         <section className={styles.formGroup}>
-          <FormLabel>
-            {t(
-              config.dispenseBehavior.allowModifyingPrescription ? 'drugHelpText' : 'drugHelpTextNoEdit',
-              config.dispenseBehavior.allowModifyingPrescription
-                ? 'You may edit the formulation and quantity dispensed here'
-                : 'You may edit quantity dispensed here',
-            )}
-          </FormLabel>
           {medicationDispensePayload ? (
             <div>
               <MedicationDispenseReview
