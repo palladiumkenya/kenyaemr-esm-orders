@@ -61,24 +61,24 @@ const CloseDispenseForm: React.FC<CloseDispenseFormProps> = ({
 
   useEffect(() => {
     const reasonForCloseOptions = [
-      {
-        id: '737fa73a-509f-40d8-9e84-91dc71db7f4c',
-        text: 'Order discontinued',
-      },
+      // {
+      //   id: '737fa73a-509f-40d8-9e84-91dc71db7f4c',
+      //   text: 'Order discontinued',
+      // },
     ];
 
-    // if (reasonForPauseValueSet?.compose?.include) {
-    //   const uuidValueSet = reasonForPauseValueSet.compose.include.find((include) => !include.system);
-    //   if (uuidValueSet) {
-    //     uuidValueSet.concept?.forEach((concept) =>
-    //       reasonForPauseOptions.push({
-    //         id: concept.code,
-    //         text: concept.display,
-    //       }),
-    //     );
-    //     reasonForPauseOptions.sort((a, b) => a.text.localeCompare(b.text));
-    //   }
-    // }
+    if (reasonForCloseValueSet?.compose?.include) {
+      const uuidValueSet = reasonForCloseValueSet.compose.include.find((include) => !include.system);
+      if (uuidValueSet) {
+        uuidValueSet.concept?.forEach((concept) =>
+          reasonForCloseOptions.push({
+            id: concept.code,
+            text: concept.display,
+          }),
+        );
+        reasonForCloseOptions.sort((a, b) => a.text.localeCompare(b.text));
+      }
+    }
     setReasonsForClose(reasonForCloseOptions);
   }, [reasonForCloseValueSet]);
 

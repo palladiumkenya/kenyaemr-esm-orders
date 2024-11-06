@@ -63,24 +63,24 @@ const PauseDispenseForm: React.FC<PauseDispenseFormProps> = ({
 
   useEffect(() => {
     const reasonForPauseOptions = [
-      {
-        id: '737fa73a-509f-40d8-9e84-91dc71db7f4c',
-        text: 'Order discontinued',
-      },
+      // {
+      //   id: '737fa73a-509f-40d8-9e84-91dc71db7f4c',
+      //   text: 'Order discontinued',
+      // },
     ];
 
-    // if (reasonForPauseValueSet?.compose?.include) {
-    //   const uuidValueSet = reasonForPauseValueSet.compose.include.find((include) => !include.system);
-    //   if (uuidValueSet) {
-    //     uuidValueSet.concept?.forEach((concept) =>
-    //       reasonForPauseOptions.push({
-    //         id: concept.code,
-    //         text: concept.display,
-    //       }),
-    //     );
-    //     reasonForPauseOptions.sort((a, b) => a.text.localeCompare(b.text));
-    //   }
-    // }
+    if (reasonForPauseValueSet?.compose?.include) {
+      const uuidValueSet = reasonForPauseValueSet.compose.include.find((include) => !include.system);
+      if (uuidValueSet) {
+        uuidValueSet.concept?.forEach((concept) =>
+          reasonForPauseOptions.push({
+            id: concept.code,
+            text: concept.display,
+          }),
+        );
+        reasonForPauseOptions.sort((a, b) => a.text.localeCompare(b.text));
+      }
+    }
     setReasonsForPause(reasonForPauseOptions);
   }, [reasonForPauseValueSet]);
 
