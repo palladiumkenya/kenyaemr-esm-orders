@@ -2,10 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ComboBox, Dropdown, NumberInput, Stack, TextArea } from '@carbon/react';
 import { OpenmrsDatePicker, useLayoutType, useConfig, useSession, userHasAccess } from '@openmrs/esm-framework';
-import { getConceptCodingUuid, getMedicationReferenceOrCodeableConcept, getOpenMRSMedicineDrugName } from '../utils';
-import MedicationCard from '../components/medication-card.component';
-import { useMedicationCodeableConcept, useMedicationFormulations } from '../medication/medication.resource';
-import { useMedicationRequest, usePrescriptionDetails } from '../medication-request/medication-request.resource';
 import {
   useOrderConfig,
   useProviders,

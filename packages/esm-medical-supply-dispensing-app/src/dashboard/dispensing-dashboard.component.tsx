@@ -6,14 +6,10 @@ import PrescriptionTabLists from '../prescriptions/prescription-tab-lists.compon
 import { useConfig } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 import { type PharmacyConfig } from '../config-schema';
-import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
 
 export default function DispensingDashboard() {
   const config = useConfig<PharmacyConfig>();
   const { t } = useTranslation();
-  // const { workListEntries, isLoading, isError } = useOrdersWorklist('', '');
-
-  // console.log(workListEntries?.length);
 
   if (config.dispenseBehavior.restrictTotalQuantityDispensed && config.dispenseBehavior.allowModifyingPrescription) {
     return (

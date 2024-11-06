@@ -21,7 +21,7 @@ const PrescriptionTabLists: React.FC = () => {
     {
       key: 'activePrescriptions',
       header: t('activeMedicalSupplies', 'Active Medical Supplies'),
-      status: 'ACTIVE',
+      status: 'ACTIVE', //should be active
     },
     {
       key: 'allPrescriptions',

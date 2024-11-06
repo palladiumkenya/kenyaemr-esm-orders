@@ -81,7 +81,10 @@ export function MedicalSupplyOrderForm({
         required_error: translateFrom(moduleName, 'quantityRequired', 'Quantity is required'),
         invalid_type_error: translateFrom(moduleName, 'quantityInvalid', 'Quantity must be a number'),
       })
-      .min(1, { message: translateFrom(moduleName, 'quantityMin', 'Quantity must be greater than 0') }),
+      .min(0, { message: translateFrom(moduleName, 'quantityMin', 'Quantity must be greater than 0') })
+      .refine((val) => val > 0, {
+        message: translateFrom(moduleName, 'quantityMin', 'Quantity must be greater than or equal to 0'),
+      }),
   });
 
   const {
@@ -204,10 +207,11 @@ export function MedicalSupplyOrderForm({
                       label={t('quantity', 'Quantity')}
                       value={value}
                       onChange={(e) => {
-                        onChange(Number(e.target?.value));
+                        onChange(parseFloat(e.target.value));
                       }}
                       onBlur={onBlur}
-                      min={1}
+                      min={0.1} // Minimum value greater than 0
+                      step={0.1} // Allows increments of 0.1
                       invalid={!!errors.quantity?.message}
                       invalidText={errors.quantity?.message}
                     />

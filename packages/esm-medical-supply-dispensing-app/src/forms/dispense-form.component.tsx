@@ -8,7 +8,7 @@ import { revalidate } from '../utils';
 import { type PharmacyConfig } from '../config-schema';
 import { createStockDispenseRequestPayload, sendStockDispenseRequest } from './stock-dispense/stock.resource';
 import { saveMedicationSupplyDispense } from '../medication-dispense/medication-dispense.resource';
-import { updateMedicationRequestFulfillerStatus } from '../medication-request/medication-request.resource';
+import { updateSupplyOrderFulfillerStatus } from '../medication-request/medication-request.resource';
 import MedicationDispenseReview from './medication-dispense-review.component';
 import StockDispense from './stock-dispense/stock-dispense.component';
 import styles from './forms.scss';
@@ -48,40 +48,51 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
       delete medicationDispensePayload['uuid'];
       delete medicationDispensePayload['dispensingUnit'];
       delete medicationDispensePayload['dsiplay'];
+      delete medicationDispensePayload['statusReasonCodeableConcept'];
+      delete medicationDispensePayload['medicalSupplyOrderStatus'];
       saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.completed, abortController)
         .then((response) => {
           if (response.ok) {
             showToast({
               critical: true,
               kind: 'success',
-              description: t('medicationDispenseSuccess', 'Medication Dispensed Successfully.'),
+              description: t('nonDrugItemsDispenseSuccess', 'Items Dispensed Successfully.'),
               title: t('dispenseSuccess', 'Dispense Success'),
             });
           }
           return response;
         })
         .then((response) => {
+          if (response.status === 201 || response.status === 200) {
+            const body = {
+              // fulfillerComment: '',
+              fulfillerStatus: 'COMPLETED',
+            };
+            return updateSupplyOrderFulfillerStatus(medicationDispensePayload.medicalSupplyOrder, body);
+          }
+        })
+        .then((response) => {
           const { status } = response;
           if (config.enableStockDispense && (status === 201 || status === 200)) {
-            const stockDispenseRequestPayload = createStockDispenseRequestPayload(
-              inventoryItem,
-              patientUuid,
-              encounterUuid,
-              medicationDispensePayload,
-            );
-            sendStockDispenseRequest(stockDispenseRequestPayload, abortController).then(
-              () => {
-                showToast({
-                  critical: true,
-                  title: t('stockDispensed', 'Stock dispensed'),
-                  kind: 'success',
-                  description: t('stockDispensedSuccessfully', 'Stock dispensed successfully and batch level updated.'),
-                });
-              },
-              (error) => {
-                showToast({ title: 'Stock dispense error', kind: 'error', description: error?.message });
-              },
-            );
+            // const stockDispenseRequestPayload = createStockDispenseRequestPayload(
+            //   inventoryItem,
+            //   patientUuid,
+            //   encounterUuid,
+            //   medicationDispensePayload,
+            // );
+            // sendStockDispenseRequest(stockDispenseRequestPayload, abortController).then(
+            //   () => {
+            //     showToast({
+            //       critical: true,
+            //       title: t('stockDispensed', 'Stock dispensed'),
+            //       kind: 'success',
+            //       description: t('stockDispensedSuccessfully', 'Stock dispensed successfully and batch level updated.'),
+            //     });
+            //   },
+            //   (error) => {
+            //     showToast({ title: 'Stock dispense error', kind: 'error', description: error?.message });
+            //   },
+            // );
           }
           return response;
         })
@@ -169,7 +180,7 @@ const DispenseForm: React.FC<DispenseFormProps> = ({ medicationDispense, mode, p
             status="active"
           />
         )}
-        {/* {patient && <ExtensionSlot name="patient-header-slot" state={bannerState} />} */}
+        {patient && <ExtensionSlot name="patient-header-slot" state={bannerState} />}
         <section className={styles.formGroup}>
           {medicationDispensePayload ? (
             <div>

@@ -223,11 +223,13 @@ export interface NonDrugMedicationDispense {
   display?: string;
   status?: string;
   medicalSupplyOrder?: string;
+  medicalSupplyOrderStatus?: string;
   concept?: string;
   dateDispensed?: Date;
   statusReason?: string;
   location?: string;
   dispenser?: string;
+  statusReasonCodeableConcept?: string;
 }
 
 export interface MedicationDispense {
@@ -283,7 +285,7 @@ export interface MedicationDispense {
 }
 export enum MedicationDispenseStatus {
   //in_progress = "in-progress",  NOT YET IMPLEMENTED
-  on_hold = 'on-hold',
+  paused = 'paused',
   completed = 'completed',
   declined = 'declined',
 }

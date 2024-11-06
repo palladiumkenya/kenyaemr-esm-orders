@@ -655,7 +655,7 @@ describe('Util Tests', () => {
       },
       performer: undefined,
       resourceType: 'MedicationDispense',
-      status: MedicationDispenseStatus.on_hold,
+      status: MedicationDispenseStatus.paused,
       subject: { display: '', reference: '', type: '' },
       substitution: { reason: [], type: undefined, wasSubstituted: false },
       type: undefined,
@@ -863,7 +863,7 @@ describe('Util Tests', () => {
 
     test('when adding new dispense should return on-hold if status of new dispense is on-hold and if restrict total quantity dispensed config is false', () => {
       newMedicationDispense.extension[0].valueDateTime = '2023-01-03T14:00:00-05:00';
-      newMedicationDispense.status = MedicationDispenseStatus.on_hold;
+      newMedicationDispense.status = MedicationDispenseStatus.paused;
       newMedicationDispense.quantity.value = 0;
       expect(
         computeNewFulfillerStatusAfterDispenseEvent(
@@ -902,7 +902,7 @@ describe('Util Tests', () => {
 
     test('when adding new on-hold dispense should return on-hold if restrict total quantity dispensed config is true', () => {
       newMedicationDispense.extension[0].valueDateTime = '2023-01-03T14:00:00-05:00';
-      newMedicationDispense.status = MedicationDispenseStatus.on_hold;
+      newMedicationDispense.status = MedicationDispenseStatus.paused;
       newMedicationDispense.quantity.value = 0;
       expect(
         computeNewFulfillerStatusAfterDispenseEvent(
@@ -915,10 +915,10 @@ describe('Util Tests', () => {
 
     test('when adding new dispense to request with existing dispense should return complete if meets total quantity ordered and restrict total quantity dispensed config is true', () => {
       newMedicationDispense.extension[0].valueDateTime = '2023-01-03T14:00:00-05:00';
-      newMedicationDispense.status = MedicationDispenseStatus.on_hold;
+      newMedicationDispense.status = MedicationDispenseStatus.paused;
       newMedicationDispense.quantity.value = 20;
       existingMedicationDispense.extension[0].valueDateTime = '2023-01-03T14:00:00-05:00';
-      existingMedicationDispense.status = MedicationDispenseStatus.on_hold;
+      existingMedicationDispense.status = MedicationDispenseStatus.paused;
       existingMedicationDispense.quantity.value = 10;
       expect(
         computeNewFulfillerStatusAfterDispenseEvent(
@@ -2191,7 +2191,7 @@ describe('Util Tests', () => {
           },
           performer: undefined,
           resourceType: 'MedicationDispense',
-          status: MedicationDispenseStatus.on_hold,
+          status: MedicationDispenseStatus.paused,
           subject: { display: '', reference: '', type: '' },
           substitution: { reason: [], type: undefined, wasSubstituted: false },
           type: undefined,
@@ -2302,7 +2302,7 @@ describe('Util Tests', () => {
           },
           performer: undefined,
           resourceType: 'MedicationDispense',
-          status: MedicationDispenseStatus.on_hold,
+          status: MedicationDispenseStatus.paused,
           subject: { display: '', reference: '', type: '' },
           substitution: { reason: [], type: undefined, wasSubstituted: false },
           type: undefined,
@@ -2404,7 +2404,7 @@ describe('Util Tests', () => {
           },
           performer: undefined,
           resourceType: 'MedicationDispense',
-          status: MedicationDispenseStatus.on_hold,
+          status: MedicationDispenseStatus.paused,
           subject: { display: '', reference: '', type: '' },
           substitution: { reason: [], type: undefined, wasSubstituted: false },
           type: undefined,
@@ -2753,7 +2753,7 @@ describe('Util Tests', () => {
       },
       performer: undefined,
       resourceType: 'MedicationDispense',
-      status: MedicationDispenseStatus.on_hold,
+      status: MedicationDispenseStatus.paused,
       subject: { display: '', reference: '', type: '' },
       substitution: { reason: [], type: undefined, wasSubstituted: false },
       type: undefined,
