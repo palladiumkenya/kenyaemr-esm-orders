@@ -49,7 +49,7 @@ export function computeFulfillerStatus(
     return MedicationRequestFulfillerStatus.declined;
   }
 
-  if (mostRecentMedicationDispenseStatus === MedicationDispenseStatus.paused) {
+  if (mostRecentMedicationDispenseStatus === MedicationDispenseStatus.in_progress) {
     return MedicationRequestFulfillerStatus.on_hold;
   }
 

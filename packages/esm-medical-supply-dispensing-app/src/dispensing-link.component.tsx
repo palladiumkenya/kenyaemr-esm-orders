@@ -5,5 +5,5 @@ import { spaBasePath } from './constants';
 
 export default function DispensingLink() {
   const { t } = useTranslation();
-  return <ConfigurableLink to={spaBasePath}>{t('dispensing', 'Dispensing')}</ConfigurableLink>;
+  return <ConfigurableLink to={spaBasePath}>{t('medicalSuppliesDispensing', 'Supplies Dispensing')}</ConfigurableLink>;
 }

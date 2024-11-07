@@ -34,7 +34,7 @@
   "pages": [
     {
       "component": "supplyDispensingDashboard",
-      "route": "medical-supply-dispensing"
+      "route": "supplies-dispensing"
     }
   ]
 }
