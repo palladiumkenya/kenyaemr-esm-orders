@@ -99,7 +99,7 @@ const PauseDispenseForm: React.FC<PauseDispenseFormProps> = ({
       delete medicationDispensePayload['dsiplay'];
       delete medicationDispensePayload['statusReasonCodeableConcept'];
       delete medicationDispensePayload['medicalSupplyOrderStatus'];
-      saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.paused, abortController)
+      saveMedicationSupplyDispense(medicationDispensePayload, MedicationDispenseStatus.in_progress, abortController)
         .then((response) => {
           if (response.ok) {
             showToast({

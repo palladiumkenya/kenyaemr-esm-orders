@@ -26,10 +26,10 @@ function DashboardExtension() {
   return (
     <ConfigurableLink
       className={classNames('cds--side-nav__link', {
-        'active-left-nav-link': navLink.match('dispensing'),
+        'active-left-nav-link': navLink.match('supplies-dispensing'),
       })}
-      to={`${spaBasePath}/dispensing`}>
-      {t('dispensing', 'Dispensing')}
+      to={`${spaBasePath}/suppliesdispensing`}>
+      {t('suppliesdispensing', 'Supplies Dispensing')}
     </ConfigurableLink>
   );
 }
