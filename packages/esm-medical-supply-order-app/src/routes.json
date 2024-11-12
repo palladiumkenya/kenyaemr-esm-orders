@@ -18,8 +18,7 @@
       "name": "add-medical-supply-order",
       "type": "order",
       "component": "addMedicalSupplyOrderWorkspace",
-      "title": "addMedicalSupplyOrderWorkspaceTitle"
-     
+      "title": "Add medical supply order"
       
     }
   ],
