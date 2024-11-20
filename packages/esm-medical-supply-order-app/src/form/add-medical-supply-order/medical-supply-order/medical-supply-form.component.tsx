@@ -201,7 +201,7 @@ export function MedicalSupplyOrderForm({
                   render={({ field: { onChange, onBlur, value } }) => (
                     <NumberInput
                       hideSteppers={true}
-                      allowEmpty={false}
+                      allowEmpty={true}
                       id="quantityInput"
                       size="lg"
                       label={t('quantity', 'Quantity')}

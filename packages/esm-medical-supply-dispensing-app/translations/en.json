@@ -14,7 +14,6 @@
   "dispensePrescription": "Dispense prescription",
   "dispenseSuccess": "Dispense Success",
   "dispenseUnit": "Dispense Unit",
-  "dispensing": "Dispensing",
   "dispensingAppError": "Dispensing App Error",
   "dispensingAppMisconfigurationMessage": "Please contact your system administration: Misconfiguration - 'restrictTotalQuantityDispensed' cannot be enabled if 'allowModifyingPrescription' is enabled.",
   "drugDispensingUnit": "Dispensing unit",
@@ -26,6 +25,7 @@
   "lastDispenser": "Last dispenser",
   "loadingInventoryItems": "Loading inventory items...",
   "location": "Location",
+  "medicalSuppliesDispensing": "Supplies Dispensing",
   "medicationListUpdated": "Medication dispense list has been updated.",
   "nonDrugItemsClosedSuccess": "Dispensing Declined Successfully.",
   "nonDrugItemsDispenseSuccess": "Items Dispensed Successfully.",
@@ -48,6 +48,7 @@
   "statusReason": "Reason/Description",
   "stockDispense": "Stock Dispense",
   "stockDispenseDetails": "Batch: {{batchNumber}} - Quantity: {{quantity}} ({{quantityUoM}}) - Expiry: {{expiration}}",
+  "suppliesdispensing": "Supplies Dispensing",
   "tabletOverlay": "Tablet overlay",
   "tabList": "Tab List"
 }
