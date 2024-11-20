@@ -207,7 +207,8 @@ export function MedicalSupplyOrderForm({
                       label={t('quantity', 'Quantity')}
                       value={value}
                       onChange={(e) => {
-                        onChange(parseFloat(e.target.value));
+                        const value = e.target.value;
+                        onChange(value === '' ? 1 : parseFloat(value) || 1);
                       }}
                       onBlur={onBlur}
                       min={0.1} // Minimum value greater than 0
