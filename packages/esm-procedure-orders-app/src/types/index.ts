@@ -465,6 +465,10 @@ export type CodedProvider = {
   uuid: string;
   display: string;
 };
+export type DateFilterContext = {
+  dateRange: Array<Date>;
+  setDateRange: React.Dispatch<React.SetStateAction<Array<Date>>>;
+};
 
 export type ProcedurePayload = {
   patient: string;

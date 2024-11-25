@@ -1,5 +1,7 @@
-@use '@carbon/layout';
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
 @use '@carbon/colors';
+@use '@carbon/layout';
 
 .dataTable {
   display: flex;
@@ -10,4 +12,31 @@
     position: relative;
     margin-bottom: layout.$spacing-01;
   }
+}
+.toolbarItem {
+  margin-left: 1rem;
+  display: flex;
+  align-items: center;
+
+  & p {
+    padding-right: 0.5rem;
+    @include type.type-style('body-01');
+    color: colors.$gray-70;
+  }
+
+  :global(.cds--date-picker__input) {
+    height: spacing.$spacing-09;
+  }
+
+  :global(.cds--dropdown) {
+    height: spacing.$spacing-09;
+  }
+
+  :global(.cds--list-box__menu:focus) {
+    outline: none;
+  }
+}
+.tableToolBar {
+  height: auto;
+  padding-top: layout.$spacing-04;
 }
