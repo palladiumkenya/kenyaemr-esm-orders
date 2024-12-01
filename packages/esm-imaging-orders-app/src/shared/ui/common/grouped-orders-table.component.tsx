@@ -18,11 +18,13 @@ import {
   TableToolbarSearch,
   TableToolbarContent,
   TableToolbar,
+  Layer,
 } from '@carbon/react';
 import ListOrderDetails from './list-order-details.component';
 import { EmptyState } from '@openmrs/esm-patient-common-lib';
 import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults';
 import TransitionLatestQueueEntryButton from '../../../imaging-tabs/test-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component';
+import { OrdersDateRangePicker } from './orders-date-range-picker';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
@@ -78,10 +80,6 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
     return showActionColumn ? [...baseColumns, { key: 'action', header: t('action', 'Action') }] : baseColumns;
   }, [workListEntries, t]);
 
-  if (paginatedResults.length === 0) {
-    return <EmptyState headerTitle={props.title} displayText={t('noOrdersDescription', 'No orders')} />;
-  }
-
   return (
     <DataTable size="md" useZebraStyle rows={rowData} headers={tableColumns}>
       {({ rows, headers, getHeaderProps, getRowProps, getExpandedRowProps, getTableProps, getTableContainerProps }) => (
@@ -92,59 +90,70 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           {...getTableContainerProps()}>
           <TableToolbar>
             <TableToolbarContent>
-              <TableToolbarSearch
-                size="sm"
-                placeholder="Search by patient name"
-                persistent={true}
-                onChange={(event) => setSearchString(event.target.value)}
-              />
+              <Layer className={styles.toolbarItem}>
+                <OrdersDateRangePicker />
+              </Layer>
+              <Layer className={styles.toolbarItem}>
+                <TableToolbarSearch
+                  expanded
+                  persistent={true}
+                  onChange={(event) => setSearchString(event.target.value)}
+                  placeholder={t('searchbypatientname', 'Search by patient name')}
+                  size="sm"
+                />
+              </Layer>
             </TableToolbarContent>
           </TableToolbar>
-          <Table {...getTableProps()} aria-label="sample table">
-            <TableHead>
-              <TableRow>
-                <TableExpandHeader aria-label="expand row" />
-                {headers.map((header, i) => (
-                  <TableHeader
-                    key={i}
-                    {...getHeaderProps({
-                      header,
-                    })}>
-                    {header.header}
-                  </TableHeader>
+          {rows.length <= 0 && (
+            <EmptyState headerTitle={props.title} displayText={t('noOrdersDescription', 'No orders')} />
+          )}
+          {rows.length > 0 && (
+            <Table {...getTableProps()} aria-label="sample table">
+              <TableHead>
+                <TableRow>
+                  <TableExpandHeader aria-label="expand row" />
+                  {headers.map((header, i) => (
+                    <TableHeader
+                      key={i}
+                      {...getHeaderProps({
+                        header,
+                      })}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <React.Fragment key={row.id}>
+                    <TableExpandRow
+                      {...getRowProps({
+                        row,
+                      })}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableExpandRow>
+                    <TableExpandedRow
+                      colSpan={headers.length + 1}
+                      className="demo-expanded-td"
+                      {...getExpandedRowProps({
+                        row,
+                      })}>
+                      <ListOrderDetails
+                        actions={props.actions}
+                        groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
+                        showActions={props.showActions}
+                        showOrderType={props.showOrderType}
+                        showStartButton={props.showStartButton}
+                        showStatus={props.showStatus}
+                      />
+                    </TableExpandedRow>
+                  </React.Fragment>
                 ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <React.Fragment key={row.id}>
-                  <TableExpandRow
-                    {...getRowProps({
-                      row,
-                    })}>
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
-                    ))}
-                  </TableExpandRow>
-                  <TableExpandedRow
-                    colSpan={headers.length + 1}
-                    className="demo-expanded-td"
-                    {...getExpandedRowProps({
-                      row,
-                    })}>
-                    <ListOrderDetails
-                      actions={props.actions}
-                      groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
-                      showActions={props.showActions}
-                      showOrderType={props.showOrderType}
-                      showStartButton={props.showStartButton}
-                      showStatus={props.showStatus}
-                    />
-                  </TableExpandedRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          )}
         </TableContainer>
       )}
     </DataTable>

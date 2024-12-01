@@ -81,10 +81,6 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
     return showActionColumn ? [...baseColumns, { key: 'action', header: t('action', 'Action') }] : baseColumns;
   }, [workListEntries, t]);
 
-  if (paginatedResults.length === 0) {
-    return <EmptyState headerTitle={props.title} displayText={t('noOrdersDescription', 'No orders')} />;
-  }
-
   return (
     <DataTable size="md" useZebraStyle rows={rowData} headers={tableColumns}>
       {({ rows, headers, getHeaderProps, getRowProps, getExpandedRowProps, getTableProps, getTableContainerProps }) => (
@@ -109,52 +105,56 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
               </Layer>
             </TableToolbarContent>
           </TableToolbar>
-
-          <Table {...getTableProps()} aria-label="sample table">
-            <TableHead>
-              <TableRow>
-                <TableExpandHeader aria-label="expand row" />
-                {headers.map((header, i) => (
-                  <TableHeader
-                    key={i}
-                    {...getHeaderProps({
-                      header,
-                    })}>
-                    {header.header}
-                  </TableHeader>
+          {rows.length <= 0 && (
+            <EmptyState headerTitle={props.title} displayText={t('noOrdersDescription', 'No orders')} />
+          )}
+          {rows.length > 0 && (
+            <Table {...getTableProps()} aria-label="sample table">
+              <TableHead>
+                <TableRow>
+                  <TableExpandHeader aria-label="expand row" />
+                  {headers.map((header, i) => (
+                    <TableHeader
+                      key={i}
+                      {...getHeaderProps({
+                        header,
+                      })}>
+                      {header.header}
+                    </TableHeader>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map((row) => (
+                  <React.Fragment key={row.id}>
+                    <TableExpandRow
+                      {...getRowProps({
+                        row,
+                      })}>
+                      {row.cells.map((cell) => (
+                        <TableCell key={cell.id}>{cell.value}</TableCell>
+                      ))}
+                    </TableExpandRow>
+                    <TableExpandedRow
+                      colSpan={headers.length + 1}
+                      className="demo-expanded-td"
+                      {...getExpandedRowProps({
+                        row,
+                      })}>
+                      <ListOrderDetails
+                        actions={props.actions}
+                        groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
+                        showActions={props.showActions}
+                        showOrderType={props.showOrderType}
+                        showStartButton={props.showStartButton}
+                        showStatus={props.showStatus}
+                      />
+                    </TableExpandedRow>
+                  </React.Fragment>
                 ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map((row) => (
-                <React.Fragment key={row.id}>
-                  <TableExpandRow
-                    {...getRowProps({
-                      row,
-                    })}>
-                    {row.cells.map((cell) => (
-                      <TableCell key={cell.id}>{cell.value}</TableCell>
-                    ))}
-                  </TableExpandRow>
-                  <TableExpandedRow
-                    colSpan={headers.length + 1}
-                    className="demo-expanded-td"
-                    {...getExpandedRowProps({
-                      row,
-                    })}>
-                    <ListOrderDetails
-                      actions={props.actions}
-                      groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
-                      showActions={props.showActions}
-                      showOrderType={props.showOrderType}
-                      showStartButton={props.showStartButton}
-                      showStatus={props.showStatus}
-                    />
-                  </TableExpandedRow>
-                </React.Fragment>
-              ))}
-            </TableBody>
-          </Table>
+              </TableBody>
+            </Table>
+          )}
         </TableContainer>
       )}
     </DataTable>

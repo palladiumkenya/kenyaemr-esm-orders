@@ -1,14 +1,22 @@
-import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { openmrsFetch, restBaseUrl, useAppContext, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { useMemo, useCallback } from 'react';
 import { Result } from '../imaging-tabs/work-list/work-list.resource';
 import { ImagingConfig } from '../config-schema';
 import { FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
+import dayjs from 'dayjs';
+import { DateFilterContext } from '../types';
 
-const createApiUrl = (radiologyOrderTypeUuid: string, activatedOnOrAfterDate: string, fulfillerStatus: string) => {
+const createApiUrl = (
+  radiologyOrderTypeUuid: string,
+  activatedOnOrAfterDate: string,
+  activatedOnOrBeforeDate: string,
+  fulfillerStatus: string,
+) => {
   const responseFormat =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
-  const orderTypeParam = `orderTypes=${radiologyOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
+  const orderTypeParam = `orderTypes=${radiologyOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&activatedOnOrBeforeDate=${activatedOnOrBeforeDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
+
   return `${restBaseUrl}/order?${orderTypeParam}`;
 };
 
@@ -17,10 +25,19 @@ export function useOrdersWorkList(activatedOnOrAfterDate: string, fulfillerStatu
     orders: { radiologyOrderTypeUuid },
     radiologyConceptClassUuid,
   } = useConfig<ImagingConfig>();
+  const { dateRange } = useAppContext<DateFilterContext>('imaging-date-filter') ?? {
+    dateRange: [dayjs().startOf('day').toDate(), new Date()],
+  };
 
   const apiUrl = useMemo(
-    () => createApiUrl(radiologyOrderTypeUuid, activatedOnOrAfterDate, fulfillerStatus),
-    [radiologyOrderTypeUuid, activatedOnOrAfterDate, fulfillerStatus],
+    () =>
+      createApiUrl(
+        radiologyOrderTypeUuid,
+        dateRange.at(0).toISOString(),
+        dateRange.at(1).toISOString(),
+        fulfillerStatus,
+      ),
+    [radiologyOrderTypeUuid, dateRange.at(0).toISOString(), dateRange.at(1).toISOString(), fulfillerStatus],
   );
 
   const { data, error, isLoading, mutate } = useSWR<{ data: { results: Array<Result> } }>(apiUrl, openmrsFetch);
