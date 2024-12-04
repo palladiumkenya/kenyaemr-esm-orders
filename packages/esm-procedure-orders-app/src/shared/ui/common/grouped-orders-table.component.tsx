@@ -99,7 +99,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
                   expanded
                   persistent={true}
                   onChange={(event) => setSearchString(event.target.value)}
-                  placeholder={t('searchbypatientname', 'Search by patient name')}
+                  placeholder={t('searchByPatientName', 'Search by patient name')}
                   size="sm"
                 />
               </Layer>
