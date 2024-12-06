@@ -8,14 +8,14 @@ import dayjs from 'dayjs';
 import { DateFilterContext } from '../types';
 
 const createApiUrl = (
-  radiologyOrderTypeUuid: string,
+  OrderTypeUuid: string,
   activatedOnOrAfterDate: string,
   activatedOnOrBeforeDate: string,
   fulfillerStatus: string,
 ) => {
   const responseFormat =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
-  const orderTypeParam = `orderTypes=${radiologyOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&activatedOnOrBeforeDate=${activatedOnOrBeforeDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
+  const orderTypeParam = `orderTypes=${OrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&activatedOnOrBeforeDate=${activatedOnOrBeforeDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
 
   return `${restBaseUrl}/order?${orderTypeParam}`;
 };
@@ -25,6 +25,7 @@ export function useOrdersWorkList(activatedOnOrAfterDate: string, fulfillerStatu
     orders: { radiologyOrderTypeUuid },
     radiologyConceptClassUuid,
   } = useConfig<ImagingConfig>();
+
   const { dateRange } = useAppContext<DateFilterContext>('imaging-date-filter') ?? {
     dateRange: [dayjs().startOf('day').toDate(), new Date()],
   };
