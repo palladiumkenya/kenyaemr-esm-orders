@@ -1,13 +1,21 @@
-import { ConfigObject, openmrsFetch, useConfig } from '@openmrs/esm-framework';
+import { ConfigObject, openmrsFetch, useAppContext, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { ProcedureConceptClass_UUID } from '../constants';
-import { Result } from '../types';
+import { DateFilterContext, Result } from '../types';
+import dayjs from 'dayjs';
 export function useOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;
+  const { dateRange } = useAppContext<DateFilterContext>('procedures-date-filter') ?? {
+    dateRange: [dayjs().startOf('day').toDate(), new Date()],
+  };
 
   const responseFormat =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,procedures,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment,frequency,numberOfRepeats)';
-  const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
+  const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${dateRange
+    .at(0)
+    .toISOString()}&activatedOnOrBeforeDate=${dateRange
+    .at(1)
+    .toISOString()}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
   const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const { data, error, isLoading } = useSWR<{ data: { results: Array<Result> } }, Error>(apiUrl, openmrsFetch);

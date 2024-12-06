@@ -16,25 +16,23 @@ const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
     return <DataTableSkeleton role="progressbar" />;
   }
 
-  if (workListEntries?.length >= 0) {
-    return (
-      <>
-        <div>
-          <div className={styles.headerBtnContainer}></div>
-          <GroupedOrdersTable
-            orders={workListEntries}
-            showActions={true}
-            showStatus={true}
-            showOrderType={true}
-            showStartButton={false}
-            title={t('workList', 'Work List')}
-            actions={[{ actionName: 'postProcedureResultForm' }, { actionName: 'reject-procedure-order-dialog' }]}
-          />
-        </div>
-        <Overlay />
-      </>
-    );
-  }
+  return (
+    <>
+      <div>
+        <div className={styles.headerBtnContainer}></div>
+        <GroupedOrdersTable
+          orders={workListEntries}
+          showActions={true}
+          showStatus={true}
+          showOrderType={true}
+          showStartButton={false}
+          title={t('workList', 'Work List')}
+          actions={[{ actionName: 'postProcedureResultForm' }, { actionName: 'reject-procedure-order-dialog' }]}
+        />
+      </div>
+      <Overlay />
+    </>
+  );
 };
 
 export default WorkList;
