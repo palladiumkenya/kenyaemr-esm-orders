@@ -47,3 +47,7 @@ interface CommonImagingProps {
 export interface CommonImagingValueCoded extends CommonImagingProps {
   valueCoded: string;
 }
+export type DateFilterContext = {
+  dateRange: Array<Date>;
+  setDateRange: React.Dispatch<React.SetStateAction<Array<Date>>>;
+};
