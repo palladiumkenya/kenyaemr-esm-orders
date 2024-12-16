@@ -20,7 +20,10 @@ export const Review: React.FC = () => {
         showStartButton={false}
         showActions={true}
         showOrderType={true}
-        actions={[{ actionName: 'review-imaging-report-modal', order: 1 }]}
+        actions={[
+          { actionName: 'imaging-review-form', order: 1 },
+          { actionName: 'amend-imaging-order-modal', order: 2 },
+        ]}
         title={t('reviewOrdered', 'Review Ordered')}
       />
     </div>
