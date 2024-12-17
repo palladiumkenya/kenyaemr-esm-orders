@@ -276,6 +276,30 @@ export function ImagingOrderForm({
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
                 <Controller
+                  name="orderReasonNonCoded"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextArea
+                      enableCounter
+                      id="orderReasonNonCodedInput"
+                      size="lg"
+                      labelText={'Order Reason'}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      maxCount={500}
+                      invalid={errors.orderReasonNonCoded?.message}
+                      invalidText={errors.orderReasonNonCoded?.message}
+                    />
+                  )}
+                />
+              </InputWrapper>
+            </Column>
+          </Grid>
+          <Grid className={styles.gridRow}>
+            <Column lg={16} md={8} sm={4}>
+              <InputWrapper>
+                <Controller
                   name="instructions"
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -314,30 +338,6 @@ export function ImagingOrderForm({
                       maxCount={500}
                       invalid={errors.commentsToFulfiller?.message}
                       invalidText={errors.commentsToFulfiller?.message}
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
-          <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="orderReasonNonCoded"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <TextArea
-                      enableCounter
-                      id="orderReasonNonCodedInput"
-                      size="lg"
-                      labelText={'Order Reason'}
-                      value={value}
-                      onChange={onChange}
-                      onBlur={onBlur}
-                      maxCount={500}
-                      invalid={errors.orderReasonNonCoded?.message}
-                      invalidText={errors.orderReasonNonCoded?.message}
                     />
                   )}
                 />
