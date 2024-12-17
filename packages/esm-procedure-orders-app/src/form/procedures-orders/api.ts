@@ -99,6 +99,7 @@ export function prepProceduresOrderPostData(
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       bodySite: order.bodySite,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
@@ -122,6 +123,7 @@ export function prepProceduresOrderPostData(
       commentToFulfiller: order.commentsToFulfiller,
       instructions: order.instructions,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       previousOrder: order.previousOrder,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
@@ -144,6 +146,7 @@ export function prepProceduresOrderPostData(
       numberOfRepeats: order.numberOfRepeats,
       commentToFulfiller: order.commentsToFulfiller,
       orderReason: order.orderReason,
+      orderReasonNonCoded: order.orderReasonNonCoded,
       previousOrder: order.previousOrder,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
