@@ -30,6 +30,7 @@ export interface ImagingOrderBasketItem extends OrderBasketItem {
   urgency?: string;
   instructions?: string;
   orderReason?: string;
+  orderReasonNonCoded?: string;
   scheduleDate?: Date | string;
   commentsToFulfiller?: string;
   laterality?: string;
