@@ -55,7 +55,7 @@
   "saveAndClose": "Save & close",
   "saveOrder": "Save order",
   "scheduleDate": "Scheduled date",
-  "searchbypatientname": "Search by patient name",
+  "searchByPatientName": "Search by patient name",
   "status": "Status",
   "submitting": "Submitting...",
   "successfullyRejected": "You have successfully rejected an Order with OrderNumber {{orderNumber}} ",
