@@ -6,6 +6,7 @@ import { restBaseUrl, showNotification, showSnackbar } from '@openmrs/esm-framew
 import { updateOrder } from './add-to-worklist-dialog.resource';
 import { Result } from '../../work-list/work-list.resource';
 import { mutate } from 'swr';
+import capitalize from 'lodash-es/capitalize';
 
 interface AddImagingToWorkListModalProps {
   queueId;
@@ -52,32 +53,39 @@ const AddImagingToWorkListModal: React.FC<AddImagingToWorkListModalProps> = ({ o
   const handleCheckboxChange = () => {
     setIsReferredChecked(!isReferredChecked);
   };
-
+  const orderName = capitalize(order?.concept?.display);
+  const orderNumber = order?.orderNumber;
   return (
     <div>
       <Form onSubmit={pickImagingOrder}>
-        <ModalHeader closeModal={closeModal} title={t('pickRequest', 'Pick Request')} />
-        <ModalBody>
-          <div className={styles.modalBody}>
-            <section className={styles.section}>
-              <Checkbox
-                checked={isReferredChecked}
-                onChange={handleCheckboxChange}
-                labelText={'Referred'}
-                id="test-referred"
+        <div className="cds--modal-header">
+          <h3 className="cds--modal-header__heading">{t('pickRequest', 'Pick Request')}</h3>
+        </div>
+        <div className="cds--modal-content">
+          <p>
+            {t('confirmationPickupMessages', `Do you want to pick this order: {{orderName}} - {{orderNumber}}?`, {
+              orderName,
+              orderNumber,
+            })}
+          </p>
+          <section className={styles.section}>
+            <Checkbox
+              checked={isReferredChecked}
+              onChange={handleCheckboxChange}
+              labelText={'Referred'}
+              id="test-referred"
+            />
+            {isReferredChecked && (
+              <TextInput
+                type="text"
+                id="referredLocation"
+                labelText={'Enter Referred Location'}
+                value={referredLocation}
+                onChange={(e) => setReferredLocation(e.target.value)}
               />
-              {isReferredChecked && (
-                <TextInput
-                  type="text"
-                  id="referredLocation"
-                  labelText={'Enter Referred Location'}
-                  value={referredLocation}
-                  onChange={(e) => setReferredLocation(e.target.value)}
-                />
-              )}
-            </section>
-          </div>
-        </ModalBody>
+            )}
+          </section>
+        </div>
         <ModalFooter>
           <Button kind="secondary" onClick={closeModal}>
             {t('cancel', 'Cancel')}

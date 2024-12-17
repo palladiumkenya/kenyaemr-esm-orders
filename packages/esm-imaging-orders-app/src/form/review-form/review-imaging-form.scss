@@ -1,0 +1,39 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@carbon/colors';
+
+.widgetContainer {
+  padding: layout.$spacing-03;
+}
+
+.actionButton {
+  --cds-layout-size-height-context: var(--cds-layout-size-height-sm, 2rem);
+  --cds-layout-size-height: var(--cds-layout-size-height-context);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: justify;
+  padding: 0 layout.$spacing-04;
+  gap: layout.$spacing-05;
+  margin-right: layout.$spacing-05;
+}
+
+.textAreaInput {
+  @include type.type-style('body-compact-01');
+  color: colors.$cool-gray-70;
+  margin: layout.$spacing-03 0;
+  width: 100%;
+}
+.buttonSet {
+  position: absolute;
+  bottom: layout.$spacing-05;
+  left: 4%;
+  width: 80%;
+  display: flex;
+  gap: layout.$spacing-02;
+
+  & > button {
+    max-width: 40%;
+    width: 40%;
+  }
+}

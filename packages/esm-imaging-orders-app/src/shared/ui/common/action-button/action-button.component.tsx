@@ -5,6 +5,7 @@ import { showModal, launchWorkspace } from '@openmrs/esm-framework';
 import { Order } from '@openmrs/esm-patient-common-lib';
 import OrderActionExtension from './order-action-extension.component';
 import { Result } from '../../../../imaging-tabs/work-list/work-list.resource';
+import styles from './action-button.scss';
 
 type ActionButtonProps = {
   action: {
@@ -25,42 +26,76 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
     });
   };
 
-  switch (action.actionName) {
-    case 'add-imaging-to-work-list-modal':
-      return <OrderActionExtension order={order as unknown as Order} />;
+  const handleOpeningReviewWorkspace = () => {
+    launchWorkspace('imaging-review-form', {
+      order,
+    });
+  };
 
-    case 'imaging-report-form':
-      return (
-        <Button kind="primary" onClick={handleOpenImagingReportForm}>
-          {t('imagingReportForm', 'Imaging Report Form')}
-        </Button>
-      );
+  const renderActionButton = () => {
+    switch (action.actionName) {
+      case 'add-imaging-to-work-list-modal':
+        return <OrderActionExtension order={order as unknown as Order} />;
 
-    case 'review-imaging-report-dialog':
-    case 'reject-imaging-order-modal':
-      return (
-        <Button
-          kind={action.actionName === 'reject-imaging-order-modal' ? 'danger' : 'tertiary'}
-          onClick={() => {
-            const dispose = showModal(action.actionName, {
-              closeModal: () => dispose(),
-              order: order,
-            });
-          }}>
-          {t(
-            action.actionName.replace(/-/g, ''),
-            action.actionName
-              .split('-')
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(' ')
-              .replace('Modal', ''),
-          )}
-        </Button>
-      );
+      case 'imaging-report-form':
+        return (
+          <Button kind="primary" size="md" onClick={handleOpenImagingReportForm} className={styles.actionButtons}>
+            {t('imagingReportForm', 'Imaging Report Form')}
+          </Button>
+        );
 
-    default:
-      return null;
-  }
+      case 'imaging-review-form':
+        return (
+          <Button kind="primary" size="md" className={styles.actionButtons} onClick={handleOpeningReviewWorkspace}>
+            {t('reviewImagingReport', 'Review Imaging Report')}
+          </Button>
+        );
+
+      case 'amend-imaging-order-modal':
+        return (
+          <Button
+            kind="secondary"
+            size="md"
+            className={styles.actionButtons}
+            onClick={() => {
+              const dispose = showModal('amend-imaging-order-modal', {
+                closeModal: () => dispose(),
+                order: order,
+              });
+            }}>
+            {t('amendRequest', 'Amend request')}
+          </Button>
+        );
+
+      case 'reject-imaging-order-modal':
+        return (
+          <Button
+            kind="danger"
+            size="md"
+            className={styles.actionButtons}
+            onClick={() => {
+              const dispose = showModal('reject-imaging-order-modal', {
+                closeModal: () => dispose(),
+                order: order,
+              });
+            }}>
+            {t(
+              action.actionName.replace(/-/g, ''),
+              action.actionName
+                .split('-')
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(' ')
+                .replace('Modal', ''),
+            )}
+          </Button>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return <div className={styles.actionButtonContainer}>{renderActionButton()}</div>;
 };
 
 export default ActionButton;
