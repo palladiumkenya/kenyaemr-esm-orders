@@ -68,6 +68,7 @@
   "saveOrder": "Save order",
   "scheduleDate": "Scheduled date",
   "searchByPatientName": "Search by patient name",
+  "status": "Status",
   "submitting": "Submitting...",
   "successfullyRejected": "You have successfully rejected an Order with OrderNumber {{orderNumber}} ",
   "testOrdered": "Test Ordered",
