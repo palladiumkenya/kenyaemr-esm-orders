@@ -11,6 +11,11 @@ export const ApprovedOrders: React.FC = () => {
     item.procedures?.some((procedure) => procedure.outcome === 'SUCCESSFUL'),
   );
 
+  const approvedWithStatus = approved.map((order) => ({
+    ...order,
+    isApproved: true,
+  }));
+
   if (isLoading) {
     return <DataTableSkeleton />;
   }
@@ -18,7 +23,7 @@ export const ApprovedOrders: React.FC = () => {
   return (
     <div>
       <GroupedOrdersTable
-        orders={approved}
+        orders={approvedWithStatus}
         showStatus={false}
         showStartButton={false}
         showActions={false}

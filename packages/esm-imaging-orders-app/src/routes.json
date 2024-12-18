@@ -39,13 +39,15 @@
       "component": "imagingReportForm",
       "title": "Imaging Report Form",
       "type": "form"
+    },
+    {
+      "name": "imaging-review-form",
+      "type": "order",
+      "component": "imagingReviewForm",
+      "title": "Review form"
     }
   ],
   "modals": [
-    {
-      "name": "review-imaging-report-modal",
-      "component": "reviewImagingReportModal"
-    },
     {
       "name": "reject-imaging-order-modal",
       "component": "rejectImagingOrderModal"
@@ -53,6 +55,14 @@
     {
       "name": "add-imaging-to-work-list-modal",
       "component": "addImagingToWorkListModal"
+    },
+    {
+      "name": "amend-imaging-order-modal",
+      "component": "amendModal"
+    },
+    {
+      "name": "print-preview-Report-modal",
+      "component": "printReportModal"
     }
   ]
 }

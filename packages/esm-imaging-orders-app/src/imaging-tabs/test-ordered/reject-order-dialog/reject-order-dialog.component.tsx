@@ -7,6 +7,8 @@ import { Result } from '../../work-list/work-list.resource';
 import { showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
 import { updateOrder } from '../pick-imaging-order/add-to-worklist-dialog.resource';
+import capitalize from 'lodash-es/capitalize';
+
 interface RejectOrderModalProps {
   order: Result;
   closeModal: () => void;
@@ -50,35 +52,36 @@ const RejectOrderModal: React.FC<RejectOrderModalProps> = ({ order, closeModal }
       },
     );
   };
+  const orderName = capitalize(order?.concept?.display);
+  const orderNumber = order?.orderNumber;
 
   return (
     <div>
       <Form onSubmit={rejectOrder}>
-        <ModalHeader closeModal={closeModal} title={t('rejectImagingOrder', 'Reject Imaging Order')} />
-        <ModalBody>
-          <div className={styles.modalBody}>
-            <section className={styles.section}>
-              <h5 className={styles.section}>
-                {order?.concept?.display} &nbsp; · &nbsp;{order?.fulfillerStatus ?? '--'} &nbsp; · &nbsp;
-                {order?.orderNumber}
-                &nbsp;
-              </h5>
-            </section>
-            <br />
-            <section className={styles.section}>
-              <TextArea
-                labelText={t('notes', 'Enter Comments ')}
-                id="nextNotes"
-                name="nextNotes"
-                invalidText="Required"
-                helperText="Please enter comment"
-                maxCount={500}
-                enableCounter
-                onChange={(e) => setNotes(e.target.value)}
-              />
-            </section>
-          </div>
-        </ModalBody>
+        <div className="cds--modal-header">
+          <h3 className="cds--modal-header__heading">{t('rejectImagingOrder', 'Reject Imaging Order')}</h3>
+        </div>
+        <div className="cds--modal-content">
+          <p>
+            {t('confirmationRejectMessages', `Do you want to reject this order: {{orderName}} - {{orderNumber}}?`, {
+              orderName,
+              orderNumber,
+            })}
+          </p>
+          <section className={styles.section}>
+            <TextArea
+              labelText={t('notes', 'Enter Comments ')}
+              id="nextNotes"
+              name="nextNotes"
+              invalidText="Required"
+              helperText="Please enter comment"
+              maxCount={500}
+              enableCounter
+              onChange={(e) => setNotes(e.target.value)}
+            />
+          </section>
+        </div>
+
         <ModalFooter>
           <Button kind="secondary" onClick={closeModal}>
             {t('cancel', 'Cancel')}

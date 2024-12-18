@@ -11,3 +11,15 @@
     margin-bottom: layout.$spacing-01;
   }
 }
+
+.widgetCard {
+  background-color: colors.$white;
+  border: 1px solid colors.$gray-20;
+}
+
+.elementContainer {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: layout.$spacing-03;
+}

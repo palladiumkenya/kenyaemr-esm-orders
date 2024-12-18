@@ -74,6 +74,9 @@ export function ImagingOrderForm({
     commentsToFulfiller: z.string().optional(),
     laterality: z.string().optional(),
     bodySite: z.string().optional(),
+    orderReasonNonCoded: z.string().min(1, {
+      message: translateFrom(moduleName, 'addOrderReasonRequired', 'Order reason is required'),
+    }),
   });
 
   const {
@@ -263,6 +266,30 @@ export function ImagingOrderForm({
                       invalid={errors.bodySite?.message}
                       invalidText={errors.bodySite?.message}
                       itemToString={(item) => item?.display}
+                    />
+                  )}
+                />
+              </InputWrapper>
+            </Column>
+          </Grid>
+          <Grid className={styles.gridRow}>
+            <Column lg={16} md={8} sm={4}>
+              <InputWrapper>
+                <Controller
+                  name="orderReasonNonCoded"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextArea
+                      enableCounter
+                      id="orderReasonNonCodedInput"
+                      size="lg"
+                      labelText={'Order Reason'}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={onBlur}
+                      maxCount={500}
+                      invalid={errors.orderReasonNonCoded?.message}
+                      invalidText={errors.orderReasonNonCoded?.message}
                     />
                   )}
                 />
