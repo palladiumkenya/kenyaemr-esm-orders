@@ -1,6 +1,6 @@
 {
   "name": "@kenyaemr/esm-medical-supply-orders-app",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "description": "Medical Supply Orders app for KenyaEMR",
   "browser": "dist/kenyaemr-esm-medical-supply-orders-app.js",
   "main": "src/index.ts",
