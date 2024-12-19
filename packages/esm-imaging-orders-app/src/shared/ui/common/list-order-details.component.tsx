@@ -97,9 +97,7 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
                   onClick={() => {
                     const dispose = showModal('print-preview-Report-modal', {
                       onClose: () => dispose(),
-                      Person: row?.patient?.person,
-                      Report: row.procedures[0].procedureReport,
-                      identifier: row?.patient?.identifier?.[0]?.identifier,
+                      approvedOrder: row,
                     });
                   }}
                   size="sm"
