@@ -139,7 +139,7 @@ const ImagingReviewForm: React.FC<ReviewOrderDialogProps> = ({ order, closeWorks
                 />
                 <TextArea
                   className={styles.textAreaInput}
-                  labelText={t('nextNotes', "Reviewer's notes")}
+                  labelText={t('impression', 'Impression note')}
                   id="nextNotes"
                   name="nextNotes"
                   value={notes}

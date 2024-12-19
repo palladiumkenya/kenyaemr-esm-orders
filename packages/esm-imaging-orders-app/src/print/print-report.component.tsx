@@ -1,17 +1,17 @@
 import React from 'react';
 import styles from './print-report.scss';
-import { useConfig, useSession } from '@openmrs/esm-framework';
+import { useConfig, useSession, formatDate } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 import { IdentifierType, Person } from '../utils/functions';
 import startCase from 'lodash-es/startCase';
 import dayjs from 'dayjs';
+import { Order } from '../types';
 
 interface PrintableReportProps {
-  Person: Person;
-  Report: string;
+  approvedOrders: Order;
 }
 
-const PrintableReport: React.FC<PrintableReportProps> = ({ Person, Report }) => {
+const PrintableReport: React.FC<PrintableReportProps> = ({ approvedOrders }) => {
   const { t } = useTranslation();
   const { logo } = useConfig({ externalModuleName: '@kenyaemr/esm-login-app' });
   const { sessionLocation, user } = useSession();
@@ -21,36 +21,60 @@ const PrintableReport: React.FC<PrintableReportProps> = ({ Person, Report }) => 
     <div className={styles.container}>
       <div className={styles.mainContent}>
         <div className={styles.printableHeader}>
-          <p className={styles.heading}>{t('imagingReport', 'Imaging Report')}</p>
+          <p className={styles.heading}>
+            {t('imagingReport', 'Imaging Report')} - {approvedOrders?.orderNumber}
+          </p>
           {logo?.src && <img className={styles.img} height={60} width={250} src={logo.src} alt={logo.alt} />}
         </div>
-
         <div className={styles.printableBody}>
           <div className={styles.billDetails}>
             <p className={styles.itemHeading}>{t('reportSummaryTo', 'Report summary to')}</p>
-            <p className={styles.itemLabel}>{startCase(Person?.display)}</p>
             <p className={styles.itemLabel}>
-              {t('age', 'Age')} {Person?.age}
+              {t('name', 'Name')}: {startCase(approvedOrders?.patient?.person?.display)}
             </p>
             <p className={styles.itemLabel}>
-              {t('gender', 'Gender')} {Person?.gender}
+              {t('identifier', 'Identifier')}: {approvedOrders?.patient?.identifiers[0]?.identifier}
+            </p>
+            <p className={styles.itemLabel}>
+              {t('age', 'Age')}: {approvedOrders?.patient?.person?.age}
+            </p>
+            <p className={styles.itemLabel}>
+              {t('gender', 'Gender')}:
+              {approvedOrders?.patient?.person?.gender === 'M'
+                ? ' Male'
+                : approvedOrders?.patient?.person?.gender === 'F'
+                ? ' Female'
+                : ' Unknown'}
+            </p>
+            <p className={styles.itemLabel}>
+              {t('orderDate', 'Order date')} {formatDate(new Date(approvedOrders?.dateActivated))}
             </p>
           </div>
 
           <div className={styles.facilityDetails}>
             <p className={styles.facilityName}>{location}</p>
-            <p className={styles.itemLabel}>Kenya</p>
+            <p className={styles.facilityName}>{approvedOrders?.careSetting?.name}</p>
+            <p className={styles.facilityName}>{t('kenya', 'Kenya')}</p>
           </div>
         </div>
-
         <div className={styles.printResults}>
-          <p className={styles.itemHeading}>{t('imagingResults', 'Imaging Results')}</p>
+          <p className={styles.itemHeading}>{t('procedure', 'Procedure')}</p>
           <div className={styles.reportSection}>
-            <p className={styles.itemLabel}>{Report}</p>
+            <p className={styles.itemLabel}>{startCase(approvedOrders?.concept?.display)}</p>
           </div>
         </div>
-
-        <p className={styles.itemHeadingGroup}>{t('anyAdditionalNotes', 'Any additional notes')}</p>
+        <div className={styles.printResults}>
+          <p className={styles.itemHeading}>{t('findings', 'Findings')}</p>
+          <div className={styles.reportSection}>
+            <p className={styles.itemLabel}>{approvedOrders?.procedures[0]?.procedureReport}</p>
+          </div>
+        </div>
+        <div className={styles.printResults}>
+          <p className={styles.itemHeading}>{t('impressions', 'Impressions')}</p>
+          <div className={styles.reportSection}>
+            <p className={styles.itemLabel}>{approvedOrders?.procedures[0]?.procedureReason}</p>
+          </div>
+        </div>
       </div>
 
       <section className={styles.sectionFooter}>
