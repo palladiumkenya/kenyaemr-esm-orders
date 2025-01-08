@@ -12,7 +12,6 @@ interface PrintableReportProps {
 
 const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder }) => {
   const { t } = useTranslation();
-  const { logo } = useConfig({ externalModuleName: '@kenyaemr/esm-login-app' });
   const { sessionLocation, user } = useSession();
   const location = sessionLocation?.display;
 
@@ -23,7 +22,6 @@ const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder }) => 
           <p className={styles.heading}>
             {t('procedureReport', 'Procedure Report')} - {completedOrder?.orderNumber}
           </p>
-          {logo?.src && <img className={styles.img} height={60} width={250} src={logo.src} alt={logo.alt} />}
         </div>
         <div className={styles.printableBody}>
           <div className={styles.billDetails}>
