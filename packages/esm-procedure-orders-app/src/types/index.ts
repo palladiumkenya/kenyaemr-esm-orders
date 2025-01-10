@@ -1,6 +1,6 @@
-import { OpenmrsResource } from '@openmrs/esm-framework';
-import { OrderBasketItem } from '@openmrs/esm-patient-common-lib';
+import { type OrderUrgency, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
 import { Link } from './patient-queue';
+import { type OpenmrsResource } from '@openmrs/esm-framework';
 
 export enum SearchTypes {
   BASIC = 'basic',
@@ -420,7 +420,7 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
     conceptUuid: string;
   };
   labReferenceNumber?: string;
-  urgency?: string;
+  urgency?: OrderUrgency;
   instructions?: string;
   previousOrder?: string;
   orderReason?: string;
