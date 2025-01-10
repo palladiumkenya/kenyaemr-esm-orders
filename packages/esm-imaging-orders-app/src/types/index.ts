@@ -1,4 +1,4 @@
-import { type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
+import { type OrderUrgency, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
 
 export interface Concept {
   uuid: string;
@@ -27,7 +27,7 @@ export interface ImagingOrderBasketItem extends OrderBasketItem {
     label: string;
     conceptUuid: string;
   };
-  urgency?: string;
+  urgency?: OrderUrgency;
   instructions?: string;
   orderReason?: string;
   orderReasonNonCoded?: string;
