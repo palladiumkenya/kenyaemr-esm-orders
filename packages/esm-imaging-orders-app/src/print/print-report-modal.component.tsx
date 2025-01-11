@@ -6,14 +6,14 @@ import PrintableReport from './print-report.component';
 import styles from './print-report.scss';
 import { IdentifierType, Person } from '../utils/functions';
 import { Identifer } from '../../../esm-procedure-orders-app/src/types/index';
+import { Order } from '../types';
 
 type PrintPreviewModalProps = {
   onClose: () => void;
-  Person: Person;
-  Report: string;
+  approvedOrder: Order;
 };
 
-const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({ onClose, Person, Report }) => {
+const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({ onClose, approvedOrder }) => {
   const { t } = useTranslation();
   const [printError, setPrintError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -26,7 +26,7 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({ onClose, Person, 
     <>
       <ModalBody>
         <div ref={ref}>
-          <PrintableReport Person={Person} Report={Report} />
+          <PrintableReport approvedOrders={approvedOrder} />
         </div>
       </ModalBody>
       <ModalFooter>
