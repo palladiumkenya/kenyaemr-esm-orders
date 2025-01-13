@@ -1,5 +1,12 @@
-import React, { useCallback, useState } from 'react';
-import { OpenmrsDatePicker, showSnackbar, useConfig, useDebounce, useSession } from '@openmrs/esm-framework';
+import React, { useCallback, useEffect, useState } from 'react';
+import {
+  DefaultWorkspaceProps,
+  OpenmrsDatePicker,
+  showSnackbar,
+  useConfig,
+  useDebounce,
+  useSession,
+} from '@openmrs/esm-framework';
 import {
   Form,
   Stack,
@@ -13,6 +20,8 @@ import {
   InlineLoading,
   Tile,
   Tag,
+  DatePicker,
+  DatePickerInput,
 } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import styles from './post-procedure-form.scss';
@@ -28,8 +37,10 @@ import { updateOrder } from '../../procedures-ordered/pick-procedure-order/add-t
 import { mutate } from 'swr';
 
 const validationSchema = z.object({
-  startDatetime: z.date({ required_error: 'Start datetime is required' }),
-  endDatetime: z.date({ required_error: 'End datetime is required' }),
+  startDatetime: z.date({
+    required_error: 'Start datetime is required',
+  }),
+  endDatetime: z.date({ required_error: 'End datetime is required', invalid_type_error: 'Please select a valid date' }),
   outcome: z.string({ required_error: 'Outcome is required' }),
   procedureReport: z.string({ required_error: 'Procedure report is required' }),
   participants: z.string().optional(),
@@ -38,12 +49,18 @@ const validationSchema = z.object({
 
 type PostProcedureFormSchema = z.infer<typeof validationSchema>;
 
-type PostProcedureFormProps = {
+type PostProcedureFormProps = DefaultWorkspaceProps & {
   patientUuid: string;
-  procedure: Result;
+  order: Result;
 };
 
-const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, procedure }) => {
+const PostProcedureForm: React.FC<PostProcedureFormProps> = ({
+  patientUuid,
+  order,
+  closeWorkspace,
+  closeWorkspaceWithSavedChanges,
+  promptBeforeClosing,
+}) => {
   const { sessionLocation } = useSession();
   const { t } = useTranslation();
 
@@ -104,7 +121,7 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
 
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting, isDirty },
     handleSubmit,
   } = useForm<PostProcedureFormSchema>({
     defaultValues: {},
@@ -114,6 +131,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
   const handleProviderChange = useCallback((selectedProvider: CodedProvider) => {
     setSelectedProvider(selectedProvider);
   }, []);
+
+  useEffect(() => {
+    if (promptBeforeClosing && isDirty) {
+      promptBeforeClosing(() => isDirty);
+    }
+  }, [promptBeforeClosing, isDirty, closeWorkspace]);
 
   const onSubmit = async (data: PostProcedureFormSchema) => {
     if (!data.startDatetime || !data.endDatetime) {
@@ -149,12 +172,12 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
       complications.push(complication);
     });
 
-    const payload: ProcedurePayload = {
+    const reportPayload = {
       patient: patientUuid,
-      procedureOrder: procedure.uuid,
-      concept: procedure.concept.uuid,
-      procedureReason: procedure.orderReason?.uuid,
-      category: procedure.orderType?.uuid,
+      procedureOrder: order?.uuid,
+      concept: order?.concept?.uuid,
+      procedureReason: order?.orderReason?.uuid,
+      category: order?.orderType?.uuid,
       status: 'COMPLETED',
       outcome: data.outcome,
       location: sessionLocation?.uuid,
@@ -171,25 +194,9 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
         },
       ],
     };
-    const body = {
-      fulfillerComment: '',
-      fulfillerStatus: 'COMPLETED',
-    };
     try {
-      const response = await savePostProcedure(payload);
-      if (
-        response.status === 201 &&
-        (procedure?.numberOfRepeats === null || procedure?.procedures?.length === procedure?.numberOfRepeats)
-      ) {
-        updateOrder(procedure.uuid, body) &&
-          showSnackbar({
-            title: t('procedureSaved', 'Procedure saved'),
-            subtitle: t('procedureSavedSuccessfully', 'Procedure saved successfully'),
-            timeoutInMs: 5000,
-            isLowContrast: true,
-            kind: 'success',
-          });
-      } else if (response.status === 201 && procedure?.procedures?.length < procedure?.numberOfRepeats) {
+      const response = await savePostProcedure(reportPayload);
+      if (response.ok) {
         showSnackbar({
           title: t('procedureSaved', 'Procedure saved'),
           subtitle: t('procedureSavedSuccessfully', 'Procedure saved successfully'),
@@ -197,9 +204,11 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
           isLowContrast: true,
           kind: 'success',
         });
+        mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, {
+          revalidate: true,
+        });
+        closeWorkspaceWithSavedChanges();
       }
-      mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, { revalidate: true });
-      closeOverlay();
     } catch (error) {
       console.error(error);
       showSnackbar({
@@ -225,15 +234,23 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
           <Controller
             control={control}
             name="startDatetime"
-            render={({ field: { onChange, value } }) => (
-              <OpenmrsDatePicker
-                value={value}
-                id="startDatetime"
-                labelText={t('startDatetime', 'Start Datetime')}
-                onChange={onChange}
-                isInvalid={!!errors.startDatetime}
-                autoFocus
-              />
+            render={({ field, fieldState }) => (
+              <DatePicker
+                datePickerType="single"
+                className={styles.formDatePicker}
+                onChange={(event) => {
+                  field.onChange(event[0]);
+                }}
+                value={field.value}>
+                <DatePickerInput
+                  placeholder="mm/dd/yyyy"
+                  labelText={t('startDatetime', 'Start Datetime')}
+                  id="startDatetime"
+                  size="md"
+                  invalid={!!errors.startDatetime}
+                  invalidText={errors.startDatetime?.message}
+                />
+              </DatePicker>
             )}
           />
         </Layer>
@@ -241,17 +258,27 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
           <Controller
             control={control}
             name="endDatetime"
-            render={({ field: { onChange, value } }) => (
-              <OpenmrsDatePicker
-                value={value}
-                id="endDatetime"
-                labelText={t('endDatetime', 'End Datetime')}
-                onChange={onChange}
-                isInvalid={!!errors.endDatetime}
-              />
+            render={({ field, fieldState }) => (
+              <DatePicker
+                datePickerType="single"
+                className={styles.formDatePicker}
+                onChange={(event) => {
+                  field.onChange(event[0]);
+                }}
+                value={field.value}>
+                <DatePickerInput
+                  placeholder="mm/dd/yyyy"
+                  labelText={t('endDatetime', 'End Datetime')}
+                  id="endDatetime"
+                  size="md"
+                  invalid={!!errors.endDatetime}
+                  invalidText={errors.endDatetime?.message}
+                />
+              </DatePicker>
             )}
           />
         </Layer>
+
         <Layer>
           <FormLabel className={styles.formLabel}>{t('procedureOutcome', 'Procedure outcome')}</FormLabel>
           <Controller
@@ -273,7 +300,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
                   },
                 ]}
                 itemToString={(item) => (item ? item.text : '')}
-                titleText={t('outcome', 'Outcome')}
                 placeholder={t('selectOutcome', 'Select outcome')}
                 invalid={!!errors.outcome}
                 invalidText={errors.outcome?.message}
@@ -289,7 +315,6 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
             render={({ field: { onChange } }) => (
               <TextArea
                 id="procedureReport"
-                labelText={t('procedureReport', 'Procedure report')}
                 rows={4}
                 onChange={onChange}
                 placeholder={t('procedureReportPlaceholder', 'Enter procedure report')}
@@ -302,26 +327,23 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
         <Layer>
           <FormLabel className={styles.formLabel}>{t('participants', 'Participants')}</FormLabel>
           <div>
-            {selectedParticipants?.map(
-              (item) =>
-                (
-                  <>
-                    <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
-                      <span style={{ marginRight: '8px' }}>{item.display}</span>
-                      <svg
-                        focusable="false"
-                        fill="currentColor"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 32 32"
-                        aria-hidden="true"
-                        onClick={() => setSelectedParticipants((prevItems) => prevItems.filter((i) => i !== item))}>
-                        <path d={StringPath}></path>
-                      </svg>
-                    </Tag>
-                  </>
-                ) ?? '-',
-            )}
+            {selectedParticipants?.map((item) => (
+              <>
+                <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <span style={{ marginRight: '8px' }}>{item.display}</span>
+                  <svg
+                    focusable="false"
+                    fill="currentColor"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 32 32"
+                    aria-hidden="true"
+                    onClick={() => setSelectedParticipants((prevItems) => prevItems.filter((i) => i !== item))}>
+                    <path d={StringPath}></path>
+                  </svg>
+                </Tag>
+              </>
+            ))}
           </div>
           <div>
             <Search
@@ -369,26 +391,23 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
         <Layer>
           <FormLabel className={styles.formLabel}>{t('complications', 'Complications')}</FormLabel>
           <div>
-            {selectedItems?.map(
-              (item) =>
-                (
-                  <>
-                    <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
-                      <span style={{ marginRight: '8px' }}>{item.display}</span>
-                      <svg
-                        focusable="false"
-                        fill="currentColor"
-                        width="16"
-                        height="16"
-                        viewBox="0 0 32 32"
-                        aria-hidden="true"
-                        onClick={() => setSelectedItems((prevItems) => prevItems.filter((i) => i !== item))}>
-                        <path d={StringPath}></path>
-                      </svg>
-                    </Tag>
-                  </>
-                ) ?? '-',
-            )}
+            {selectedItems?.map((item) => (
+              <>
+                <Tag style={{ display: 'inline-flex', alignItems: 'center' }}>
+                  <span style={{ marginRight: '8px' }}>{item.display}</span>
+                  <svg
+                    focusable="false"
+                    fill="currentColor"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 32 32"
+                    aria-hidden="true"
+                    onClick={() => setSelectedItems((prevItems) => prevItems.filter((i) => i !== item))}>
+                    <path d={StringPath}></path>
+                  </svg>
+                </Tag>
+              </>
+            ))}
           </div>
           <div>
             <Search
@@ -435,10 +454,10 @@ const PostProcedureForm: React.FC<PostProcedureFormProps> = ({ patientUuid, proc
         </Layer>
       </Stack>
       <ButtonSet className={styles.buttonSetContainer}>
-        <Button onClick={() => closeOverlay()} size="lg" kind="secondary">
+        <Button onClick={closeWorkspace} size="md" kind="secondary">
           {t('discard', 'Discard')}
         </Button>
-        <Button type="submit" size="lg" kind="primary">
+        <Button type="submit" size="md" kind="primary">
           {t('saveAndClose', 'Save & Close')}
         </Button>
       </ButtonSet>

@@ -7,6 +7,7 @@ import OrderActionExtension from './order-action-extension.component';
 import { Result } from '../../../../types';
 import { launchOverlay } from '../../../../components/overlay/hook';
 import PostProcedureForm from '../../../../form/post-procedures/post-procedure-form.component';
+import styles from './action-button.scss';
 
 type ActionButtonProps = {
   action: {
@@ -20,10 +21,10 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
   const { t } = useTranslation();
 
   const handleOpenProcedureResultForm = () => {
-    launchOverlay(
-      t('procedureResultForm', 'Procedure Result Form'),
-      <PostProcedureForm patientUuid={patientUuid} procedure={order} />,
-    );
+    launchWorkspace('procedure-report-form', {
+      patientUuid,
+      order,
+    });
   };
   switch (action.actionName) {
     case 'add-procedure-to-worklist-dialog':
@@ -31,7 +32,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
 
     case 'postProcedureResultForm':
       return (
-        <Button kind="primary" onClick={handleOpenProcedureResultForm}>
+        <Button kind="primary" onClick={handleOpenProcedureResultForm} size="md" className={styles.actionButtons}>
           {t('procedureResultForm', 'Procedure Result Form')}
         </Button>
       );
@@ -45,7 +46,9 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
               closeModal: () => dispose(),
               order: order,
             });
-          }}>
+          }}
+          size="md"
+          className={styles.actionButtons}>
           {t(
             action.actionName.replace(/-/g, ''),
             action.actionName
