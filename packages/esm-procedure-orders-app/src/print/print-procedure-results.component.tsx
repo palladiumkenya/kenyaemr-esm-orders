@@ -12,6 +12,7 @@ type PrintPreviewModalProps = {
 };
 
 const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({ onClose, completedOrder }) => {
+  const ordererName = completedOrder?.orderer;
   const { t } = useTranslation();
   const [printError, setPrintError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -24,7 +25,7 @@ const PrintPreviewModal: React.FC<PrintPreviewModalProps> = ({ onClose, complete
     <>
       <ModalBody>
         <div ref={ref}>
-          <PrintableReport completedOrder={completedOrder} />
+          <PrintableReport completedOrder={completedOrder} ordererName={ordererName?.toString()} />
         </div>
       </ModalBody>
       <ModalFooter>

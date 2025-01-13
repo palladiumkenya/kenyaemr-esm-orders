@@ -8,9 +8,10 @@ import { Order, Result } from '../types';
 
 interface PrintableReportProps {
   completedOrder: Result;
+  ordererName: string;
 }
 
-const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder }) => {
+const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder, ordererName }) => {
   const { t } = useTranslation();
   const { sessionLocation, user } = useSession();
   const location = sessionLocation?.display;
@@ -44,7 +45,11 @@ const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder }) => 
                 : ' Unknown'}
             </p>
             <p className={styles.itemLabel}>
-              {t('orderDate', 'Order date')} {formatDate(new Date(completedOrder?.dateActivated))}
+              {t('orderDate', 'Order date')}:{' '}
+              {completedOrder?.dateActivated ? dayjs(completedOrder.dateActivated).format('YYYY-MM-DD hh:mm A') : '--'}
+            </p>
+            <p className={styles.itemLabel}>
+              {t('orderer', 'Orderer')}: {ordererName}
             </p>
           </div>
 
@@ -90,17 +95,6 @@ const PrintableReport: React.FC<PrintableReportProps> = ({ completedOrder }) => 
           }}>
           <span style={{ fontSize: '14px', marginBottom: '10px' }}>
             Results Reviewed / Authorized by :<span style={{ marginLeft: '50px' }}>{user?.display}</span>
-          </span>
-        </div>
-        <div
-          style={{
-            margin: '10px',
-            display: 'flex',
-            width: '500px',
-            flexDirection: 'row',
-          }}>
-          <span style={{ fontSize: '14px', marginTop: '10px' }}>
-            Sign : ............................................{' '}
           </span>
         </div>
       </section>

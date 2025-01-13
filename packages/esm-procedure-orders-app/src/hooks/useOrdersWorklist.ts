@@ -10,7 +10,7 @@ export function useOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatu
   };
 
   const responseFormat =
-    'custom:(uuid,orderNumber,patient:(uuid,display,identifiers,person:(uuid,display,age,gender)),concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
+    'custom:(uuid,orderNumber,patient:(uuid,display,identifiers,person:(uuid,display,age,gender)),concept:(uuid,display,conceptClass),action,careSetting,orderer:(uuid,display),urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
   const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${dateRange
     .at(0)
     .toISOString()}&activatedOnOrBeforeDate=${dateRange
