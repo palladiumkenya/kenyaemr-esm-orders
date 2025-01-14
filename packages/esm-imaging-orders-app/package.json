@@ -1,6 +1,6 @@
 {
   "name": "@kenyaemr/esm-imaging-orders-app",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Imaging Orders app for KenyaEMR",
   "browser": "dist/kenyaemr-esm-imaging-orders-app.js",
   "main": "src/index.ts",
