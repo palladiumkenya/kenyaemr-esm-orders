@@ -21,7 +21,7 @@ describe('TransitionLatestQueueEntryButton', () => {
     });
   });
 
-  it('should render a button', () => {
+  it('should render a button when an active visit exists', () => {
     render(<TransitionLatestQueueEntryButton patientUuid={patientUuid} />);
 
     expect(screen.getByRole('button', { name: /transition/i })).toBeInTheDocument();
@@ -51,11 +51,10 @@ describe('TransitionLatestQueueEntryButton', () => {
 
     render(<TransitionLatestQueueEntryButton patientUuid={patientUuid} />);
 
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
     expect(screen.queryByRole('button')).not.toBeInTheDocument();
   });
 
-  it('should disable the button when no active visit exists', () => {
+  it('should not render the button when no active visit exists', () => {
     (useVisit as jest.Mock).mockReturnValue({
       activeVisit: null,
       isLoading: false,
@@ -63,6 +62,6 @@ describe('TransitionLatestQueueEntryButton', () => {
 
     render(<TransitionLatestQueueEntryButton patientUuid={patientUuid} />);
 
-    expect(screen.getByRole('button', { name: /transition/i })).toBeDisabled();
+    expect(screen.queryByRole('button', { name: /transition/i })).not.toBeInTheDocument();
   });
 });
