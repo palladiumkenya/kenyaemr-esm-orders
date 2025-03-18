@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import styles from './list-order-details.scss';
 import { useTranslation } from 'react-i18next';
-import { formatDate, parseDate, showModal } from '@openmrs/esm-framework';
+import { formatDate, parseDate, showModal, usePatient } from '@openmrs/esm-framework';
 import { ListOrdersDetailsProps } from './grouped-procedure-types';
 import {
   Tile,
@@ -14,10 +14,12 @@ import {
   AccordionItem,
   TextArea,
   Button,
+  InlineLoading,
 } from '@carbon/react';
 import ActionButton from './action-button/action-button.component';
 import capitalize from 'lodash-es/capitalize';
 import { Printer } from '@carbon/react/icons';
+import usePatientDiagnosis from './list-order-details.resource';
 
 const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, showActions, actions }) => {
   const orders = groupedOrders?.orders;
@@ -38,6 +40,11 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
       }));
   }, [orders]);
 
+  const { diagnoses, isLoading } = usePatientDiagnosis(orders[0]?.patient?.uuid);
+  if (isLoading) {
+    return <InlineLoading status="active" description={t('loading', 'Loading...')} />;
+  }
+
   return (
     <div>
       {orderRows.map((row) => (
@@ -52,17 +59,33 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
           </div>
 
           <div className={styles.orderStatus}>
-            {t('orderStatus', 'Status:')}
-            <Tag size="lg" type={row?.status ? 'green' : 'red'}>
-              {row.fulfillerStatus || t('orderNotPicked', 'Order not picked')}
-            </Tag>
+            <span className={styles.urgencyStatus}>
+              {t('orderStatus', 'Status:')}
+              <Tag size="lg" type={row?.status ? 'green' : 'red'}>
+                {row.fulfillerStatus || t('orderNotPicked', 'Order not picked')}
+              </Tag>
+            </span>
           </div>
 
-          <div className={styles.orderUrgency}>
+          <div className={styles.orderHeader}>
+            <span className={styles.urgencyStatus}>
+              {t('diagnosis', 'Diagnosis: ')}
+              {diagnoses.length > 0 ? (
+                diagnoses.map((diagnosis) => (
+                  <Tag size="lg" type="blue" key={diagnosis.id}>
+                    {capitalize(diagnosis.text)}
+                  </Tag>
+                ))
+              ) : (
+                <Tag size="lg" type="red">
+                  {t('noDiagnosisAvailable', 'No diagnosis available')}
+                </Tag>
+              )}
+            </span>
             <span className={styles.urgencyStatus}>
               {t('urgencyStatus', 'Urgency: ')}
               <Tag size="lg" type="blue">
-                {capitalize(row?.urgency || '--')}
+                {capitalize(row.urgency || '--')}
               </Tag>
             </span>
           </div>
