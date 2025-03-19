@@ -86,3 +86,4 @@ e2e/storageState.json
 
 #vscode
 .vscode/settings.json
+.qodo
