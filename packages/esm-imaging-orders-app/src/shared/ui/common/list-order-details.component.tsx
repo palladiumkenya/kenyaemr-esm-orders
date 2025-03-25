@@ -34,7 +34,7 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
               {t('orderNumbers', 'Order number:')} {row.orderNumber}
             </span>
             <span className={styles.orderDate}>
-              {t('orderDate', 'Order Date:')} {row.dateActivated ? formatDate(parseDate(row.dateActivated)) : '--'}
+              {t('orderDate', 'Order date:')} {row.dateActivated ? formatDate(parseDate(row.dateActivated)) : '--'}
             </span>
           </div>
 
@@ -57,19 +57,23 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
           <StructuredListWrapper>
             <StructuredListBody>
               <StructuredListRow>
-                <StructuredListCell>{t('testOrdered', 'Test ordered: ')}</StructuredListCell>
+                <StructuredListCell>{t('testOrdered', 'Test ordered')}</StructuredListCell>
                 <StructuredListCell className={styles.orderName}>{capitalize(row.display || '--')}</StructuredListCell>
               </StructuredListRow>
               <StructuredListRow>
-                <StructuredListCell>
-                  <span className={styles.instructionLabel}>{t('orderInStruction', 'Instructions: ')}</span>
-                </StructuredListCell>
-                <StructuredListCell>
-                  {row.instructions || (
+                <StructuredListCell>{t('orderInStruction', 'Instructions')}</StructuredListCell>
+                <StructuredListCell className={styles.orderName}>
+                  {capitalize(row.instructions) || (
                     <Tag size="lg" type="red">
                       {t('NoInstructionLeft', 'No instructions are provided.')}
                     </Tag>
                   )}
+                </StructuredListCell>
+              </StructuredListRow>
+              <StructuredListRow>
+                <StructuredListCell>{t('orderReason', 'Order reason ')}</StructuredListCell>
+                <StructuredListCell className={styles.orderName}>
+                  {capitalize(row.orderReasonNonCoded || '--')}
                 </StructuredListCell>
               </StructuredListRow>
             </StructuredListBody>
