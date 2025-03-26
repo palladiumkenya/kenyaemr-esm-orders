@@ -6,7 +6,7 @@ export function useAllOrders(activatedOnOrAfterDate: string, fulfillerStatus: st
   const config = useConfig() as ConfigObject;
 
   const responseFormat =
-    'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,encounter,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment,frequency,numberOfRepeats,quantity,quantityUnits:(uuid,display))';
+    'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderReasonNonCoded,orderer:ref,encounter,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment,frequency,numberOfRepeats,quantity,quantityUnits:(uuid,display))';
   const responseFormat1 =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass:(uuid)),action,careSetting,orderer:ref,procedures,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment,frequency,numberOfRepeats)';
   const orderTypeParam = `orderTypes=${config.orders.medicalSupplyOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
