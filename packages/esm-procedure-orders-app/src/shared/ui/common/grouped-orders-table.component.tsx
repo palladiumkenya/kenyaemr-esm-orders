@@ -1,8 +1,3 @@
-import React, { useMemo, useState } from 'react';
-import styles from './grouped-orders-table.scss';
-import { useTranslation } from 'react-i18next';
-import { usePagination } from '@openmrs/esm-framework';
-import { type GroupedOrdersTableProps } from './grouped-procedure-types';
 import {
   DataTable,
   Search,
@@ -19,16 +14,16 @@ import {
 } from '@carbon/react';
 import { usePagination } from '@openmrs/esm-framework';
 import { CardHeader } from '@openmrs/esm-patient-common-lib';
-import React, { useMemo, useState } from 'react';
+import upperCase from 'lodash-es/upperCase';
+import { default as React, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import EmptyState from '../../../empty-state/empty-state-component';
 import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults';
 import TransitionLatestQueueEntryButton from '../../../procedures-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component';
 import styles from './grouped-orders-table.scss';
-import { GroupedOrdersTableProps } from './grouped-procedure-types';
+import { type GroupedOrdersTableProps } from './grouped-procedure-types';
 import ListOrderDetails from './list-order-details.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
-import upperCase from 'lodash-es/upperCase';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
