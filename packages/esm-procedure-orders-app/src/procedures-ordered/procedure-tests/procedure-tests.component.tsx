@@ -14,7 +14,7 @@ import {
 import { ErrorState } from '@openmrs/esm-framework';
 import styles from '../procedure-queue.scss';
 import PickProcedureRequestActionMenu from '../_pick-procedure-request-menu.component';
-import { Encounter } from '../../types';
+import { type Encounter } from '../../types';
 
 interface ProceduresProps {
   encounter: Encounter;

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, ButtonSet, ModalBody, ModalFooter, InlineNotification } from '@carbon/react';
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
 import styles from './print-procedure.scss';
-import { Order, Result } from '../types';
+import { Order, type Result } from '../types';
 import PrintableReport from './print-procedure.component';
 
 type PrintPreviewModalProps = {

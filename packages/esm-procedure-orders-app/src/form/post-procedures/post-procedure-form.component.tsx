@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  DefaultWorkspaceProps,
+  type DefaultWorkspaceProps,
   OpenmrsDatePicker,
   showSnackbar,
   useConfig,
@@ -29,7 +29,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { savePostProcedure, useConditionsSearch, useProvidersSearch } from './post-procedure.resource';
-import { CodedProvider, CodedCondition, ProcedurePayload, Result } from '../../types';
+import { type CodedProvider, type CodedCondition, ProcedurePayload, type Result } from '../../types';
 import dayjs from 'dayjs';
 import { closeOverlay } from '../../components/overlay/hook';
 import { type ConfigObject, StringPath } from '../../config-schema';

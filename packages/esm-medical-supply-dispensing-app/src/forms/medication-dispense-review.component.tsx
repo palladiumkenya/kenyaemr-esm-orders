@@ -9,7 +9,7 @@ import {
   useSubstitutionTypeValueSet,
 } from '../medication-dispense/medication-dispense.resource';
 import { PRIVILEGE_CREATE_DISPENSE_MODIFY_DETAILS } from '../constants';
-import { NonDrugMedicationDispense, type Medication, type MedicationDispense } from '../types/index';
+import { type NonDrugMedicationDispense, type Medication, type MedicationDispense } from '../types/index';
 import { type PharmacyConfig } from '../config-schema';
 import styles from '../components/medication-dispense-review.scss';
 import dayjs from 'dayjs';

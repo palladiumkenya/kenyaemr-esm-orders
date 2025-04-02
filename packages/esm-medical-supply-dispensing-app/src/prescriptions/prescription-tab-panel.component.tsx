@@ -23,7 +23,7 @@ import PrescriptionExpanded from './prescription-expanded.component';
 import { type PharmacyConfig } from '../config-schema';
 import styles from './prescriptions.scss';
 import { useAllOrders } from '../hooks/useOrdersWorklist';
-import { PrescriptionsTableRow } from '../types';
+import { type PrescriptionsTableRow } from '../types';
 
 interface PrescriptionTabPanelProps {
   searchTerm: string;

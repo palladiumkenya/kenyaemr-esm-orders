@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, ModalBody, ModalFooter, ModalHeader, Checkbox, TextInput } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { restBaseUrl, showNotification, showSnackbar } from '@openmrs/esm-framework';
-import { Result } from '../../work-list/work-list.resource';
+import { type Result } from '../../work-list/work-list.resource';
 import { mutate } from 'swr';
 import { updateOrder } from '../pick-imaging-order/add-to-worklist-dialog.resource';
 import capitalize from 'lodash-es/capitalize';

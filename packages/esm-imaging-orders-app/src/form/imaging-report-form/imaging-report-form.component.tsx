@@ -3,7 +3,7 @@ import { mutate } from 'swr';
 import styles from './imaging-report-form.scss';
 import { useTranslation } from 'react-i18next';
 import {
-  DefaultWorkspaceProps,
+  type DefaultWorkspaceProps,
   ExtensionSlot,
   ResponsiveWrapper,
   showNotification,
@@ -11,7 +11,7 @@ import {
   useLayoutType,
   usePatient,
 } from '@openmrs/esm-framework';
-import { Result } from '../../imaging-tabs/work-list/work-list.resource';
+import { type Result } from '../../imaging-tabs/work-list/work-list.resource';
 import { Controller, useForm } from 'react-hook-form';
 import { saveProcedureReport, useGetOrderConceptByUuid } from './imaging.resource';
 import { Stack, Button, TextArea, ButtonSet, InlineLoading } from '@carbon/react';

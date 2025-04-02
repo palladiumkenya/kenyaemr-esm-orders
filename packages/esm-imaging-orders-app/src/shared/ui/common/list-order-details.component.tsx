@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './list-order-details.scss';
 import { useTranslation } from 'react-i18next';
 import { ExtensionSlot, formatDate, parseDate, showModal } from '@openmrs/esm-framework';
-import { ListOrdersDetailsProps } from './grouped-imaging-types';
+import { type ListOrdersDetailsProps } from './grouped-imaging-types';
 import {
   Tile,
   Tag,

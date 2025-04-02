@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import styles from './instructions.scss';
 import { formatDate, parseDate } from '@openmrs/esm-framework';
-import { Result } from '../../types';
+import { type Result } from '../../types';
 
 interface ProcedureInstructionsModalProps {
   order: Result;

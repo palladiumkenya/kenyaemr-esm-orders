@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton } from '@carbon/react';
 import styles from './work-list.scss';
 import { useOrdersWorkList } from '../../hooks/useOrdersWorklist';
-import { WorkListProps } from '../../shared/ui/common/grouped-imaging-types';
+import { type WorkListProps } from '../../shared/ui/common/grouped-imaging-types';
 import GroupedOrdersTable from '../../shared/ui/common/grouped-orders-table.component';
 
 const WorkList: React.FC<WorkListProps> = ({ fulfillerStatus }) => {

@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './result-form.scss';
 import { TextInput, Select, SelectItem } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { ConceptReference } from './result-form.resource';
+import { type ConceptReference } from './result-form.resource';
 import { Controller } from 'react-hook-form';
 import { min } from 'rxjs/operators';
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
-import { translateFrom, useLayoutType, useSession, DefaultWorkspaceProps, ExtensionSlot } from '@openmrs/esm-framework';
+import { translateFrom, useLayoutType, useSession, type DefaultWorkspaceProps, ExtensionSlot } from '@openmrs/esm-framework';
 import { careSettingUuid, prepImagingOrderPostData, useConceptById } from '../api';
 import {
   Button,

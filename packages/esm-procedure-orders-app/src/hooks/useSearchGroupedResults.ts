@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { GroupedOrders } from '../types';
+import { type GroupedOrders } from '../types';
 
 export function useSearchGroupedResults(data: Array<GroupedOrders>, searchString: string) {
   const searchResults = useMemo(() => {

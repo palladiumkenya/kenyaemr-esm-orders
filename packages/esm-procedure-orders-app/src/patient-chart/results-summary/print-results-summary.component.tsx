@@ -2,10 +2,10 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import styles from './print-results-summary.scss';
 import { formatDate, parseDate } from '@openmrs/esm-framework';
 import logoImg from '../../../assets/logo/moh_logo_without_word.png';
-import { Identifier, PatientResource } from '../../utils/functions';
+import { type Identifier, type PatientResource } from '../../utils/functions';
 import { useTranslation } from 'react-i18next';
 import PrintResultsTable from './print-results-table.component';
-import { Result } from '../patient-procedure-order-results.resource';
+import { type Result } from '../patient-procedure-order-results.resource';
 
 interface PrintResultsSummaryProps {
   encounterResponse: Result;

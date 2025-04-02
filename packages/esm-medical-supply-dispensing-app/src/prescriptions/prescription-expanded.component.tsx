@@ -4,7 +4,7 @@ import { Tab, Tabs, TabList, TabPanels, TabPanel } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import styles from './prescription-expanded.scss';
 import PrescriptionDetails from './prescription-details.component';
-import { NonDrugDispensingUnit, NonDrugMedicationDispense } from '../types';
+import { NonDrugDispensingUnit, type NonDrugMedicationDispense } from '../types';
 
 interface TabItem {
   name: string;

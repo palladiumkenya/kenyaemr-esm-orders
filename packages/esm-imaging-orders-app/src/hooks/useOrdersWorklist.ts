@@ -1,11 +1,11 @@
 import { openmrsFetch, restBaseUrl, useAppContext, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { useMemo, useCallback } from 'react';
-import { Result } from '../imaging-tabs/work-list/work-list.resource';
-import { ImagingConfig } from '../config-schema';
-import { FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
+import { type Result } from '../imaging-tabs/work-list/work-list.resource';
+import { type ImagingConfig } from '../config-schema';
+import { type FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
 import dayjs from 'dayjs';
-import { DateFilterContext } from '../types';
+import { type DateFilterContext } from '../types';
 
 const createApiUrl = (
   OrderTypeUuid: string,
