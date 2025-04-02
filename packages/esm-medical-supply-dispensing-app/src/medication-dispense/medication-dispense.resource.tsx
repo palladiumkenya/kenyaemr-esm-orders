@@ -2,7 +2,7 @@ import { fhirBaseUrl, restBaseUrl, openmrsFetch, type Session } from '@openmrs/e
 import dayjs from 'dayjs';
 import useSWR from 'swr';
 import {
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
   type MedicationDispense,
   type MedicationDispenseStatus,
   type MedicationRequest,

@@ -4,7 +4,7 @@ import ProcedureSummaryTiles from './summary-tiles/procedure-summary-tiles.compo
 import ProcedureOrdersList from './procedures-ordered/procedure-tabs.component';
 import Overlay from './components/overlay/overlay.component';
 import { useDefineAppContext } from '@openmrs/esm-framework';
-import { DateFilterContext } from './types';
+import { type DateFilterContext } from './types';
 import dayjs from 'dayjs';
 
 const Procedure: React.FC = () => {

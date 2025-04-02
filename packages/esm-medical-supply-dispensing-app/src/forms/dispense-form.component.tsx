@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, FormLabel, InlineLoading } from '@carbon/react';
 import { ExtensionSlot, showNotification, showToast, useConfig, usePatient, useSession } from '@openmrs/esm-framework';
 import { closeOverlay } from '../hooks/useOverlay';
-import { MedicationDispenseStatus, type InventoryItem, NonDrugMedicationDispense } from '../types';
+import { MedicationDispenseStatus, type InventoryItem, type NonDrugMedicationDispense } from '../types';
 import { revalidate } from '../utils';
 import { type PharmacyConfig } from '../config-schema';
 import { createStockDispenseRequestPayload, sendStockDispenseRequest } from './stock-dispense/stock.resource';

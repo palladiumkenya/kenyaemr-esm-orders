@@ -1,5 +1,5 @@
 import { type OrderUrgency, type OrderBasketItem } from '@openmrs/esm-patient-common-lib';
-import { Link } from './patient-queue';
+import { type Link } from './patient-queue';
 import { type OpenmrsResource } from '@openmrs/esm-framework';
 
 export enum SearchTypes {
@@ -425,7 +425,7 @@ export interface ProcedureOrderBasketItem extends OrderBasketItem {
   previousOrder?: string;
   orderReason?: string;
   orderReasonNonCoded?: string;
-  scheduledDate?: string | Date;
+  scheduledDate?: Date;
   commentsToFulfiller?: string;
   laterality?: string;
   numberOfRepeats?: string;

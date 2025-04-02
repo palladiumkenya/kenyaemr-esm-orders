@@ -1,6 +1,7 @@
 @use '@carbon/layout';
 @use '@carbon/styles/scss/type';
 
+// TODO: refactor to use esm-style-guide
 .addPatientToQueue {
   --cds-layout-size-height-context: var(--cds-layout-size-height-sm, 2rem);
   --cds-layout-size-height: var(--cds-layout-size-height-context);

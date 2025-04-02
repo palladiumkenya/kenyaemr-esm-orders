@@ -1,6 +1,6 @@
 import { FetchResponse, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
-import { Result } from '../../patient-chart/patient-procedure-order-results.resource';
+import { type Result } from '../../patient-chart/patient-procedure-order-results.resource';
 export function useGetLabOrders(encounterUuid: string) {
   const apiUrl = `${restBaseUrl}/encounter/${encounterUuid}?v=full`;
 

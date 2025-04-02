@@ -1,11 +1,11 @@
 import { openmrsFetch, restBaseUrl, useAppContext, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { useMemo, useCallback } from 'react';
-import { Result } from '../imaging-tabs/work-list/work-list.resource';
-import { ImagingConfig } from '../config-schema';
-import { FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
+import { type Result } from '../imaging-tabs/work-list/work-list.resource';
+import { type ImagingConfig } from '../config-schema';
+import { type FulfillerStatus } from '../shared/ui/common/grouped-imaging-types';
 import dayjs from 'dayjs';
-import { DateFilterContext } from '../types';
+import { type DateFilterContext } from '../types';
 
 const createApiUrl = (
   OrderTypeUuid: string,
@@ -14,7 +14,7 @@ const createApiUrl = (
   fulfillerStatus: string,
 ) => {
   const responseFormat =
-    'custom:(uuid,orderNumber,patient:(uuid,display,identifiers,person:(uuid,display,age,gender)),concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
+    'custom:(uuid,orderNumber,patient:(uuid,display,identifiers,person:(uuid,display,age,gender)),concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,orderReasonNonCoded,orderReason,bodySite,laterality,commentToFulfiller,procedures,display,fulfillerStatus,dateStopped,scheduledDate,dateActivated,fulfillerComment)';
   const orderTypeParam = `orderTypes=${OrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&activatedOnOrBeforeDate=${activatedOnOrBeforeDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
 
   return `${restBaseUrl}/order?${orderTypeParam}`;

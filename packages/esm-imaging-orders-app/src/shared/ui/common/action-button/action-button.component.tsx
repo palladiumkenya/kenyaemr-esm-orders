@@ -2,9 +2,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
 import { showModal, launchWorkspace } from '@openmrs/esm-framework';
-import { Order } from '@openmrs/esm-patient-common-lib';
+import { type Order } from '@openmrs/esm-patient-common-lib';
 import OrderActionExtension from './order-action-extension.component';
-import { Result } from '../../../../imaging-tabs/work-list/work-list.resource';
+import { type Result } from '../../../../imaging-tabs/work-list/work-list.resource';
 import styles from './action-button.scss';
 
 type ActionButtonProps = {

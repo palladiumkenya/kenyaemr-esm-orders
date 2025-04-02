@@ -6,7 +6,7 @@ import styles from './reject-order-dialog.scss';
 import { showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
 import { updateOrder } from '../pick-procedure-order/add-to-worklist-dialog.resource';
-import { Result } from '../../types';
+import { type Result } from '../../types';
 import capitalize from 'lodash-es/capitalize';
 
 interface RejectProcedureOrderDialogProps {

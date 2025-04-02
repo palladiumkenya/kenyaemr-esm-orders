@@ -5,7 +5,7 @@ import Overlay from '../components/overlay/overlay.component';
 import { useOrdersWorklist } from '../hooks/useOrdersWorklist';
 import GroupedOrdersTable from '../shared/ui/common/grouped-orders-table.component';
 import { DataTableSkeleton } from '@carbon/react';
-import { WorklistProps } from '../types';
+import { type WorklistProps } from '../types';
 
 const WorkList: React.FC<WorklistProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();

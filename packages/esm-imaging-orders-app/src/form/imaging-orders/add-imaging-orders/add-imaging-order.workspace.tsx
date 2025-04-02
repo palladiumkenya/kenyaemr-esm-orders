@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
 import { ArrowLeft } from '@carbon/react/icons';
 import {
-  DefaultWorkspaceProps,
+  type DefaultWorkspaceProps,
   age,
   formatDate,
   getPatientName,

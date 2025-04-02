@@ -12,6 +12,7 @@ import AddImagingToWorkListModal from './imaging-tabs/test-ordered/pick-imaging-
 import AmendModal from './imaging-tabs/test-ordered/amend-order-dialog/amend-imaging-dialog.component';
 import ImagingReviewForm from './form/review-form/review-imaging-form.workspace';
 import PrintPreviewModal from './print/print-report-modal.component';
+import SearchPatientWorkspace from './form/imaging-orders/search-patient.workspace';
 
 const options = {
   featureName: 'esm-imaging-orders-app',
@@ -42,6 +43,7 @@ export const printReportModal = getSyncLifecycle(PrintPreviewModal, options);
 
 // t('addImagingOrderWorkspaceTitle', 'Add Imaging order')
 export const addImagingOrderWorkspace = getSyncLifecycle(AddImagingOrderWorkspace, options);
+export const searchPatientWorkspace = getSyncLifecycle(SearchPatientWorkspace, options);
 
 export const imagingReportForm = getSyncLifecycle(ImagingReportForm, options);
 export const imagingReviewForm = getSyncLifecycle(ImagingReviewForm, options);

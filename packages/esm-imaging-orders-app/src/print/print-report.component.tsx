@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { IdentifierType, Person } from '../utils/functions';
 import startCase from 'lodash-es/startCase';
 import dayjs from 'dayjs';
-import { Order } from '../types';
+import { type Order } from '../types';
 
 interface PrintableReportProps {
   approvedOrders: Order;

@@ -20,7 +20,7 @@ import {
   type MedicationDispense,
   MedicationDispenseStatus,
   MedicationRequestFulfillerStatus,
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
 } from '../types';
 import { type PharmacyConfig } from '../config-schema';
 import { updateSupplyOrderFulfillerStatus } from '../medication-request/medication-request.resource';

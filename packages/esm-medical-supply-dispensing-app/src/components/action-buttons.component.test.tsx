@@ -1,7 +1,7 @@
 import { render } from '@testing-library/react';
 import React from 'react';
 import ActionButtons from './action-buttons.component';
-import { type MedicationRequest, MedicationRequestStatus, NonDrugMedicationDispense } from '../types';
+import { type MedicationRequest, MedicationRequestStatus, type NonDrugMedicationDispense } from '../types';
 import { toDateObjectStrict, useConfig } from '@openmrs/esm-framework';
 import { date } from 'zod';
 

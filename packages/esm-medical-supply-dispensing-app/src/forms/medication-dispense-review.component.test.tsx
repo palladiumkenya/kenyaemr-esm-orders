@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { type MedicationDispense, MedicationDispenseStatus, NonDrugMedicationDispense } from '../types';
+import { type MedicationDispense, MedicationDispenseStatus, type NonDrugMedicationDispense } from '../types';
 import MedicationDispenseReview from './medication-dispense-review.component';
 import { OpenmrsDatePicker, useConfig } from '@openmrs/esm-framework';
 

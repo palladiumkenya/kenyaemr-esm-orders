@@ -45,6 +45,12 @@
       "type": "order",
       "component": "imagingReviewForm",
       "title": "Review form"
+    },
+    {
+      "name": "search-patient-workspace",
+      "component": "searchPatientWorkspace",
+      "title": "Search patient",
+      "type": "other-form"
     }
   ],
   "modals": [
@@ -63,6 +69,17 @@
     {
       "name": "print-preview-Report-modal",
       "component": "printReportModal"
+    }
+  ],
+  "workspaceGroups": [
+    {
+      "name": "add-imaging-order-workspace-group",
+      "members": [
+        "add-drug-order",
+        "order-basket",
+        "add-lab-order",
+        "add-imaging-order"
+      ]
     }
   ]
 }
