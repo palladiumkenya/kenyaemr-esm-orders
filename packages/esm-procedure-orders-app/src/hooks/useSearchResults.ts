@@ -1,6 +1,6 @@
 import { formatDate, parseDate } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
-import { Result } from '../types';
+import { type Result } from '../types';
 
 export function useSearchResults(data: Result[], searchString: string) {
   const flattenedData = data.map((eachObject) => {

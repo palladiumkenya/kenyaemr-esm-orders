@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, ModalBody, ModalFooter, ModalHeader, Tile } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import styles from '../procedure-instructions/instructions.scss';
-import { Result } from '../../types';
+import { type Result } from '../../types';
 
 interface ProcedureRejectReasonModalProps {
   order: Result;

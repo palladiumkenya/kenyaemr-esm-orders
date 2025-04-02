@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePagination } from '@openmrs/esm-framework';
-import { LaboratoryOrderFilter, usePatientLaboratoryOrders } from './patient-procedure-order-results.resource';
+import { type LaboratoryOrderFilter, usePatientLaboratoryOrders } from './patient-procedure-order-results.resource';
 
 export function useLaboratoryOrderResultsPages(filter: LaboratoryOrderFilter) {
   const { t } = useTranslation();

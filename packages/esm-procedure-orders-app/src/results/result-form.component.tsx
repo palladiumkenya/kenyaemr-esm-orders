@@ -6,7 +6,7 @@ import { closeOverlay } from '../components/overlay/hook';
 import { ExtensionSlot, showNotification, showToast, usePatient } from '@openmrs/esm-framework';
 import { useGetOrderConceptByUuid, saveProcedureReport } from './result-form.resource';
 import { useForm } from 'react-hook-form';
-import { Result } from '../types';
+import { type Result } from '../types';
 
 interface ResultFormProps {
   patientUuid: string;

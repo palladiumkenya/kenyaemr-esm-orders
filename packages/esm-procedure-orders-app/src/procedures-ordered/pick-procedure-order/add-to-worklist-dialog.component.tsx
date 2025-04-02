@@ -5,7 +5,7 @@ import styles from './add-to-worklist-dialog.scss';
 import { showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { updateOrder } from './add-to-worklist-dialog.resource';
 import { mutate } from 'swr';
-import { Result } from '../../types';
+import { type Result } from '../../types';
 import capitalize from 'lodash-es/capitalize';
 
 interface AddProcedureToWorklistDialogProps {

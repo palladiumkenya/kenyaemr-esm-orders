@@ -1,6 +1,6 @@
 import { formatDate, parseDate } from '@openmrs/esm-framework';
 import { useMemo } from 'react';
-import { Result } from '../imaging-tabs/work-list/work-list.resource';
+import { type Result } from '../imaging-tabs/work-list/work-list.resource';
 
 /**
  * A custom hook that processes and filters imaging order results based on a search string.

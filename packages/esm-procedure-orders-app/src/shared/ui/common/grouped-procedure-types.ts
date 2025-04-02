@@ -1,4 +1,4 @@
-import { Result } from '../../../types';
+import { type Result } from '../../../types';
 
 export type FulfillerStatus = '' | 'IN_PROGRESS' | 'DECLINED' | 'COMPLETED' | 'EXCEPTION';
 

@@ -4,7 +4,7 @@ import {
   type StockDispenseRequest,
   type InventoryItem,
   type MedicationDispense,
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
 } from '../../types';
 import { getUuidFromReference } from '../../utils';
 

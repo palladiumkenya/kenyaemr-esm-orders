@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import styles from './list-order-details.scss';
 import { useTranslation } from 'react-i18next';
 import { formatDate, parseDate, showModal } from '@openmrs/esm-framework';
-import { ListOrdersDetailsProps } from './grouped-procedure-types';
+import { type ListOrdersDetailsProps } from './grouped-procedure-types';
 import {
   Tile,
   Tag,

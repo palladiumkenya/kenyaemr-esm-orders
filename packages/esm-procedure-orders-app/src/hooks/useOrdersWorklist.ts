@@ -1,7 +1,7 @@
-import { ConfigObject, openmrsFetch, useAppContext, useConfig } from '@openmrs/esm-framework';
+import { type ConfigObject, openmrsFetch, useAppContext, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { ProcedureConceptClass_UUID } from '../constants';
-import { DateFilterContext, Result } from '../types';
+import { type DateFilterContext, type Result } from '../types';
 import dayjs from 'dayjs';
 export function useOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;

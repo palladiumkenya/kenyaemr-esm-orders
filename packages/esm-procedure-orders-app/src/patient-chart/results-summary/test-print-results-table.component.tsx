@@ -16,7 +16,7 @@ import {
 } from '@carbon/react';
 import styles from './results-summary.scss';
 import TestResultsChildren from './test-children-results.component';
-import { Ob } from '../patient-procedure-order-results.resource';
+import { type Ob } from '../patient-procedure-order-results.resource';
 
 interface TestOrdersProps {
   obs: Ob[];

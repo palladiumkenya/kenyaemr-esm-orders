@@ -1,4 +1,4 @@
-import React, { ReactSVGElement } from 'react';
+import React, { type ReactSVGElement } from 'react';
 import { Tile } from '@carbon/react';
 import { Edit } from '@carbon/react/icons';
 import { type MedicationReferenceOrCodeableConcept } from '../types/index';

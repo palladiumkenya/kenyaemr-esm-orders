@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { ImagingPageHeader } from './header/imagining-header.component';
 import { ImagingTabs } from './imaging-tabs/imaging-tabs.component';
 import { useDefineAppContext } from '@openmrs/esm-framework';
-import { DateFilterContext } from './types';
+import { type DateFilterContext } from './types';
 import dayjs from 'dayjs';
 
 const ImagingOrders: React.FC = () => {

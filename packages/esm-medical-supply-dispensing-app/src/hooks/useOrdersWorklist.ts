@@ -1,7 +1,7 @@
-import { ConfigObject, openmrsFetch, useConfig } from '@openmrs/esm-framework';
+import { type ConfigObject, openmrsFetch, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
 import { medicalSupplyOrderConceptClass_UUID } from '../constants';
-import { Result } from '../types';
+import { type Result } from '../types';
 export function useAllOrders(activatedOnOrAfterDate: string, fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;
 

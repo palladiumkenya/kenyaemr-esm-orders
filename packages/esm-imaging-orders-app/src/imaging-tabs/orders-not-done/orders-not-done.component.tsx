@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { DataTableSkeleton } from '@carbon/react';
 import { useOrdersWorkList } from '../../hooks/useOrdersWorklist';
-import { FulfillerStatus } from '../../shared/ui/common/grouped-imaging-types';
+import { type FulfillerStatus } from '../../shared/ui/common/grouped-imaging-types';
 import GroupedOrdersTable from '../../shared/ui/common/grouped-orders-table.component';
 import styles from '../test-ordered/tests-ordered.scss';
 interface NotDoneProps {

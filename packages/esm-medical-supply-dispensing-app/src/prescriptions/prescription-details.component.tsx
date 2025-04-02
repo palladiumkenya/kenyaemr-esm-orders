@@ -9,7 +9,7 @@ import {
   type MedicationRequest,
   MedicationRequestCombinedStatus,
   NonDrugDispensingUnit,
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
 } from '../types';
 import { computeMedicationRequestCombinedStatus, getConceptCodingDisplay } from '../utils';
 import { PRIVILEGE_CREATE_DISPENSE } from '../constants';

@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 import styles from './grouped-orders-table.scss';
 import { useTranslation } from 'react-i18next';
 import { usePagination } from '@openmrs/esm-framework';
-import { GroupedOrdersTableProps } from './grouped-imaging-types';
+import { type GroupedOrdersTableProps } from './grouped-imaging-types';
 import {
   Table,
   TableHead,

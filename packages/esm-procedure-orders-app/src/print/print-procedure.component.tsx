@@ -4,7 +4,7 @@ import { useConfig, useSession, formatDate } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 import startCase from 'lodash-es/startCase';
 import dayjs from 'dayjs';
-import { Order, Result } from '../types';
+import { Order, type Result } from '../types';
 
 interface PrintableReportProps {
   completedOrder: Result;
