@@ -1,23 +1,24 @@
-import React, { useMemo } from 'react';
-import styles from './list-order-details.scss';
-import { useTranslation } from 'react-i18next';
-import { formatDate, parseDate, showModal } from '@openmrs/esm-framework';
-import { type ListOrdersDetailsProps } from './grouped-procedure-types';
 import {
-  Tile,
-  Tag,
-  StructuredListWrapper,
-  StructuredListBody,
-  StructuredListRow,
-  StructuredListCell,
   Accordion,
   AccordionItem,
-  TextArea,
   Button,
+  InlineLoading,
+  StructuredListBody,
+  StructuredListCell,
+  StructuredListRow,
+  StructuredListWrapper,
+  Tag,
+  TextArea,
 } from '@carbon/react';
-import ActionButton from './action-button/action-button.component';
-import capitalize from 'lodash-es/capitalize';
 import { Printer } from '@carbon/react/icons';
+import { formatDate, parseDate, showModal } from '@openmrs/esm-framework';
+import capitalize from 'lodash-es/capitalize';
+import React, { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import ActionButton from './action-button/action-button.component';
+import { type ListOrdersDetailsProps } from './grouped-procedure-types';
+import usePatientDiagnosis from './list-order-details.resource';
+import styles from './list-order-details.scss';
 
 const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, showActions, actions }) => {
   const orders = groupedOrders?.orders;
@@ -38,6 +39,11 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
       }));
   }, [orders]);
 
+  const { diagnoses, isLoading } = usePatientDiagnosis(orders[0]?.patient?.uuid);
+  if (isLoading) {
+    return <InlineLoading status="active" description={t('loading', 'Loading...')} />;
+  }
+
   return (
     <div>
       {orderRows.map((row) => (
@@ -52,17 +58,33 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
           </div>
 
           <div className={styles.orderStatus}>
-            {t('orderStatus', 'Status:')}
-            <Tag size="lg" type={row?.status ? 'green' : 'red'}>
-              {row.fulfillerStatus || t('orderNotPicked', 'Order not picked')}
-            </Tag>
+            <span className={styles.urgencyStatus}>
+              {t('orderStatus', 'Status:')}
+              <Tag size="lg" type="warm-gray">
+                {row.fulfillerStatus || t('orderNotPicked', 'Order not picked')}
+              </Tag>
+            </span>
           </div>
 
-          <div className={styles.orderUrgency}>
+          <div className={styles.orderHeader}>
+            <span className={styles.urgencyStatus}>
+              {t('diagnosis', 'Diagnosis: ')}
+              {diagnoses.length > 0 ? (
+                diagnoses.map((diagnosis) => (
+                  <Tag size="lg" type="warm-gray" key={diagnosis.id}>
+                    {diagnosis.text ? capitalize(diagnosis.text) : t('noDiagnosis', 'No available diagnosis')}
+                  </Tag>
+                ))
+              ) : (
+                <Tag size="lg" type="warm-gray">
+                  {t('noDiagnosis', 'No available diagnosis')}
+                </Tag>
+              )}
+            </span>
             <span className={styles.urgencyStatus}>
               {t('urgencyStatus', 'Urgency: ')}
-              <Tag size="lg" type="blue">
-                {capitalize(row?.urgency || '--')}
+              <Tag size="lg" type="warm-gray">
+                {capitalize(row.urgency || '--')}
               </Tag>
             </span>
           </div>

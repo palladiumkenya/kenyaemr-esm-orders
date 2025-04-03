@@ -1,29 +1,34 @@
 import React from 'react';
-import styles from './list-order-details.scss';
 import { useTranslation } from 'react-i18next';
 import { ExtensionSlot, formatDate, parseDate, showModal } from '@openmrs/esm-framework';
 import { type ListOrdersDetailsProps } from './grouped-imaging-types';
 import {
-  Tile,
-  Tag,
-  StructuredListWrapper,
-  StructuredListBody,
-  StructuredListRow,
-  StructuredListCell,
   Accordion,
   AccordionItem,
-  TextArea,
   Button,
+  StructuredListBody,
+  StructuredListCell,
+  StructuredListRow,
+  StructuredListWrapper,
+  Tag,
+  TextArea,
+  InlineLoading,
 } from '@carbon/react';
+import { Printer } from '@carbon/react/icons';
 import capitalize from 'lodash-es/capitalize';
 import ActionButton from './action-button/action-button.component';
-import { Printer } from '@carbon/react/icons';
-import { Person } from '../../../../../esm-procedure-orders-app/src/form/procedures-orders/api';
+import styles from './list-order-details.scss';
+import usePatientDiagnosis from './list-order-details.resource';
 
 const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, showActions, actions }) => {
   const { t } = useTranslation();
   const orders = groupedOrders?.orders || [];
   const patientUuid = orders[0]?.patient?.uuid;
+  const { diagnoses, isLoading } = usePatientDiagnosis(patientUuid);
+
+  if (isLoading) {
+    return <InlineLoading status="active" description={t('loading', 'Loading...')} />;
+  }
 
   return (
     <div>
@@ -38,17 +43,33 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
             </span>
           </div>
 
-          <div className={styles.orderStatus}>
-            {t('orderStatus', 'Status:')}
-            <Tag size="lg" type={row.fulfillerStatus ? 'green' : 'red'}>
-              {row.fulfillerStatus || t('orderNotPicked', 'Order not picked')}
-            </Tag>
+          <div className={styles.orderHeader}>
+            <span className={styles.urgencyStatus}>
+              {t('orderStatus', 'Status:')}
+              <Tag size="lg" type="warm-gray">
+                {capitalize(row.fulfillerStatus) || t('orderNotPicked', 'Order not picked')}
+              </Tag>
+            </span>
           </div>
 
-          <div className={styles.orderUrgency}>
+          <div className={styles.orderHeader}>
+            <span className={styles.urgencyStatus}>
+              {t('diagnosis', 'Diagnosis: ')}
+              {diagnoses.length > 0 ? (
+                diagnoses.map((diagnosis) => (
+                  <Tag size="lg" type="warm-gray" key={diagnosis.id}>
+                    {diagnosis.text ? capitalize(diagnosis.text) : t('noDiagnosis', 'No available diagnosis')}
+                  </Tag>
+                ))
+              ) : (
+                <Tag size="lg" type="warm-gray">
+                  {t('noDiagnosis', 'No available diagnosis')}
+                </Tag>
+              )}
+            </span>
             <span className={styles.urgencyStatus}>
               {t('urgencyStatus', 'Urgency: ')}
-              <Tag size="lg" type="blue">
+              <Tag size="lg" type="warm-gray">
                 {capitalize(row.urgency || '--')}
               </Tag>
             </span>
@@ -64,7 +85,7 @@ const ListOrderDetails: React.FC<ListOrdersDetailsProps> = ({ groupedOrders, sho
                 <StructuredListCell>{t('orderInStruction', 'Instructions')}</StructuredListCell>
                 <StructuredListCell className={styles.orderName}>
                   {capitalize(row.instructions) || (
-                    <Tag size="lg" type="red">
+                    <Tag size="lg" type="warm-gray">
                       {t('NoInstructionLeft', 'No instructions are provided.')}
                     </Tag>
                   )}

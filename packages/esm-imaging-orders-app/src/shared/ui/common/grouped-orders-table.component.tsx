@@ -27,6 +27,7 @@ import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults'
 import TransitionLatestQueueEntryButton from '../../../imaging-tabs/test-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
 import EmptyState from '../../../empty-state/empty-state-component';
+import upperCase from 'lodash-es/upperCase';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
@@ -60,9 +61,14 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const rowData = useMemo(() => {
     return paginatedResults.map((patient) => ({
       id: patient.patientId,
-      patientName: patient.orders[0].patient?.person?.display,
+      patientName: upperCase(patient.orders[0].patient?.person?.display),
       patientAge: patient?.orders[0]?.patient?.person?.age,
-      patientGender: patient?.orders[0]?.patient?.person?.gender,
+      patientGender:
+        patient?.orders[0]?.patient?.person?.gender === 'M'
+          ? t('male', 'Male')
+          : patient?.orders[0]?.patient?.person?.gender === 'F'
+          ? t('female', 'Female')
+          : patient?.orders[0]?.patient?.person?.gender,
       orders: patient.orders,
       totalOrders: patient.orders?.length,
       fulfillerStatus: patient.orders[0].fulfillerStatus,
@@ -71,13 +77,13 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           <TransitionLatestQueueEntryButton patientUuid={patient.patientId} />
         ) : null,
     }));
-  }, [paginatedResults]);
+  }, [paginatedResults, t]);
 
   const tableColumns = useMemo(() => {
     const baseColumns = [
       { key: 'patientName', header: t('patientName', 'Patient Name') },
       { key: 'patientAge', header: t('age', 'Age') },
-      { key: 'patientGender', header: t('gender', 'Gender') },
+      { key: 'patientGender', header: t('sex', 'Sex') },
       { key: 'totalOrders', header: t('totalOrders', 'Total Orders') },
     ];
 
