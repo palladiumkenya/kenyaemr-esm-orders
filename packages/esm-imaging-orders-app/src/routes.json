@@ -8,7 +8,6 @@
     {
       "component": "imagingOrdersLink",
       "name": "imaging-orders-link",
-      "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "imaging-orders",
         "title": "imaging-orders",
