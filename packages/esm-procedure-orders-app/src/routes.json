@@ -8,7 +8,6 @@
     {
       "component": "procedureDashboardLink",
       "name": "procedure-dashboard-link",
-      "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "procedure",
         "title": "procedure",
