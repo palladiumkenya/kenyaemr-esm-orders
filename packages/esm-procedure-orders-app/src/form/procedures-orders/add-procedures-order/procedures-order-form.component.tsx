@@ -147,7 +147,7 @@ export function ProceduresOrderForm({
         onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
       });
     },
-    [orders, setOrders, closeWorkspace, session?.currentProvider?.uuid, defaultValues],
+    [orders, setOrders, closeWorkspace, session?.currentProvider?.uuid, defaultValues, closeWorkspaceWithSavedChanges],
   );
 
   const cancelOrder = useCallback(() => {
@@ -165,7 +165,7 @@ export function ProceduresOrderForm({
 
   useEffect(() => {
     promptBeforeClosing(() => isDirty);
-  }, [isDirty]);
+  }, [isDirty, promptBeforeClosing]);
 
   const [showScheduleDate, setShowScheduleDate] = useState(false);
 
@@ -218,10 +218,10 @@ export function ProceduresOrderForm({
                     <ComboBox
                       size="lg"
                       id="categoryInput"
-                      titleText={t('category', 'Category')}
+                      titleText={t('operationCategory', 'Operation category')}
                       selectedItem={categoryItems.find((option) => option.value === value) || null}
                       items={categoryItems}
-                      placeholder={t('categoryPlaceholder', 'Select one')}
+                      placeholder={t('categoryPlaceholder', 'Select category')}
                       onBlur={onBlur}
                       onChange={({ selectedItem }) => onChange(selectedItem?.value || '')}
                       invalid={error?.message}
