@@ -1,0 +1,17 @@
+{
+  "additionalInstructions": "Additional instructions",
+  "discard": "Discard",
+  "error": "Error",
+  "medicalSupplyType": "Medical supply type",
+  "orderActionDiscontinue": "Discontinue",
+  "orderActionIncomplete": "Incomplete",
+  "orderActionNew": "New",
+  "orderActionRenew": "Renew",
+  "orderActionRevise": "Modify",
+  "pleaseRequiredFields": "Please fill all required fields",
+  "priority": "Priority",
+  "quantity": "Quantity",
+  "quantityUnits": "Quantity Units",
+  "removeFromBasket": "Remove from basket",
+  "saveOrder": "Save order"
+}
