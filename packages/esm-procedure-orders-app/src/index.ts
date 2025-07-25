@@ -28,6 +28,7 @@ export function startupApp() {
 
 export const root = getAsyncLifecycle(() => import('./root.component'), options);
 
+// t('Procedures', 'Procedures')
 export const procedureDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'procedure',
