@@ -27,6 +27,7 @@ export function startupApp() {
 
 export const root = getSyncLifecycle(Root, options);
 
+// t('imagingOrders', 'Imaging Orders')
 export const imagingOrdersLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'imaging-orders',
