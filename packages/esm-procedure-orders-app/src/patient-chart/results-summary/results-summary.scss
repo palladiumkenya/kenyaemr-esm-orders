@@ -1,8 +1,8 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
 @use '@carbon/styles/scss/colors';
-@import '~@openmrs/esm-styleguide/src/vars';
-@import '../../root.scss';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '../../root.scss' as *;
 
 .section {
   margin: 5px;

@@ -3,8 +3,15 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonSkeleton, Search, SkeletonText, Tile } from '@carbon/react';
 import { ArrowRight, ShoppingCartArrowDown, ShoppingCartArrowUp } from '@carbon/react/icons';
-import { useDebounce, useLayoutType, useSession, ResponsiveWrapper, closeWorkspace } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import {
+  useDebounce,
+  useLayoutType,
+  useSession,
+  ResponsiveWrapper,
+  closeWorkspace,
+  launchWorkspace,
+} from '@openmrs/esm-framework';
+import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import styles from './medical-supply-type-search.scss';
 import { type MedicalSupplyOrderBasketItem } from '../../../types';
 import { createEmptyMedicalSupplyOrder } from './medical-supply-order';
@@ -177,7 +184,7 @@ const MedicalSupplyTypeSearchResultItem: React.FC<MedicalSupplyTypeSearchResultI
     setOrders([...orders, medicalSupplyOrder]);
     closeWorkspace('add-medical-supply-order', {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [orders, setOrders, createMedicalSupplyOrder, testType]);
 

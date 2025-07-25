@@ -9,11 +9,11 @@ import {
   age,
   formatDate,
   getPatientName,
+  launchWorkspace,
   parseDate,
   useLayoutType,
   usePatient,
 } from '@openmrs/esm-framework';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { TestTypeSearch } from './imaging-type-search';
 import { ImagingOrderForm } from './imaging-order-form.component';
 import styles from './add-imaging-order.scss';
@@ -39,7 +39,7 @@ export default function AddImagingOrderWorkspace({
   const cancelOrder = useCallback(() => {
     closeWorkspace({
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [closeWorkspace]);
 

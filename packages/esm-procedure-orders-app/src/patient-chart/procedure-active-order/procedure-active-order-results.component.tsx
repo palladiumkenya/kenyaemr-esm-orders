@@ -1,7 +1,15 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './laboratory-active-test-order-results.scss';
-import { formatDate, parseDate, ErrorState, showModal, useConfig, usePagination } from '@openmrs/esm-framework';
+import {
+  formatDate,
+  parseDate,
+  ErrorState,
+  showModal,
+  useConfig,
+  usePagination,
+  launchWorkspace,
+} from '@openmrs/esm-framework';
 import { mutate } from 'swr';
 import {
   DataTable,
@@ -37,7 +45,7 @@ import PrintResultsSummary from '../results-summary/print-results-summary.compon
 import { useGetPatientByUuid } from '../../utils/functions';
 import { ResourceRepresentation, type Result, getOrderColor } from '../patient-procedure-order-results.resource';
 import { useLaboratoryOrderResultsPages } from '../patient-procedure-order-results-table.resource';
-import { CardHeader, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { CardHeader } from '@openmrs/esm-patient-common-lib';
 
 interface LaboratoryActiveTestOrderResultsProps {
   patientUuid: string;
@@ -115,7 +123,7 @@ const LaboratoryActiveTestOrderResults: React.FC<LaboratoryActiveTestOrderResult
   };
 
   const launchLabRequestForm = () => {
-    launchPatientWorkspace('patient-laboratory-referral-workspace', {
+    launchWorkspace('patient-laboratory-referral-workspace', {
       workspaceTitle: 'Lab Request Form',
       mutateForm: () => {
         mutate((key) => true, undefined, {

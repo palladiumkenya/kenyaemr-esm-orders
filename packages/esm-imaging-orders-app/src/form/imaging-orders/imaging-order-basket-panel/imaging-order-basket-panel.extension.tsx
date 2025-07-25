@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, Tile } from '@carbon/react';
 import { Add, ChevronDown, ChevronUp } from '@carbon/react/icons';
-import { useLayoutType, closeWorkspace } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useLayoutType, closeWorkspace, launchWorkspace } from '@openmrs/esm-framework';
+import { type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import { ImagingOrderBasketItemTile } from './imaging-order-basket-item-tile.component';
 import { prepImagingOrderPostData } from '../api';
 import ImagingIcon from './imaging-icon.component';
@@ -58,14 +58,14 @@ export default function ImagingOrderBasketPanelExtension() {
   const launchImagingOrderForm = useCallback(() => {
     closeWorkspace('order-basket', {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('add-imaging-order'),
+      onWorkspaceClose: () => launchWorkspace('add-imaging-order'),
     });
   }, []);
 
   const openImagingOrderFormForEditing = useCallback((order: OrderBasketItem) => {
     closeWorkspace('order-basket', {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('add-imaging-order', { order }),
+      onWorkspaceClose: () => launchWorkspace('add-imaging-order', { order }),
     });
   }, []);
 
