@@ -1,7 +1,7 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
-@import '~@openmrs/esm-styleguide/src/vars';
-@import '../root.scss';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '../root.scss' as *;
 
 title {
   width: 6.938rem;

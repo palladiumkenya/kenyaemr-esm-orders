@@ -1,11 +1,9 @@
 import React, { useCallback, useState } from 'react';
-import classNames from 'classnames';
-import capitalize from 'lodash-es/capitalize';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@carbon/react';
 import { ArrowLeft } from '@carbon/react/icons';
-import { age, formatDate, parseDate, useLayoutType, usePatient } from '@openmrs/esm-framework';
-import { type DefaultPatientWorkspaceProps, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { launchWorkspace, useLayoutType } from '@openmrs/esm-framework';
+import { type DefaultPatientWorkspaceProps } from '@openmrs/esm-patient-common-lib';
 import { MedicalSupplyTypeSearch } from './medical-supply-type-search';
 import { MedicalSupplyOrderForm } from './medical-supply-form.component';
 import styles from './add-medical-supply-order.scss';
@@ -34,7 +32,7 @@ export default function AddMedicalSupplyOrderWorkspace({
   const cancelOrder = useCallback(() => {
     closeWorkspace({
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [closeWorkspace]);
 

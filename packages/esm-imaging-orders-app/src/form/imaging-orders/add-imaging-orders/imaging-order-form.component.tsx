@@ -1,7 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
-import { translateFrom, useLayoutType, useSession, type DefaultWorkspaceProps, ExtensionSlot } from '@openmrs/esm-framework';
+import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import {
+  translateFrom,
+  useLayoutType,
+  useSession,
+  type DefaultWorkspaceProps,
+  ExtensionSlot,
+  launchWorkspace,
+} from '@openmrs/esm-framework';
 import { careSettingUuid, prepImagingOrderPostData, useConceptById } from '../api';
 import {
   Button,
@@ -102,7 +109,7 @@ export function ImagingOrderForm({
       newOrders[orderIndex] = data;
       setOrders(newOrders);
       closeWorkspaceWithSavedChanges({
-        onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+        onWorkspaceClose: () => launchWorkspace('order-basket'),
       });
     },
     [orders, setOrders, defaultValues, closeWorkspaceWithSavedChanges, session],
@@ -111,7 +118,7 @@ export function ImagingOrderForm({
   const cancelOrder = useCallback(() => {
     setOrders(orders.filter((order) => order.testType.conceptUuid !== defaultValues.testType.conceptUuid));
     closeWorkspace({
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [closeWorkspace, orders, setOrders, defaultValues]);
 

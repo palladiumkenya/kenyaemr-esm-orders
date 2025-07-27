@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonSkeleton, Search, SkeletonText, Tile } from '@carbon/react';
 import { ArrowRight, ShoppingCartArrowDown, ShoppingCartArrowUp } from '@carbon/react/icons';
-import { useDebounce, useLayoutType, useSession, ResponsiveWrapper, closeWorkspace } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useDebounce, useLayoutType, useSession, ResponsiveWrapper, closeWorkspace, launchWorkspace } from '@openmrs/esm-framework';
+import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import { prepImagingOrderPostData } from '../api';
 import { type ImagingType, useImagingTypes } from './useImagingTypes';
 import { createEmptyLabOrder } from './imaging-order';
@@ -159,7 +159,7 @@ const TestTypeSearchResultItem: React.FC<TestTypeSearchResultItemProps> = ({ tes
     setOrders([...orders, labOrder]);
     closeWorkspace('add-imaging-order', {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [orders, setOrders, createLabOrder, testType]);
 

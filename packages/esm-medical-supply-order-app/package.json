@@ -44,14 +44,13 @@
   "peerDependencies": {
     "@carbon/react": "^1.x",
     "@openmrs/esm-framework": "6.x",
-    "@openmrs/esm-patient-common-lib": "9.x",
+    "@openmrs/esm-patient-common-lib": "10.x",
     "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
   "devDependencies": {
-    "@openmrs/esm-patient-common-lib": "^9.2.2",
-    "webpack": "^5.74.0"
+    "webpack": "5.98.0"
   }
 }

@@ -4,7 +4,6 @@ import { TextInput, Select, SelectItem } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import { type ConceptReference } from './result-form.resource';
 import { Controller } from 'react-hook-form';
-import { min } from 'rxjs/operators';
 
 interface ResultFormFieldProps {
   concept: ConceptReference;
