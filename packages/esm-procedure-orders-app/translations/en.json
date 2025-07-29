@@ -82,6 +82,7 @@
   "pickProcedureRequest": "Pick Procedure Request",
   "pickRequest": "Pick Request",
   "pickSuccessfully": "You have successfully picked an Order",
+  "pleaseEnterComment": "Please enter comment",
   "pleaseRequiredFields": "Please fill all required fields",
   "print": "Print",
   "printError": "Error",

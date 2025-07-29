@@ -74,7 +74,7 @@ const RejectOrderModal: React.FC<RejectOrderModalProps> = ({ order, closeModal }
               id="nextNotes"
               name="nextNotes"
               invalidText="Required"
-              helperText="Please enter comment"
+              helperText={t('pleaseEnterComment', 'Please enter comment')}
               maxCount={500}
               enableCounter
               onChange={(e) => setNotes(e.target.value)}

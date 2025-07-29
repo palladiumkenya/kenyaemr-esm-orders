@@ -1,12 +1,14 @@
 import React, { useMemo } from 'react';
 import last from 'lodash-es/last';
 import { BrowserRouter, useLocation } from 'react-router-dom';
-import { ConfigurableLink } from '@openmrs/esm-framework';
+import { ConfigurableLink, MaybeIcon } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
+import styles from './left-panel-link.scss';
 
 export interface LinkConfig {
   name: string;
   title: string;
+  icon: string;
 }
 
 export function LinkExtension({ config }: { config: LinkConfig }) {
@@ -30,7 +32,10 @@ export function LinkExtension({ config }: { config: LinkConfig }) {
     <ConfigurableLink
       to={spaBasePath + '/' + name}
       className={`cds--side-nav__link ${name === urlSegment && 'active-left-nav-link'}`}>
-      {t(title)}
+      <span className={styles.menu}>
+        <MaybeIcon icon={config.icon} className={styles.icon} size={16} />
+        <span>{t(title)}</span>
+      </span>
     </ConfigurableLink>
   );
 }
