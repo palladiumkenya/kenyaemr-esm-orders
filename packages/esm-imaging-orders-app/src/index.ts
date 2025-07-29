@@ -27,11 +27,12 @@ export function startupApp() {
 
 export const root = getSyncLifecycle(Root, options);
 
-// t('imagingOrders', 'Imaging Orders')
+// t('Imaging Orders', 'Imaging Orders')
 export const imagingOrdersLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'imaging-orders',
     title: 'Imaging Orders',
+    icon: 'omrs-icon-user-xray',
   }),
   options,
 );
