@@ -20,6 +20,11 @@
       "slot": "imaging-dashboard-slot"
     },
     {
+     "component": "radiologyDashboard",
+      "name": "radiology-dashboard-slot-name",
+      "slot": "express-radiology-dashboard-slot"
+    },
+    {
       "name": "imaging-order-panel",
       "component": "imagingOrderPanel",
       "slot": "order-basket-slot",

@@ -12,6 +12,8 @@ import rejectProcedureOrderDialog from './procedures-ordered/reject-order-dialog
 import procedureRejectReasonModal from './procedures-ordered/reject-reason/procedure-reject-reason.component';
 import PostProcedureForm from './form/post-procedures/post-procedure-form.component';
 import PrintPreviewModal from './print/print-procedure-results.component';
+import Procedure from './procedure.component';
+import Root from './root.component';
 
 const moduleName = '@kenyaemr/esm-procedure-orders-app';
 
@@ -27,6 +29,7 @@ export function startupApp() {
 }
 
 export const root = getAsyncLifecycle(() => import('./root.component'), options);
+export const expressProceduresDashboard = getSyncLifecycle(Procedure, options);
 
 // t('Procedures', 'Procedures')
 export const procedureDashboardLink = getSyncLifecycle(

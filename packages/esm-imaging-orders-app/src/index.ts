@@ -13,6 +13,7 @@ import AmendModal from './imaging-tabs/test-ordered/amend-order-dialog/amend-ima
 import ImagingReviewForm from './form/review-form/review-imaging-form.workspace';
 import PrintPreviewModal from './print/print-report-modal.component';
 import SearchPatientWorkspace from './form/imaging-orders/search-patient.workspace';
+import ImagingOrders from './imaging-orders.component';
 
 const options = {
   featureName: 'esm-imaging-orders-app',
@@ -26,6 +27,7 @@ export function startupApp() {
 }
 
 export const root = getSyncLifecycle(Root, options);
+export const radiologyDashboard = getSyncLifecycle(ImagingOrders, options);
 
 // t('Imaging Orders', 'Imaging Orders')
 export const imagingOrdersLink = getSyncLifecycle(

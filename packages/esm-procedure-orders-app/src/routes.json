@@ -20,6 +20,11 @@
       "slot": "procedure-dashboard-slot"
     },
     {
+      "component": "expressProceduresDashboard",
+      "name": "express-procedures-dashboard",
+      "slot": "express-procedures-dashboard-slot"
+    },
+    {
         "name": "procedures-ordered-tile-component",
         "slot": "procedure-tiles-slot",
         "component": "OrderedTileComponent",
