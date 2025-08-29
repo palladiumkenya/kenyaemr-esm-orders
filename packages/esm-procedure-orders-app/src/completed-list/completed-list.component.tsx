@@ -13,7 +13,7 @@ interface CompletedListProps {
 export const CompletedList: React.FC<CompletedListProps> = ({ fulfillerStatus }) => {
   const { t } = useTranslation();
 
-  const { workListEntries, isLoading } = useOrdersWorklist('', fulfillerStatus);
+  const { workListEntries, isLoading } = useOrdersWorklist('COMPLETED', fulfillerStatus);
 
   if (isLoading) {
     return <DataTableSkeleton role="progressbar" />;

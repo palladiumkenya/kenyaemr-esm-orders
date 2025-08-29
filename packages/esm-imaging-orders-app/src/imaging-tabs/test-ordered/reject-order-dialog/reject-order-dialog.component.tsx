@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Button, Form, ModalBody, ModalFooter, ModalHeader, TextArea } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import styles from './reject-order-dialog.scss';
-import { Result } from '../../work-list/work-list.resource';
+import { type Result } from '../../work-list/work-list.resource';
 import { showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { mutate } from 'swr';
 import { updateOrder } from '../pick-imaging-order/add-to-worklist-dialog.resource';
@@ -74,7 +74,7 @@ const RejectOrderModal: React.FC<RejectOrderModalProps> = ({ order, closeModal }
               id="nextNotes"
               name="nextNotes"
               invalidText="Required"
-              helperText="Please enter comment"
+              helperText={t('pleaseEnterComment', 'Please enter comment')}
               maxCount={500}
               enableCounter
               onChange={(e) => setNotes(e.target.value)}

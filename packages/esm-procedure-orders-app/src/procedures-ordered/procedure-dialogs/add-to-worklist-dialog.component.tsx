@@ -20,7 +20,7 @@ import {
   useReferralLocations,
   useSpecimenTypes,
 } from './add-to-worklist-dialog.resource';
-import { Order } from '../../types';
+import { type Order } from '../../types';
 
 interface AddToWorklistDialogProps {
   queueId;

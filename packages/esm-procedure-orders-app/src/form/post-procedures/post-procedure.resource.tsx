@@ -1,6 +1,7 @@
 import useSWR from 'swr';
-import { OpenmrsResource, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
-import { CodedProvider, CodedCondition, ProcedurePayload } from '../../types';
+import { type OpenmrsResource, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { type CodedProvider, type CodedCondition, ProcedurePayload } from '../../types';
+import { updateOrder } from '../../procedures-ordered/pick-procedure-order/add-to-worklist-dialog.resource';
 
 type Provider = {
   uuid: string;
@@ -21,16 +22,23 @@ export const useProviders = () => {
   };
 };
 
-export const savePostProcedure = async (postProcedure: ProcedurePayload) => {
-  const response = await openmrsFetch(`${restBaseUrl}/procedure`, {
+export async function savePostProcedure(reportPayload) {
+  const abortController = new AbortController();
+  const updateResults = await openmrsFetch(`/ws/rest/v1/procedure`, {
     method: 'POST',
-    body: JSON.stringify(postProcedure),
     headers: {
       'Content-Type': 'application/json',
     },
+    signal: abortController.signal,
+    body: reportPayload,
   });
-  return response;
-};
+
+  if (updateResults.status === 201 || updateResults.status === 200) {
+    return await updateOrder(reportPayload.procedureOrder, {
+      fulfillerStatus: 'COMPLETED',
+    });
+  }
+}
 
 export function useConditionsSearch(conditionToLookup: string) {
   const config = useConfig();

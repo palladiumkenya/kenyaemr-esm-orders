@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PageHeader, LaboratoryPictogram } from '@openmrs/esm-framework';
+import { Add } from '@carbon/react/icons';
+import {
+  PageHeader,
+  LaboratoryPictogram,
+  PageHeaderContent,
+  launchWorkspaceGroup,
+  launchWorkspace,
+} from '@openmrs/esm-framework';
+import { Button } from '@carbon/react';
 import styles from './imagining-header.scss';
 
 export const ImagingPageHeader: React.FC = () => {
   const { t } = useTranslation();
-  // TODO Add correct illustration by registering the correct pictogram
-  // https://github.com/openmrs/openmrs-esm-core/blob/8d4612d384f000990303365e0d8575ebf382bb4f/packages/framework/esm-styleguide/src/pictograms/pictogram-registration.ts#L9
+
+  const launchAddImagingOrderWorkspace = useCallback(() => {
+    launchWorkspace('search-patient-workspace');
+  }, []);
+
   return (
-    <PageHeader
-      illustration={<LaboratoryPictogram />}
-      title={t('imagingOrders', 'Imaging Orders')}
-      className={styles.pageHeader}
-    />
+    <PageHeader>
+      <PageHeaderContent illustration={<LaboratoryPictogram />} title={t('imagingOrders', 'Imaging Orders')} />
+      <div className={styles.pageHeaderActions}>
+        <Button renderIcon={Add} onClick={launchAddImagingOrderWorkspace}>
+          {t('addImagingOrder', 'Add Imaging Order')}
+        </Button>
+      </div>
+    </PageHeader>
   );
 };

@@ -1,14 +1,8 @@
-import { useEffect, useMemo } from 'react';
-import useSWRImmutable from 'swr/immutable';
-import fuzzy from 'fuzzy';
-import { type FetchResponse, openmrsFetch, useConfig, restBaseUrl, reportError } from '@openmrs/esm-framework';
+import { openmrsFetch, useConfig, restBaseUrl } from '@openmrs/esm-framework';
 
 import { type MedicalSupplyConfig } from '../config-schema';
 import { type Concept } from '../types';
 import useSWR from 'swr';
-
-type ConceptResult = FetchResponse<Concept>;
-type ConceptResults = FetchResponse<{ setMembers: Array<Concept> }>;
 
 export interface MedicalSupplyType {
   label: string;

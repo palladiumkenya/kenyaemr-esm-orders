@@ -1,42 +1,30 @@
-@use '@carbon/styles/scss/spacing';
-@use '@carbon/styles/scss/type';
-@use '@carbon/colors';
 @use '@carbon/layout';
+@use '@carbon/colors';
 
 .dataTable {
   display: flex;
   flex-direction: column;
   border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
 
   & > section {
     position: relative;
     margin-bottom: layout.$spacing-01;
   }
 }
-.toolbarItem {
-  margin-left: 1rem;
+
+.widgetCard {
+  background-color: colors.$white;
+  border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+  margin-top: layout.$spacing-05;
+}
+
+.elementContainer {
   display: flex;
   align-items: center;
-
-  & p {
-    padding-right: 0.5rem;
-    @include type.type-style('body-01');
-    color: colors.$gray-70;
-  }
-
-  :global(.cds--date-picker__input) {
-    height: layout.$spacing-09;
-  }
-
-  :global(.cds--dropdown) {
-    height: layout.$spacing-09;
-  }
-
-  :global(.cds--list-box__menu:focus) {
-    outline: none;
-  }
-}
-.tableToolBar {
-  height: auto;
-  padding-top: layout.$spacing-04;
+  gap: 1rem;
+  margin-right: layout.$spacing-03;
 }

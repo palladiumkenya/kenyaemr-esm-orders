@@ -1,8 +1,8 @@
 import useSWR, { mutate } from 'swr';
-import { ConfigObject, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { type ConfigObject, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import { useCallback } from 'react';
 import { ProcedureConceptClass_UUID } from '../constants';
-import { Result } from '../types';
+import { type Result } from '../types';
 
 export function useMetrics() {
   const metrics = {

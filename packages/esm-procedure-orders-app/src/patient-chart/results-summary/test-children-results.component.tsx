@@ -1,5 +1,5 @@
-import React, { AnchorHTMLAttributes, useMemo } from 'react';
-import { GroupMember, Value } from '../patient-procedure-order-results.resource';
+import React, { type AnchorHTMLAttributes, useMemo } from 'react';
+import { type GroupMember, type Value } from '../patient-procedure-order-results.resource';
 import { useTranslation } from 'react-i18next';
 import {
   DataTable,

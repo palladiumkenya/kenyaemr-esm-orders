@@ -3,8 +3,8 @@ import classNames from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { Button, Tile } from '@carbon/react';
 import { Add, ChevronDown, ChevronUp } from '@carbon/react/icons';
-import { useLayoutType, closeWorkspace } from '@openmrs/esm-framework';
-import { launchPatientWorkspace, type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useLayoutType, closeWorkspace, launchWorkspace } from '@openmrs/esm-framework';
+import { type OrderBasketItem, useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import { ProceduresOrderBasketItemTile } from './procedures-order-basket-item-tile.component';
 import { prepProceduresOrderPostData } from '../api';
 import LabIcon from './procedures-icon.component';
@@ -56,7 +56,7 @@ export default function ProceduresOrderBasketPanelExtension() {
     closeWorkspace('order-basket', {
       ignoreChanges: true,
       onWorkspaceClose: () => {
-        launchPatientWorkspace('add-procedures-order');
+        launchWorkspace('add-procedures-order');
       },
     });
   }, []);
@@ -64,7 +64,7 @@ export default function ProceduresOrderBasketPanelExtension() {
   const openEditProceduresForm = useCallback((order: OrderBasketItem) => {
     closeWorkspace('order-basket', {
       ignoreChanges: true,
-      onWorkspaceClose: () => launchPatientWorkspace('add-procedures-order', { order }),
+      onWorkspaceClose: () => launchWorkspace('add-procedures-order', { order }),
     });
   }, []);
 

@@ -7,8 +7,8 @@ import useSWRImmutable from 'swr/immutable';
 import { type ProcedureOrderBasketItem } from '../../types';
 
 export interface ProcedureOrderPost extends OrderPost {
-  scheduledDate?: Date | string;
-  commentToFulfilleON_SCHEDULED_DATEr?: string;
+  scheduledDate?: string;
+  commentToFulfiller?: string;
   specimenSource?: string;
   specimenType?: string;
   numberOfRepeats?: string;
@@ -101,9 +101,11 @@ export function prepProceduresOrderPostData(
       orderReason: order.orderReason,
       orderReasonNonCoded: order.orderReasonNonCoded,
       bodySite: order.bodySite,
+      category: order.category,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
-      payload['scheduledDate'] = order.scheduleDate;
+      payload['scheduledDate'] =
+        order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
   } else if (order.action === 'REVISE') {
@@ -125,9 +127,11 @@ export function prepProceduresOrderPostData(
       orderReason: order.orderReason,
       orderReasonNonCoded: order.orderReasonNonCoded,
       previousOrder: order.previousOrder,
+      category: order.category,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
-      payload['scheduledDate'] = order.scheduleDate;
+      payload['scheduledDate'] =
+        order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
   } else if (order.action === 'DISCONTINUE') {
@@ -150,7 +154,8 @@ export function prepProceduresOrderPostData(
       previousOrder: order.previousOrder,
     };
     if (order.urgency === 'ON_SCHEDULED_DATE') {
-      payload['scheduledDate'] = order.scheduleDate;
+      payload['scheduledDate'] =
+        order.scheduleDate instanceof Date ? order.scheduleDate.toISOString() : order.scheduleDate;
     }
     return payload;
   } else {

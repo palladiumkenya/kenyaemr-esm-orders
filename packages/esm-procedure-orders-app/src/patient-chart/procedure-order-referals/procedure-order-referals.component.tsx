@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styles from './procedure-order-referals.scss';
-import { formatDate, parseDate, ErrorState, showModal, useConfig } from '@openmrs/esm-framework';
+import { formatDate, parseDate, ErrorState, showModal, useConfig, launchWorkspace } from '@openmrs/esm-framework';
 
 import {
   DataTable,
@@ -33,9 +33,9 @@ import TestsResults from '../results-summary/test-results-table.component';
 import { useReactToPrint } from 'react-to-print';
 import PrintResultsSummary from '../results-summary/print-results-summary.component';
 import { useGetPatientByUuid } from '../../utils/functions';
-import { ResourceRepresentation, Result, getOrderColor } from '../patient-procedure-order-results.resource';
+import { ResourceRepresentation, type Result, getOrderColor } from '../patient-procedure-order-results.resource';
 import { useLaboratoryOrderResultsPages } from '../patient-procedure-order-results-table.resource';
-import { CardHeader, launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
+import { CardHeader } from '@openmrs/esm-patient-common-lib';
 import { mutate } from 'swr';
 
 interface LaboratoryOrderReferalResultsProps {
@@ -129,7 +129,7 @@ const LaboratoryOrderReferalResults: React.FC<LaboratoryOrderReferalResultsProps
 
   const EditReferralAction: React.FC<EditReferralActionProps> = ({ formUuid, encounterUuid }) => {
     const launchForm = () => {
-      launchPatientWorkspace('patient-laboratory-referral-workspace', {
+      launchWorkspace('patient-laboratory-referral-workspace', {
         workspaceTitle: 'Edit Referral Form',
         mutateForm: () => {
           mutate((key) => true, undefined, {

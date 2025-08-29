@@ -1,6 +1,6 @@
 {
   "name": "@kenyaemr/esm-medical-supply-dispensing-app",
-  "version": "4.0.4",
+  "version": "4.0.5",
   "description": "Medical Supply Dispensing app for KenyaEMR",
   "browser": "dist/kenyaemr-esm-medical-supply-dispensing-app.js",
   "main": "src/index.ts",
@@ -13,7 +13,7 @@
     "debug": "npm run serve",
     "build": "webpack --mode production",
     "analyze": "webpack --mode=production --env.analyze=true",
-    "lint": "eslint src --ext ts,tsx",
+    "lint": "eslint src --ext ts,tsx --ignore-pattern '**/*.test.ts' --ignore-pattern '**/*.test.tsx' --ignore-pattern '**/__tests__/**'",
     "typescript": "tsc",
     "extract-translations": "i18next 'src/**/*.component.tsx' 'src/index.ts' --config ../../tools/i18next-parser.config.js",
     "test": "cross-env TZ=UTC jest --config jest.config.js --verbose false --passWithNoTests",
@@ -37,18 +37,18 @@
     "url": "https://github.com/palladiumkenya/kenyaemr-esm-orders/issues"
   },
   "dependencies": {
-    "@carbon/react": "^1.42.1",
     "lodash-es": "^4.17.15",
     "react-to-print": "^2.14.13"
   },
   "peerDependencies": {
-    "@openmrs/esm-framework": "5.x",
+    "@carbon/react": "^1.x",
+    "@openmrs/esm-framework": "6.x",
     "react": "^18.1.0",
     "react-i18next": "11.x",
     "react-router-dom": "6.x",
     "swr": "2.x"
   },
   "devDependencies": {
-    "webpack": "^5.74.0"
+    "webpack": "5.98.0"
   }
 }

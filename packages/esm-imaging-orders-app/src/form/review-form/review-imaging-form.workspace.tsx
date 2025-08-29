@@ -26,7 +26,7 @@ import classNames from 'classnames';
 import { CardHeader, useAllowedFileExtensions } from '@openmrs/esm-patient-common-lib';
 import { updateImagingProcedure } from '../../imaging-tabs/test-ordered/pick-imaging-order/add-to-worklist-dialog.resource';
 import { DocumentAttachment } from '@carbon/react/icons';
-import { Result } from '../../imaging-tabs/work-list/work-list.resource';
+import { type Result } from '../../imaging-tabs/work-list/work-list.resource';
 
 interface ReviewOrderDialogProps {
   order: Result;

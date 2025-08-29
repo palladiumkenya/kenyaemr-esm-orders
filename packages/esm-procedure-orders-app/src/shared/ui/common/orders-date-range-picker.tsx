@@ -3,7 +3,7 @@ import { useAppContext } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { DateFilterContext } from '../../../types';
+import { type DateFilterContext } from '../../../types';
 import styles from './orders-date-range-picker.scss';
 
 export const OrdersDateRangePicker = () => {
@@ -20,17 +20,19 @@ export const OrdersDateRangePicker = () => {
   };
 
   return (
-    <div className={styles.datePickerWrapper}>
-      <p>{t('dateRange', 'Date range')}:</p>
-      <DatePicker
-        datePickerType="range"
-        className={styles.dateRangePicker}
-        onClose={handleOrdersDateRangeChange}
-        maxDate={currentDate.toISOString()}
-        value={dateRange}>
-        <DatePickerInput id="date-picker-input-id-start" placeholder="dd/mm/yyyy" size="md" />
-        <DatePickerInput id="date-picker-input-id-finish" placeholder="dd/mm/yyyy" size="md" />
-      </DatePicker>
-    </div>
+    <>
+      <p>{t('filter', 'Filter')}:</p>
+      <div className={styles.datePickerWrapper}>
+        <DatePicker
+          datePickerType="range"
+          className={styles.dateRangePicker}
+          onClose={handleOrdersDateRangeChange}
+          maxDate={currentDate.toISOString()}
+          value={dateRange}>
+          <DatePickerInput id="date-picker-input-id-start" placeholder="dd/mm/yyyy" size="md" />
+          <DatePickerInput id="date-picker-input-id-finish" placeholder="dd/mm/yyyy" size="md" />
+        </DatePicker>
+      </div>
+    </>
   );
 };

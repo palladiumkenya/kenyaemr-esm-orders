@@ -17,19 +17,19 @@ export const ImagingTabs: React.FC = () => {
   const { pendingReviewCount, approvedOrdersCount } = useCompletedOrders();
 
   const tabsData = [
-    { label: 'pendingOrders', text: 'Active Orders', count: activeOrdersCount, component: <TestsOrdered /> },
+    { label: 'pendingOrders', text: t('activeOrders', 'Active Orders'), count: activeOrdersCount, component: <TestsOrdered /> },
     {
       label: 'workList',
-      text: 'WorkList',
+      text: t('workList', 'WorkList'),
       count: workListCount,
       component: <WorkList fulfillerStatus="IN_PROGRESS" />,
     },
-    { label: 'referredProcedures', text: 'Referred Out', count: referredTestsCount, component: <ReferredTests /> },
-    { label: 'review', text: 'Pending Review', count: pendingReviewCount, component: <Review /> },
-    { label: 'approved', text: 'Approved', count: approvedOrdersCount, component: <ApprovedOrders /> },
+    { label: 'referredProcedures', text: t('referredOut', 'Referred Out'), count: referredTestsCount, component: <ReferredTests /> },
+    { label: 'review', text: t('pendingReview', 'Pending Review'), count: pendingReviewCount, component: <Review /> },
+    { label: 'approved', text: t('approved', 'Approved'), count: approvedOrdersCount, component: <ApprovedOrders /> },
     {
       label: 'notDone',
-      text: 'Not Done',
+      text: t('notDone', 'Not Done'),
       count: ordersNotDoneCount,
       component: <OrdersNotDone fulfillerStatus="DECLINED" />,
     },

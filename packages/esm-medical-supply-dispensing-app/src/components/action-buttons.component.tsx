@@ -6,7 +6,7 @@ import {
   MedicationDispenseStatus,
   type MedicationRequestBundle,
   MedicationRequestStatus,
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
 } from '../types';
 import { launchOverlay } from '../hooks/useOverlay';
 import {

@@ -35,7 +35,7 @@ import TestsResults from '../results-summary/test-results-table.component';
 import { useReactToPrint } from 'react-to-print';
 import PrintResultsSummary from '../results-summary/print-results-summary.component';
 import { useGetPatientByUuid } from '../../utils/functions';
-import { ResourceRepresentation, Result, getOrderColor } from '../patient-procedure-order-results.resource';
+import { ResourceRepresentation, type Result, getOrderColor } from '../patient-procedure-order-results.resource';
 import { useLaboratoryOrderResultsPages } from '../patient-procedure-order-results-table.resource';
 import { CardHeader } from '@openmrs/esm-patient-common-lib';
 

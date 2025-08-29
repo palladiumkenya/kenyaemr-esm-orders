@@ -1,4 +1,4 @@
-import { Result } from '../../../imaging-tabs/work-list/work-list.resource';
+import { type Result } from '../../../imaging-tabs/work-list/work-list.resource';
 
 export type FulfillerStatus = '' | 'IN_PROGRESS' | 'DECLINED' | 'COMPLETED' | 'EXCEPTION';
 

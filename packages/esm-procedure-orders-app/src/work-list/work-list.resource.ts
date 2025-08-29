@@ -1,7 +1,7 @@
 import { openmrsFetch, useConfig } from '@openmrs/esm-framework';
 import useSWR from 'swr';
-import { ConfigObject } from '../config-schema';
-import { Result } from '../types';
+import { type ConfigObject } from '../config-schema';
+import { type Result } from '../types';
 
 export function useGetOrdersWorklist(activatedOnOrAfterDate: string, fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;

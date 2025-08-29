@@ -1,4 +1,4 @@
-import { Concept, Link, type OpenmrsResource } from '@openmrs/esm-framework';
+import { type Concept, type Link, type OpenmrsResource } from '@openmrs/esm-framework';
 
 export interface AllergyIntolerance {
   resourceType: string;

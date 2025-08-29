@@ -1,8 +1,8 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/colors';
 @use '@carbon/styles/scss/type';
-@import '~@openmrs/esm-styleguide/src/vars';
-@import '../../root.scss';
+@use '@openmrs/esm-styleguide/src/vars' as *;
+@use '../../root.scss' as *;
 
 .widgetCard {
   border: 1px solid colors.$gray-20;

@@ -10,6 +10,8 @@ import procedureInstructionsModal from './procedures-ordered/procedure-instructi
 import ProceduresOrderBasketPanelExtension from './form/procedures-orders/procedures-order-basket-panel/procedures-order-basket-panel.extension';
 import rejectProcedureOrderDialog from './procedures-ordered/reject-order-dialog/reject-procedure-order-dialog.component';
 import procedureRejectReasonModal from './procedures-ordered/reject-reason/procedure-reject-reason.component';
+import PostProcedureForm from './form/post-procedures/post-procedure-form.component';
+import PrintPreviewModal from './print/print-procedure-results.component';
 
 const moduleName = '@kenyaemr/esm-procedure-orders-app';
 
@@ -26,10 +28,12 @@ export function startupApp() {
 
 export const root = getAsyncLifecycle(() => import('./root.component'), options);
 
+// t('Procedures', 'Procedures')
 export const procedureDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'procedure',
     title: 'Procedures',
+    icon: 'omrs-icon-syringe',
   }),
   options,
 );
@@ -47,6 +51,8 @@ export const procedureRejectModalComponent = getSyncLifecycle(procedureRejectRea
 export const addProcedureToWorklistDialogComponent = getSyncLifecycle(addProcedureToWorklistDialog, options);
 
 export const proceduresOrderPanel = getSyncLifecycle(ProceduresOrderBasketPanelExtension, options);
+export const postProcedureResults = getSyncLifecycle(PostProcedureForm, options);
+export const printProcedureReportModal = getSyncLifecycle(PrintPreviewModal, options);
 
 // t('addProcedureOrderWorkspaceTitle', 'Add procedure order')
 export const addProceduresOrderWorkspace = getAsyncLifecycle(

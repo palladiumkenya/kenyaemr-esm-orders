@@ -1,5 +1,5 @@
 import React from 'react';
-import { Order } from '@openmrs/esm-patient-common-lib';
+import { type Order } from '@openmrs/esm-patient-common-lib';
 import { ExtensionSlot, restBaseUrl } from '@openmrs/esm-framework';
 import { useTranslation } from 'react-i18next';
 

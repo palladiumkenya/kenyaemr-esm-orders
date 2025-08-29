@@ -1,7 +1,7 @@
 @use '@carbon/styles/scss/type';
 @use '@carbon/layout';
 @use '@carbon/colors';
-@import '@openmrs/esm-styleguide/src/vars';
+@use '@openmrs/esm-styleguide/src/vars' as *;
 
 .formLabel {
   color: colors.$cool-gray-90;
@@ -82,6 +82,8 @@
 
 .formContainer {
   margin: 1rem;
+  position: relative;
+  z-index: 100;
 }
 
 .button {
@@ -180,4 +182,8 @@
   li:hover {
     background-color: $ui-03;
   }
+}
+
+.formDatePicker input {
+  min-width: 23rem;
 }

@@ -1,5 +1,5 @@
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import { ObsMetaInfo } from '@openmrs/esm-patient-common-lib';
+import { type ObsMetaInfo } from '@openmrs/esm-patient-common-lib';
 
 import useSWR from 'swr';
 

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import classNames from 'classnames';
-import { launchPatientWorkspace, useOrderBasket } from '@openmrs/esm-patient-common-lib';
+import { useOrderBasket } from '@openmrs/esm-patient-common-lib';
 import {
   translateFrom,
   useLayoutType,
@@ -8,6 +8,7 @@ import {
   useConfig,
   ExtensionSlot,
   type DefaultWorkspaceProps,
+  launchWorkspace,
 } from '@openmrs/esm-framework';
 import { careSettingUuid, prepProceduresOrderPostData, useOrderReasons, useConceptById, type Concept } from '../api';
 import {
@@ -25,7 +26,7 @@ import {
   NumberInput,
 } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { priorityOptions } from './procedures-order';
+import { categoryItems, priorityOptions } from './procedures-order';
 import { useProceduresTypes } from './useProceduresTypes';
 import { Controller, type FieldErrors, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -88,6 +89,7 @@ export function ProceduresOrderForm({
         invalid_type_error: translateFrom(moduleName, 'addLabOrderLabReferenceRequired', 'Test type is required'),
       },
     ),
+    category: z.string().optional(),
     orderReason: orderReasonRequired
       ? z
           .string({
@@ -143,16 +145,16 @@ export function ProceduresOrderForm({
       newOrders[orderIndex] = data;
       setOrders(newOrders);
       closeWorkspaceWithSavedChanges({
-        onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+        onWorkspaceClose: () => launchWorkspace('order-basket'),
       });
     },
-    [orders, setOrders, closeWorkspace, session?.currentProvider?.uuid, defaultValues],
+    [orders, setOrders, closeWorkspace, session?.currentProvider?.uuid, defaultValues, closeWorkspaceWithSavedChanges],
   );
 
   const cancelOrder = useCallback(() => {
     setOrders(orders.filter((order) => order.testType.conceptUuid !== defaultValues.testType.conceptUuid));
     closeWorkspace({
-      onWorkspaceClose: () => launchPatientWorkspace('order-basket'),
+      onWorkspaceClose: () => launchWorkspace('order-basket'),
     });
   }, [closeWorkspace, orders, setOrders, defaultValues]);
 
@@ -164,7 +166,7 @@ export function ProceduresOrderForm({
 
   useEffect(() => {
     promptBeforeClosing(() => isDirty);
-  }, [isDirty]);
+  }, [isDirty, promptBeforeClosing]);
 
   const [showScheduleDate, setShowScheduleDate] = useState(false);
 
@@ -182,7 +184,6 @@ export function ProceduresOrderForm({
       <Form className={styles.orderForm} onSubmit={handleSubmit(handleFormSubmission, onError)} id="procedureOrderForm">
         <div className={styles.form}>
           <ExtensionSlot name="top-of-procedure-order-form-slot" state={{ order: initialOrder }} />
-
           <Grid className={styles.gridRow}>
             <Column lg={16} md={8} sm={4}>
               <InputWrapper>
@@ -204,6 +205,28 @@ export function ProceduresOrderForm({
                       onChange={({ selectedItem }) => onChange(selectedItem)}
                       invalid={errors.testType?.message}
                       invalidText={errors.testType?.message}
+                    />
+                  )}
+                />
+              </InputWrapper>
+            </Column>
+            <Column lg={16} md={8} sm={4}>
+              <InputWrapper>
+                <Controller
+                  name="category"
+                  control={control}
+                  render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+                    <ComboBox
+                      size="lg"
+                      id="categoryInput"
+                      titleText={t('operationCategory', 'Operation category')}
+                      selectedItem={categoryItems.find((option) => option.value === value) || null}
+                      items={categoryItems}
+                      placeholder={t('categoryPlaceholder', 'Select category')}
+                      onBlur={onBlur}
+                      onChange={({ selectedItem }) => onChange(selectedItem?.value || '')}
+                      invalid={error?.message}
+                      invalidText={error?.message}
                     />
                   )}
                 />

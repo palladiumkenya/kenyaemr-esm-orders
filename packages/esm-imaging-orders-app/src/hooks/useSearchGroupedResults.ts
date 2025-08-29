@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { GroupedOrders } from '../shared/ui/common/grouped-imaging-types';
+import { type GroupedOrders } from '../shared/ui/common/grouped-imaging-types';
 
 /**
  * A custom hook that filters grouped orders based on a search string.

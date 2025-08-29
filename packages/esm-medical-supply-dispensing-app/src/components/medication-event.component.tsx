@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   NonDrugDispensingUnit,
-  NonDrugMedicationDispense,
+  type NonDrugMedicationDispense,
   type DosageInstruction,
   type MedicationDispense,
   type MedicationRequest,

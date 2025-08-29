@@ -8,7 +8,6 @@
     {
       "component": "procedureDashboardLink",
       "name": "procedure-dashboard-link",
-      "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "procedure",
         "title": "procedure",
@@ -130,6 +129,18 @@
       "type": "order",
       "title": "Add procedure order",
       "component": "addProceduresOrderWorkspace"
+    },
+     {
+      "name": "procedure-report-form",
+      "component": "postProcedureResults",
+      "title": "Procedure Report Form",
+      "type": "form"
+    }
+  ],
+   "modals": [
+    {
+      "name": "print-procedure-report-modal",
+      "component": "printProcedureReportModal"
     }
   ],
   "pages": [
