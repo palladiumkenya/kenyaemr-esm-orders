@@ -2,7 +2,7 @@
 
 # KenyaEMR ESM Imaging Orders App
 
-This is a frontend module that provides imaging orders functionality. Currently, we support:
+This is a frontend module that provides radiology and imaging orders functionality. Currently, we support:
 
 - Radiology orders
 - Radiology report

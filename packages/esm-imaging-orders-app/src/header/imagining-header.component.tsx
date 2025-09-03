@@ -5,7 +5,6 @@ import {
   PageHeader,
   LaboratoryPictogram,
   PageHeaderContent,
-  launchWorkspaceGroup,
   launchWorkspace,
 } from '@openmrs/esm-framework';
 import { Button } from '@carbon/react';
@@ -20,7 +19,7 @@ export const ImagingPageHeader: React.FC = () => {
 
   return (
     <PageHeader>
-      <PageHeaderContent illustration={<LaboratoryPictogram />} title={t('imagingOrders', 'Imaging Orders')} />
+      <PageHeaderContent illustration={<LaboratoryPictogram />} title={t('radiologyAndImaging', 'Radiology and Imaging')} />
       <div className={styles.pageHeaderActions}>
         <Button renderIcon={Add} onClick={launchAddImagingOrderWorkspace}>
           {t('addImagingOrder', 'Add Imaging Order')}
