@@ -7,7 +7,8 @@
   "extensions": [
     {
       "component": "imagingOrdersLink",
-      "name": "imaging-orders-link",
+      "name": "radiology-dashboard-link",
+      "slot":"homepage-dashboard-slot",
       "meta": {
         "name": "imaging-orders",
         "title": "imaging-orders",

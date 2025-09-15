@@ -95,8 +95,8 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
           <div className={styles.elementContainer}>
             <OrdersDateRangePicker />
             <Search
-              expanded
-              persistent={true}
+              isExpanded
+              labelText=""
               onChange={(event) => setSearchString(event.target.value)}
               placeholder={t('searchByPatientName', 'Search by patient name')}
               size="md"
@@ -105,7 +105,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
         </CardHeader>
       </div>
 
-      <DataTable size="md" useZebraStyle rows={rowData} headers={tableColumns}>
+      <DataTable size="md" useZebraStyles rows={rowData} headers={tableColumns}>
         {({
           rows,
           headers,

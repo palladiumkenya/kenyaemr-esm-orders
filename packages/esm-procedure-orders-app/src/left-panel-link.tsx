@@ -8,7 +8,7 @@ import styles from './left-panel-link.scss';
 export interface LinkConfig {
   name: string;
   title: string;
-  icon: string;
+  icon?: string;
 }
 
 export function LinkExtension({ config }: { config: LinkConfig }) {

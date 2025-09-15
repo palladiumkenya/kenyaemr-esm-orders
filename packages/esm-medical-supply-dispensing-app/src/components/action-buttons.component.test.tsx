@@ -37,14 +37,12 @@ describe('Action Buttons Component tests', () => {
       dispensingUnit: { uuid: 'd4f69a68-1171-4e47-8693-478df18daf40', display: 'Test' },
       quantity: 2,
       display: 'test ',
-      instrucions: 'test',
       status: '',
       medicalSupplyOrder: 'd4f69a68-1171-4e47-8693-478df18daf40',
       concept: '',
       dateDispensed: new Date(),
       statusReason: '',
       location: '',
-      encounters: '',
       dispenser: '',
     };
 
@@ -68,14 +66,12 @@ describe('Action Buttons Component tests', () => {
       dispensingUnit: { uuid: 'd4f69a68-1171-4e47-8693-478df18daf40', display: 'Test' },
       quantity: 2,
       display: 'test ',
-      instrucions: 'test',
       status: '',
       medicalSupplyOrder: 'd4f69a68-1171-4e47-8693-478df18daf40',
       concept: '',
       dateDispensed: new Date(),
       statusReason: '',
       location: '',
-      encounters: '',
       dispenser: '',
     };
 

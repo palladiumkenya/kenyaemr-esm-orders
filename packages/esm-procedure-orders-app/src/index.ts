@@ -36,7 +36,6 @@ export const procedureDashboardLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'procedure',
     title: 'Procedures',
-    icon: 'omrs-icon-syringe',
   }),
   options,
 );

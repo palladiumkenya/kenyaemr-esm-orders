@@ -8,7 +8,7 @@ import styles from './left-panel-link.scss';
 export interface LinkConfig {
   name: string;
   title: string;
-  icon: string;
+  icon?: string;
 }
 
 const isUuid = (value: string) => {

@@ -117,7 +117,6 @@ const ResultFormField: React.FC<ResultFormFieldProps> = ({ concept, control, err
                     key={member.uuid}
                     className={styles.textInput}
                     {...field}
-                    type="text"
                     labelText={member?.display}
                     autoFocus={index === 0}>
                     <SelectItem text={t('option', 'Choose an Option')} value="" />
