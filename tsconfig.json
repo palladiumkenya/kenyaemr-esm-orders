@@ -18,10 +18,12 @@
     "moduleResolution": "node",
     "noEmit": true,
     "paths": {
-      "@openmrs/*": ["./node_modules/@openmrs/*"]
+      "@openmrs/*": ["./node_modules/@openmrs/*"],
+      "@types/*": ["./node_modules/@types/*"]
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
     "target": "esnext",
     "typeRoots": ["./node_modules/@types"]
   }

@@ -34,7 +34,6 @@ export const imagingOrdersLink = getSyncLifecycle(
   createLeftPanelLink({
     name: 'imaging-orders',
     title: 'Radiology and Imaging',
-    icon: 'omrs-icon-user-xray',
   }),
   options,
 );
