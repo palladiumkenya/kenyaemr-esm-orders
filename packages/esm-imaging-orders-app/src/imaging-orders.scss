@@ -1,0 +1,8 @@
+@use '@carbon/layout';
+
+.pageHeaderActions{
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-end;
+    margin-right: layout.$spacing-05;
+}

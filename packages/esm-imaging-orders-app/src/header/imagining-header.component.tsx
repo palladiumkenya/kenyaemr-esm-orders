@@ -6,6 +6,7 @@ import {
   LaboratoryPictogram,
   PageHeaderContent,
   launchWorkspace,
+  ExtensionSlot,
 } from '@openmrs/esm-framework';
 import { Button } from '@carbon/react';
 import styles from './imagining-header.scss';
@@ -13,18 +14,18 @@ import styles from './imagining-header.scss';
 export const ImagingPageHeader: React.FC = () => {
   const { t } = useTranslation();
 
-  const launchAddImagingOrderWorkspace = useCallback(() => {
-    launchWorkspace('search-patient-workspace');
-  }, []);
-
   return (
-    <PageHeader>
-      <PageHeaderContent illustration={<LaboratoryPictogram />} title={t('radiologyAndImaging', 'Radiology and Imaging')} />
-      <div className={styles.pageHeaderActions}>
-        <Button renderIcon={Add} onClick={launchAddImagingOrderWorkspace}>
-          {t('addImagingOrder', 'Add Imaging Order')}
-        </Button>
+    <>
+      <div className={`omrs-main-content`}>
+        <PageHeader className={styles.PageHeader} data-testid="patient-queue-header">
+          <PageHeaderContent
+            illustration={<LaboratoryPictogram />}
+            title={t('radiologyAndImaging', 'Radiology and Imaging')}
+          />{' '}
+          <ExtensionSlot className={styles.providerBannerInfoSlot} name="provider-banner-info-slot" />
+        </PageHeader>
       </div>
-    </PageHeader>
+     
+    </>
   );
 };
