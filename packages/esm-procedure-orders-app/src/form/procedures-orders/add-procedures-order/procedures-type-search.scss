@@ -1,5 +1,6 @@
 @use '@carbon/styles/scss/spacing';
 @use '@carbon/styles/scss/type';
+@use '@carbon/layout' as layout;
 @use '@openmrs/esm-styleguide/src/vars' as *;
 
 /** For TestTypeSearchResults */
@@ -85,7 +86,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: spacing.$spacing-07;
+ padding: layout.$spacing-07;
   border: 1px solid $ui-03;
   text-align: center;
   background-color: $ui-01;
