@@ -1,8 +1,9 @@
 @use '@carbon/styles/scss/spacing';
+@use '@carbon/layout' as layout;
 @use '@carbon/styles/scss/type';
 
 .container {
-  padding: spacing.$spacing-07;
+  padding: layout.$spacing-07;
 }
 
 .welcome {
