@@ -36,13 +36,14 @@ export interface Result {
   links: Link[];
   type: string;
   resourceVersion: string;
-  procedures: Procedure[];
+  procedures: Array<Procedure>;
 }
 
 export interface Procedure {
   uuid: string;
   outcome: string;
   procedureReport: string;
+  impressions: string;
 }
 export interface Patient {
   uuid: string;

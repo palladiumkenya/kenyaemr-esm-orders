@@ -123,6 +123,7 @@ const ImagingReportForm: React.FC<ResultFormProps> = ({
                 name="procedureReport"
                 render={({ field }) => (
                   <TextArea
+                    rows={10}
                     labelText={concept?.display}
                     id="procedureReport"
                     name="procedureReport"

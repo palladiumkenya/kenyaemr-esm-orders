@@ -28,7 +28,7 @@ export const TestsOrdered: React.FC = () => {
         showActions={true}
         showOrderType={false}
         actions={testOrderAction}
-        title={t('testOrdered', 'Test Ordered')}
+        title={t('imagingOrders', 'Imaging Orders')}
       />
     </div>
   );
