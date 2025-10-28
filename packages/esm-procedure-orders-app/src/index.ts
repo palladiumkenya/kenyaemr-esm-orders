@@ -61,3 +61,7 @@ export const addProceduresOrderWorkspace = getAsyncLifecycle(
   () => import('./form/procedures-orders/add-procedures-order/add-procedures-order.workspace'),
   options,
 );
+export const procedureResultsComponent = getAsyncLifecycle(
+  () => import('./procedure-results/procedure-results.component'),
+  options,
+);

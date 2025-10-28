@@ -1,11 +1,15 @@
+import React from 'react';
 import { useAppContext, OpenmrsDateRangePicker } from '@openmrs/esm-framework';
 import dayjs from 'dayjs';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
+
 import { type DateFilterContext } from '../../../types';
+
 import styles from './orders-date-range-picker.scss';
 
-export const OrdersDateRangePicker = () => {
+type OrdersDateRangePickerProps = {};
+
+export const OrdersDateRangePicker: React.FC<OrdersDateRangePickerProps> = () => {
   const currentDate = new Date();
   const { dateRange, setDateRange } = useAppContext<DateFilterContext>('imaging-date-filter') ?? {
     dateRange: [dayjs().startOf('day').toDate(), new Date()],
@@ -22,6 +26,7 @@ export const OrdersDateRangePicker = () => {
 
   return (
     <div className={styles.datePickerWrapper}>
+      <p>{t('filterByDateRange', 'Filter by date range')}</p>
       <OpenmrsDateRangePicker
         value={[dateRange[0], dateRange[1]]}
         onChange={handleOrdersDateRangeChange}

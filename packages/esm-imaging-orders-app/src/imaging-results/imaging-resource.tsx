@@ -20,8 +20,12 @@ export const usePatientImagingResults = (patientUuid: string) => {
   const fulfillerStatus: FulfillerStatus = 'COMPLETED';
   const {
     orders: { radiologyOrderTypeUuid },
+    radiologyConceptClassUuid,
   } = useConfig<ImagingConfig>();
   const baseUrl = `${restBaseUrl}/order?patient=${patientUuid}&orderTypes=${radiologyOrderTypeUuid}&v=${imagingResultsResponseFormat}&&fulfillerStatus=${fulfillerStatus}`;
   const { data, isLoading, error } = useSWR<{ data: { results: Array<Result> } }>(baseUrl, openmrsFetch);
-  return { orders: data?.data?.results ?? [], isLoading, error };
+  const filteredOrders = data?.data?.results?.filter(
+    (order) => order.concept.conceptClass.uuid === radiologyConceptClassUuid,
+  );
+  return { orders: filteredOrders ?? [], isLoading, error };
 };

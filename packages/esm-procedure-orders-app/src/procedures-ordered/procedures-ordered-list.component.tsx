@@ -23,7 +23,7 @@ const ProcedureOrderedList: React.FC<ProcedurePatientListProps> = () => {
         showStatus={true}
         showOrderType={true}
         showStartButton={false}
-        title={t('proceduresOrdered', 'Procedures Ordered')}
+        title={t('orderedProcedures', 'Ordered Procedures')}
         actions={[
           {
             actionName: 'add-procedure-to-worklist-dialog',
