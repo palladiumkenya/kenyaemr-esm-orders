@@ -1,30 +1,56 @@
 import React from 'react';
 import { TabPanels, TabList, Tabs, Tab, TabPanel } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { useImagingOrderStats } from '../shared/imaging.resource';
+import { useParams } from 'react-router-dom';
 import { useOrdersWorkList } from '../hooks/useOrdersWorklist';
+
 import { TestsOrdered } from './test-ordered/tests-ordered.component';
 import WorkList from './work-list/work-list.component';
 import { ReferredTests } from './referred-test/referred-ordered.component';
 import { Review } from './review-ordered/review-ordered.component';
 import { ApprovedOrders } from './approved/approved-orders.component';
 import { OrdersNotDone } from './orders-not-done/orders-not-done.component';
+import { useImagingOrderStats } from '../shared/imaging.resource';
+
 import styles from './imaging-tabs.scss';
+import ImagingOrderSearch from './search/imaging-order-search.component';
 
 export const ImagingTabs: React.FC = () => {
   const { t } = useTranslation();
+  const params = useParams<{ patientUuid: string }>();
+
   const { activeOrdersCount, workListCount, referredTestsCount, ordersNotDoneCount } = useOrderCounts();
   const { pendingReviewCount, approvedOrdersCount } = useCompletedOrders();
 
+  const searchTab = [
+    {
+      label: 'search',
+      text: t('search', 'Search'),
+      count: 0,
+      component: <ImagingOrderSearch />,
+    },
+  ];
+
   const tabsData = [
-    { label: 'pendingOrders', text: t('activeOrders', 'Active Orders'), count: activeOrdersCount, component: <TestsOrdered /> },
+    ...(params.patientUuid ? searchTab : []),
+    {
+      label: 'pendingOrders',
+      text: t('activeOrders', 'Active Orders'),
+      count: activeOrdersCount,
+      component: <TestsOrdered />,
+    },
     {
       label: 'workList',
       text: t('workList', 'WorkList'),
       count: workListCount,
       component: <WorkList fulfillerStatus="IN_PROGRESS" />,
     },
-    { label: 'referredProcedures', text: t('referredOut', 'Referred Out'), count: referredTestsCount, component: <ReferredTests /> },
+    {
+      label: 'referredProcedures',
+      text: t('referredOut', 'Referred Out'),
+      count: referredTestsCount,
+      component: <ReferredTests />,
+    },
     { label: 'review', text: t('pendingReview', 'Pending Review'), count: pendingReviewCount, component: <Review /> },
     { label: 'approved', text: t('approved', 'Approved'), count: approvedOrdersCount, component: <ApprovedOrders /> },
     {
@@ -41,7 +67,7 @@ export const ImagingTabs: React.FC = () => {
         <TabList aria-label="List of tabs" contained style={{ marginLeft: '1rem' }}>
           {tabsData.map(({ label, text, count }) => (
             <Tab key={label}>
-              {t(label, text)} ({count})
+              {t(label, text)} {count > 0 ? `(${count})` : ''}
             </Tab>
           ))}
         </TabList>

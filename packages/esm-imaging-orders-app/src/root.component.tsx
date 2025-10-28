@@ -10,6 +10,7 @@ const Root: React.FC = () => {
     <BrowserRouter basename={baseName}>
       <Routes>
         <Route path="/" element={<ImagingOrders />} />
+        <Route path="/:patientUuid" element={<ImagingOrders />} />
       </Routes>
       <WorkspaceContainer contextKey="imaging-orders" />
     </BrowserRouter>

@@ -14,9 +14,10 @@ type ActionButtonProps = {
   };
   order: Result;
   patientUuid: string;
+  size?: 'sm' | 'md' | 'lg';
 };
 
-const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid }) => {
+const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid, size = 'md' }) => {
   const { t } = useTranslation();
 
   const handleOpenImagingReportForm = () => {
@@ -39,14 +40,14 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
 
       case 'imaging-report-form':
         return (
-          <Button kind="primary" size="md" onClick={handleOpenImagingReportForm} className={styles.actionButtons}>
+          <Button kind="primary" size={size} onClick={handleOpenImagingReportForm} className={styles.actionButtons}>
             {t('imagingReportForm', 'Imaging Report Form')}
           </Button>
         );
 
       case 'imaging-review-form':
         return (
-          <Button kind="primary" size="md" className={styles.actionButtons} onClick={handleOpeningReviewWorkspace}>
+          <Button kind="primary" size={size} className={styles.actionButtons} onClick={handleOpeningReviewWorkspace}>
             {t('reviewImagingReport', 'Review Imaging Report')}
           </Button>
         );
@@ -55,7 +56,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
         return (
           <Button
             kind="secondary"
-            size="md"
+            size={size}
             className={styles.actionButtons}
             onClick={() => {
               const dispose = showModal('amend-imaging-order-modal', {
@@ -71,7 +72,7 @@ const ActionButton: React.FC<ActionButtonProps> = ({ action, order, patientUuid 
         return (
           <Button
             kind="danger"
-            size="md"
+            size={size}
             className={styles.actionButtons}
             onClick={() => {
               const dispose = showModal('reject-imaging-order-modal', {
