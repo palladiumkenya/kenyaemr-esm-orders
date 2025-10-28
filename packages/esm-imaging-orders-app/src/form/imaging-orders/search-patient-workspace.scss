@@ -1,0 +1,9 @@
+@use '@carbon/layout';
+
+.container {
+  padding: layout.$spacing-03;
+
+  &form {
+    outline: none;
+  }
+}

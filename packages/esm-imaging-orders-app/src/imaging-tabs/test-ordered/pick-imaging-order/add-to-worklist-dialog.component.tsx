@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Form, ModalBody, ModalFooter, ModalHeader, Checkbox, TextInput } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
 import styles from './add-to-worklist-dialog.scss';
-import { restBaseUrl, showNotification, showSnackbar } from '@openmrs/esm-framework';
+import {  showNotification, showSnackbar } from '@openmrs/esm-framework';
 import { updateOrder } from './add-to-worklist-dialog.resource';
 import { type Result } from '../../work-list/work-list.resource';
 import { mutate } from 'swr';
@@ -37,7 +37,9 @@ const AddImagingToWorkListModal: React.FC<AddImagingToWorkListModalProps> = ({ o
           kind: 'success',
           subtitle: t('pickSuccessfully', 'You have successfully picked an Order'),
         });
-
+        mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, {
+          revalidate: true,
+        });
         closeModal();
       }
     } catch (error) {

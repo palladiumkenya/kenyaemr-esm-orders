@@ -1,9 +1,11 @@
 import useSWR, { mutate } from 'swr';
-import { openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
+import { openmrsFetch, useAppContext, useConfig } from '@openmrs/esm-framework';
 
 import { type Result } from '../imaging-tabs/work-list/work-list.resource';
 import { useCallback, useMemo } from 'react';
 import { type ImagingConfig } from '../config-schema';
+import { type DateFilterContext } from '../types';
+import dayjs from 'dayjs';
 
 /**
  * Hook to fetch and process imaging order statistics based on fulfiller status.
@@ -17,44 +19,74 @@ export function useImagingOrderStats(fulfillerStatus: string) {
     radiologyConceptClassUuid,
   } = useConfig<ImagingConfig>();
 
+  const dateRange = useAppContext<DateFilterContext>('imaging-date-filter')?.dateRange;
+
+  // Calculate date range boundaries
+  const dateRangeDates = useMemo(() => {
+    const startDate = dateRange?.at(0);
+    const endDate = dateRange?.at(1);
+    
+    return {
+      activatedOnOrAfterDate: startDate ? dayjs(startDate).startOf('day').toISOString() : undefined,
+      activatedOnOrBeforeDate: endDate ? dayjs(endDate).endOf('day').toISOString() : undefined,
+    };
+  }, [dateRange]);
+
   const responseFormat =
     'custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)';
+
+  // Build API URL with query parameters
   const apiUrl = useMemo(() => {
-    const orderTypeParam = `orderTypes=${radiologyOrderTypeUuid}&fulfillerStatus=${fulfillerStatus}&v=${responseFormat}`;
-    return `/ws/rest/v1/order?${orderTypeParam}`;
-  }, [radiologyOrderTypeUuid, fulfillerStatus, responseFormat]);
+    const params = new URLSearchParams({
+      orderTypes: radiologyOrderTypeUuid,
+      fulfillerStatus,
+      v: responseFormat,
+    });
 
-  const mutateOrders = useCallback(() => {
-    return mutate(
-      (key) => typeof key === 'string' && key.startsWith(`${restBaseUrl}/order?orderType=${radiologyOrderTypeUuid}`),
-    );
-  }, [radiologyOrderTypeUuid]);
+    if (dateRangeDates.activatedOnOrAfterDate) {
+      params.set('activatedOnOrAfterDate', dateRangeDates.activatedOnOrAfterDate);
+    }
+    if (dateRangeDates.activatedOnOrBeforeDate) {
+      params.set('activatedOnOrBeforeDate', dateRangeDates.activatedOnOrBeforeDate);
+    }
 
+    return `/ws/rest/v1/order?${params.toString()}`;
+  }, [
+    radiologyOrderTypeUuid,
+    fulfillerStatus,
+    responseFormat,
+    dateRangeDates.activatedOnOrAfterDate,
+    dateRangeDates.activatedOnOrBeforeDate,
+  ]);
+
+  // Fetch orders from API
   const { data, error, isLoading } = useSWR<{ data: { results: Array<Result> } }, Error>(apiUrl, openmrsFetch);
 
+  // Filter orders based on fulfiller status and other conditions
   const radiologyOrders = useMemo(() => {
-    return data?.data?.results?.filter((order) => {
-      const baseConditions =
-        order.dateStopped === null && order.concept.conceptClass.uuid === radiologyConceptClassUuid;
+    if (!data?.data?.results) return [];
 
-      switch (fulfillerStatus) {
-        case '':
-          return baseConditions && order.fulfillerStatus === null && order.action === 'NEW';
-        case 'IN_PROGRESS':
-        case 'DECLINED':
-        case 'COMPLETED':
-        case 'EXCEPTION':
-          return baseConditions && order.fulfillerStatus === fulfillerStatus && order.action !== 'DISCONTINUE';
-        default:
-          return false;
+    return data.data.results.filter((order) => {
+      const isOrderNotStopped = order.dateStopped === null;
+      const isRadiologyOrder = order.concept.conceptClass.uuid === radiologyConceptClassUuid;
+      
+      if (!isOrderNotStopped || !isRadiologyOrder) {
+        return false;
       }
+
+      return matchesFulfillerStatus(order, fulfillerStatus);
     });
   }, [data, fulfillerStatus, radiologyConceptClassUuid]);
 
-  const count = useMemo(
-    () => (fulfillerStatus != null ? radiologyOrders?.length ?? 0 : 0),
-    [fulfillerStatus, radiologyOrders],
-  );
+  // Calculate order count
+  const count = useMemo(() => radiologyOrders?.length ?? 0, [radiologyOrders]);
+
+  // Mutate cache for this query pattern
+  const mutateOrders = useCallback(() => {
+    return mutate(
+      (key) => typeof key === 'string' && key.includes('/order?') && key.includes(`orderTypes=${radiologyOrderTypeUuid}`),
+    );
+  }, [radiologyOrderTypeUuid]);
 
   return {
     count,
@@ -62,4 +94,23 @@ export function useImagingOrderStats(fulfillerStatus: string) {
     isError: error,
     mutate: mutateOrders,
   };
+}
+
+/**
+ * Determines if an order matches the specified fulfiller status filter
+ */
+function matchesFulfillerStatus(order: Result, fulfillerStatus: string): boolean {
+  const isNewOrder = fulfillerStatus === '' && order.action === 'NEW';
+  const isActiveOrderStatus = ['IN_PROGRESS', 'DECLINED', 'COMPLETED', 'EXCEPTION'].includes(fulfillerStatus);
+  const isNotDiscontinued = order.action !== 'DISCONTINUE';
+
+  if (isNewOrder) {
+    return order.fulfillerStatus === null;
+  }
+
+  if (isActiveOrderStatus) {
+    return order.fulfillerStatus === fulfillerStatus && isNotDiscontinued;
+  }
+
+  return false;
 }

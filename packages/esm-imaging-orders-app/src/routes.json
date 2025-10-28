@@ -30,6 +30,11 @@
       "component": "imagingOrderPanel",
       "slot": "order-basket-slot",
       "order": 3
+    },
+    {
+      "name": "imaging-results-component",
+      "component": "imagingResultsComponent",
+      "slot": "ewf-radiology-and-imaging-results-slot"
     }
   ],
   "workspaces": [
@@ -43,7 +48,8 @@
       "name": "imaging-report-form",
       "component": "imagingReportForm",
       "title": "Imaging Report Form",
-      "type": "form"
+      "type": "form",
+      "width": "extra-wide"
     },
     {
       "name": "imaging-review-form",
@@ -55,7 +61,8 @@
       "name": "search-patient-workspace",
       "component": "searchPatientWorkspace",
       "title": "Search patient",
-      "type": "other-form"
+      "type": "other-form",
+      "width": "extra-wide"
     }
   ],
   "modals": [

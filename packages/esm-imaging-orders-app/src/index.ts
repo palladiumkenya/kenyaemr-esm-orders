@@ -2,7 +2,7 @@ import Root from './root.component';
 import { moduleName } from './constants';
 import { configSchema } from './config-schema';
 
-import { defineConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
+import { defineConfigSchema, getAsyncLifecycle, getSyncLifecycle } from '@openmrs/esm-framework';
 import { createLeftPanelLink } from './left-panel-link';
 import RejectImagingOrderModal from './imaging-tabs/test-ordered/reject-order-dialog/reject-order-dialog.component';
 import ImagingReportForm from './form/imaging-report-form/imaging-report-form.component';
@@ -52,3 +52,4 @@ export const imagingReportForm = getSyncLifecycle(ImagingReportForm, options);
 export const imagingReviewForm = getSyncLifecycle(ImagingReviewForm, options);
 export const addImagingToWorkListModal = getSyncLifecycle(AddImagingToWorkListModal, options);
 export const amendModal = getSyncLifecycle(AmendModal, options);
+export const imagingResultsComponent = getAsyncLifecycle(() => import('./imaging-results/imaging-results.component'), options);

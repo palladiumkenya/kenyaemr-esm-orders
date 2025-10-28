@@ -1,0 +1,32 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@carbon/colors';
+
+.container {
+  padding: layout.$spacing-05;
+  background-color: colors.$white;
+}
+
+.procedure {
+  p {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin: 0;
+    @include type.type-style('legal-02');
+    color: colors.$gray-100;
+    background-color: colors.$white;
+    padding: layout.$spacing-03;
+    border: 1px solid colors.$gray-20;
+  }
+
+  h4 {
+    @include type.type-style('heading-02');
+    color: colors.$gray-100;
+    background-color: colors.$gray-20;
+    padding: layout.$spacing-03;
+    border: 1px solid colors.$gray-20;
+    margin: 0;
+    margin: layout.$spacing-03 0;
+  }
+}

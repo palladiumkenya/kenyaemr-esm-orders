@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { mutate } from 'swr';
 import styles from './review-imaging-form.scss';
 import { useTranslation } from 'react-i18next';
@@ -22,7 +22,7 @@ import {
   TableCell,
   Column,
 } from '@carbon/react';
-import classNames from 'classnames';
+
 import { CardHeader, useAllowedFileExtensions } from '@openmrs/esm-patient-common-lib';
 import { updateImagingProcedure } from '../../imaging-tabs/test-ordered/pick-imaging-order/add-to-worklist-dialog.resource';
 import { DocumentAttachment } from '@carbon/react/icons';
@@ -72,7 +72,7 @@ const ImagingReviewForm: React.FC<ReviewOrderDialogProps> = ({ order, closeWorks
     setIsSubmitting(true);
 
     try {
-      await updateImagingProcedure(order?.procedures[0]?.uuid, { outcome: 'SUCCESSFUL' });
+      await updateImagingProcedure(order?.procedures[0]?.uuid, { outcome: 'SUCCESSFUL', impressions: notes });
       showSnackbar({
         isLowContrast: true,
         title: t('createResponse', 'Create Review'),
