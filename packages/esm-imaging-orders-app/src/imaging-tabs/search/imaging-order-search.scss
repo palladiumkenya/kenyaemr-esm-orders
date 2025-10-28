@@ -1,0 +1,139 @@
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@carbon/colors';
+
+.container {
+  margin: layout.$spacing-05 0;
+}
+
+.patientSearchBarSlot {
+  margin-bottom: layout.$spacing-05;
+  form {
+    border: none;
+  }
+}
+
+.statusContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-height: layout.$spacing-04;
+}
+
+.patientHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  column-gap: layout.$spacing-04;
+  background-color: colors.$white;
+  height: layout.$layout-04;
+  border-bottom: 1px solid colors.$gray-20;
+
+  .patientInformation {
+    display: flex;
+    align-items: center;
+    column-gap: layout.$spacing-04;
+    padding-left: layout.$spacing-05;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: layout.$spacing-05;
+  }
+}
+
+.patientName {
+  @include type.type-style('heading-03');
+  color: colors.$gray-100;
+  display: inline-flex;
+  align-items: center;
+}
+
+.patientGender {
+  @include type.type-style('body-compact-02');
+  color: colors.$gray-70;
+}
+
+.patientIdentifier {
+  @include type.type-style('body-compact-02');
+  color: colors.$gray-70;
+  text-transform: uppercase;
+}
+
+.ordersTableContainer {
+  margin-top: layout.$spacing-05;
+}
+
+.imagingOrderDetailsContainer {
+  padding: layout.$spacing-05;
+  background-color: colors.$white;
+  margin-top: layout.$spacing-05;
+}
+
+.imagingOrderDetails {
+  display: flex;
+  flex-direction: column;
+}
+
+.imagingOrderDetailsRow {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  border-bottom: 1px solid colors.$gray-20;
+  background-color: colors.$white;
+  height: layout.$spacing-08;
+  align-items: center;
+}
+
+.imagingOrderDetailsRowTitle {
+  @include type.type-style('heading-01');
+  color: colors.$gray-100;
+}
+
+.imagingOrderDetailsRowValue {
+  @include type.type-style('body-01');
+  color: colors.$gray-70;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  height: layout.$spacing-08;
+  margin-top: layout.$spacing-04;
+}
+
+.imagingOrderResults {
+  :global(.cds--accordion__title) {
+    @include type.type-style('heading-02');
+  }
+}
+
+.procedure {
+  width: 100%;
+  p {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    word-break: break-word;
+    margin: 0;
+    @include type.type-style('legal-02');
+    color: colors.$gray-100;
+    background-color: colors.$white;
+    padding: layout.$spacing-03;
+    border: 1px solid colors.$gray-20;
+  }
+
+  h4 {
+    @include type.type-style('heading-02');
+    color: colors.$gray-100;
+    background-color: colors.$gray-20;
+    padding: layout.$spacing-03;
+    border: 1px solid colors.$gray-20;
+    margin: 0;
+    margin: layout.$spacing-03 0;
+  }
+}
