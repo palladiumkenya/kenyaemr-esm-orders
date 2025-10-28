@@ -1,5 +1,7 @@
 import React from 'react';
+import { mutate } from 'swr';
 import { formatDate, parseDate, useLayoutType } from '@openmrs/esm-framework';
+import { CardHeader } from '@openmrs/esm-patient-common-lib';
 import { useTranslation } from 'react-i18next';
 import {
   DataTable,
@@ -16,26 +18,28 @@ import {
   TableExpandedRow,
   Button,
 } from '@carbon/react';
-import { mutate } from 'swr';
 import { Renew } from '@carbon/react/icons';
-import { CardHeader, EmptyState } from '@openmrs/esm-patient-common-lib';
 
-import { usePatientImagingResults } from './imaging-resource';
+import { usePatientProcedureResults } from './procedures-resource';
+import { type Procedure } from '../types';
 
-import styles from './imaging-results.scss';
-type ImagingResultsComponentProps = {
+import styles from './procedure-results.scss';
+
+type ProcedureResultsComponentProps = {
   patientUuid: string;
 };
 
-const ImagingResultsComponent: React.FC<ImagingResultsComponentProps> = ({ patientUuid }) => {
+const ProcedureResultsComponent: React.FC<ProcedureResultsComponentProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
   const responseSize = useLayoutType() === 'tablet' ? 'md' : 'sm';
-  const { orders, isLoading } = usePatientImagingResults(patientUuid);
+  const { orders, isLoading } = usePatientProcedureResults(patientUuid);
+
   const handleRefresh = () => {
     mutate((key) => typeof key === 'string' && key.includes('/order?'), undefined, {
       revalidate: true,
     });
   };
+
   if (isLoading) {
     return <DataTableSkeleton />;
   }
@@ -56,18 +60,16 @@ const ImagingResultsComponent: React.FC<ImagingResultsComponentProps> = ({ patie
     report: order.procedures.map((procedure) => procedure.procedureReport).join(', '),
   }));
 
-  if (orders.length === 0) {
+  const getComplications = (procedure: Procedure) => {
     return (
-      <EmptyState
-        displayText={t('noImagingResults', 'imaging results found')}
-        headerTitle={t('imagingResults', 'Imaging Results')}
-      />
+      procedure.encounters?.map((encounter) => encounter.obs.map((obs) => obs.value?.display)).join(', ') ??
+      t('noComplications', 'No complications')
     );
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <CardHeader title={t('imagingResults', 'Imaging Results')}>
+      <CardHeader title={t('procedureResults', 'Procedure Results')}>
         <Button size={responseSize} kind="ghost" renderIcon={Renew} onClick={handleRefresh}>
           {t('refresh', 'Refresh')}
         </Button>
@@ -83,7 +85,7 @@ const ImagingResultsComponent: React.FC<ImagingResultsComponentProps> = ({ patie
           getTableContainerProps,
         }) => (
           <TableContainer className={styles.dataTable} {...getTableContainerProps()}>
-            <Table {...getTableProps()} aria-label={t('imagingResults', 'Imaging Results')}>
+            <Table {...getTableProps()} aria-label={t('procedureResults', 'Procedure Results')}>
               <TableHead>
                 <TableRow>
                   <TableExpandHeader aria-label={t('expandRow', 'Expand row')} />
@@ -110,10 +112,10 @@ const ImagingResultsComponent: React.FC<ImagingResultsComponentProps> = ({ patie
                       <div className={styles.expandedRow}>
                         {orders[index].procedures.map((procedure) => (
                           <div className={styles.procedure} key={procedure.uuid}>
-                            <h4>{t('findings', 'Findings')}</h4>
+                            <h4>{t('procedureReport', 'Procedure Report')}</h4>
                             <p>{procedure.procedureReport}</p>
-                            <h4>{t('impressions')}</h4>
-                            <p>{procedure.impressions}</p>
+                            <h4>{t('complications', 'Complications')}</h4>
+                            <p>{getComplications(procedure)}</p>
                           </div>
                         ))}
                       </div>
@@ -129,4 +131,4 @@ const ImagingResultsComponent: React.FC<ImagingResultsComponentProps> = ({ patie
   );
 };
 
-export default ImagingResultsComponent;
+export default ProcedureResultsComponent;

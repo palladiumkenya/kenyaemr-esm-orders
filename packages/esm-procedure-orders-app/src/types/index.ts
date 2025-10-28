@@ -582,7 +582,7 @@ export interface Result {
   clinicalHistory: any;
   frequency: any;
   numberOfRepeats: any;
-  procedures: any;
+  procedures: Array<Procedure>;
   links: Link[];
   type: string;
   resourceVersion: string;
@@ -659,4 +659,40 @@ export interface SpecimenSource {
   uuid: string;
   display: string;
   links: Link[];
+}
+
+// Procedure result types from OpenMRS return in procedures-resource
+export interface ProcedureObservation {
+  uuid: string;
+  value: any;
+  display: string;
+  concept: {
+    uuid: string;
+    display: string;
+  };
+}
+
+export interface ProcedureEncounter {
+  // Only 'obs' requested in the response format
+  obs: Array<ProcedureObservation>;
+}
+
+export interface Procedure {
+  uuid: string;
+  patient: string; // patient uuid
+  procedureOrder: string; // order uuid
+  concept: OpenmrsResource;
+  procedureReason: string;
+  category: string | null;
+  bodySite: string | null;
+  partOf: string | null;
+  startDatetime: string | null;
+  endDatetime: string | null;
+  status: string | null;
+  statusReason: string | null;
+  outcome: string | null;
+  procedureReport: string | null;
+  impressions: string | null;
+  location: OpenmrsResource | null;
+  encounters?: Array<ProcedureEncounter>;
 }

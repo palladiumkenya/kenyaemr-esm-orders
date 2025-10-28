@@ -5,6 +5,8 @@
   display: flex;
   flex-direction: column;
   border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
 
   & > section {
     position: relative;
@@ -15,11 +17,20 @@
 .widgetCard {
   background-color: colors.$white;
   border: 1px solid colors.$gray-20;
+  margin-right: layout.$spacing-05;
+  margin-left: layout.$spacing-05;
+  margin-top: layout.$spacing-05;
 }
 
-.elementContainer {
+.dataTableContainer {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-right: layout.$spacing-03;
+  flex-direction: column;
+}
+
+.filtersContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: layout.$spacing-03 layout.$spacing-05 layout.$spacing-02 layout.$spacing-05;
+  column-gap: layout.$spacing-05;
+
 }

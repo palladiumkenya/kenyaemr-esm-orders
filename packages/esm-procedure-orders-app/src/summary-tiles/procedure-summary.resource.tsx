@@ -1,8 +1,10 @@
 import useSWR, { mutate } from 'swr';
-import { type ConfigObject, openmrsFetch, restBaseUrl, useConfig } from '@openmrs/esm-framework';
 import { useCallback } from 'react';
+import { type ConfigObject, openmrsFetch, restBaseUrl, useAppContext, useConfig } from '@openmrs/esm-framework';
+import dayjs from 'dayjs';
+
+import { type DateFilterContext, type Result } from '../types';
 import { ProcedureConceptClass_UUID } from '../constants';
-import { type Result } from '../types';
 
 export function useMetrics() {
   const metrics = {
@@ -22,8 +24,15 @@ export function useMetrics() {
 
 export function useProcedureOrderStats(fulfillerStatus: string) {
   const config = useConfig() as ConfigObject;
+  const { dateRange } = useAppContext<DateFilterContext>('procedures-date-filter') ?? {
+    dateRange: [dayjs().startOf('day').toDate(), new Date()],
+    setDateRange: () => {},
+  };
 
-  const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
+  const activatedOnOrAfterDate = dateRange.at(0).toISOString();
+  const activatedOnOrBeforeDate = dateRange.at(1).toISOString();
+
+  const orderTypeParam = `orderTypes=${config.procedureOrderTypeUuid}&activatedOnOrAfterDate=${activatedOnOrAfterDate}&activatedOnOrBeforeDate=${activatedOnOrBeforeDate}&isStopped=false&fulfillerStatus=${fulfillerStatus}&v=custom:(uuid,orderNumber,patient:ref,concept:(uuid,display,conceptClass),action,careSetting,orderer:ref,urgency,instructions,commentToFulfiller,display,fulfillerStatus,dateStopped)`;
   const apiUrl = `/ws/rest/v1/order?${orderTypeParam}`;
 
   const { data, error, isLoading } = useSWR<{ data: { results: Array<Result> } }, Error>(apiUrl, openmrsFetch);

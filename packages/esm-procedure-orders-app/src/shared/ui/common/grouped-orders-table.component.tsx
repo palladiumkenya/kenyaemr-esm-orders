@@ -1,3 +1,4 @@
+import { default as React, useMemo, useState } from 'react';
 import {
   DataTable,
   Search,
@@ -11,23 +12,29 @@ import {
   TableHead,
   TableHeader,
   TableRow,
+  Button,
+  Pagination,
 } from '@carbon/react';
-import { usePagination } from '@openmrs/esm-framework';
-import { CardHeader } from '@openmrs/esm-patient-common-lib';
+import { restBaseUrl, useLayoutType, usePagination } from '@openmrs/esm-framework';
+import { CardHeader, usePaginationInfo } from '@openmrs/esm-patient-common-lib';
 import upperCase from 'lodash-es/upperCase';
-import { default as React, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { mutate } from 'swr';
+import { Renew } from '@carbon/react/icons';
+
 import EmptyState from '../../../empty-state/empty-state-component';
-import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults';
-import TransitionLatestQueueEntryButton from '../../../procedures-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component';
-import styles from './grouped-orders-table.scss';
-import { type GroupedOrdersTableProps } from './grouped-procedure-types';
 import ListOrderDetails from './list-order-details.component';
 import { OrdersDateRangePicker } from './orders-date-range-picker';
+import TransitionLatestQueueEntryButton from '../../../procedures-ordered/transition-patient-new-queue/transition-latest-queue-entry-button.component';
+import { useSearchGroupedResults } from '../../../hooks/useSearchGroupedResults';
+import { type GroupedOrdersTableProps } from './grouped-procedure-types';
+
+import styles from './grouped-orders-table.scss';
 
 const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const workListEntries = props.orders;
   const { t } = useTranslation();
+  const responseSize = useLayoutType() === 'tablet' ? 'md' : 'sm';
   const [currentPageSize] = useState<number>(10);
   const [searchString, setSearchString] = useState<string>('');
 
@@ -53,6 +60,7 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
   const groupedOrdersByPatient = groupOrdersById(workListEntries);
   const searchResults = useSearchGroupedResults(groupedOrdersByPatient, searchString);
   const { goTo, results: paginatedResults, currentPage } = usePagination(searchResults, currentPageSize);
+  const { pageSizes } = usePaginationInfo(currentPageSize, currentPageSize, currentPage, paginatedResults.length);
 
   const rowData = useMemo(() => {
     return paginatedResults.map((patient) => ({
@@ -63,8 +71,8 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
         patient?.orders[0]?.patient?.person?.gender === 'M'
           ? t('male', 'Male')
           : patient?.orders[0]?.patient?.person?.gender === 'F'
-          ? t('female', 'Female')
-          : patient?.orders[0]?.patient?.person?.gender,
+            ? t('female', 'Female')
+            : patient?.orders[0]?.patient?.person?.gender,
       orders: patient.orders,
       totalOrders: patient.orders?.length,
       fulfillerStatus: patient.orders[0].fulfillerStatus,
@@ -88,87 +96,115 @@ const GroupedOrdersTable: React.FC<GroupedOrdersTableProps> = (props) => {
     return showActionColumn ? [...baseColumns, { key: 'action', header: t('action', 'Action') }] : baseColumns;
   }, [workListEntries, t]);
 
+  const handleRefresh = () => {
+    mutate((key) => typeof key === 'string' && key.includes(`${restBaseUrl}/order?`), undefined, {
+      revalidate: true,
+    });
+  };
+
   return (
     <>
       <div className={styles.widgetCard}>
         <CardHeader title={props?.title}>
-          <div className={styles.elementContainer}>
-            <OrdersDateRangePicker />
-            <Search
-              isExpanded
-              labelText=""
-              onChange={(event) => setSearchString(event.target.value)}
-              placeholder={t('searchByPatientName', 'Search by patient name')}
-              size="md"
-            />
-          </div>
+          <Button size={responseSize} kind="ghost" renderIcon={Renew} onClick={handleRefresh}>
+            {t('refresh', 'Refresh')}
+          </Button>
         </CardHeader>
       </div>
+      <div className={styles.dataTableContainer}>
+        <div className={styles.filtersContainer}>
+          <Search
+            light
+            labelText=""
+            onChange={(event) => setSearchString(event.target.value)}
+            placeholder={t('searchByPatientName', 'Search by patient name')}
+            size="md"
+          />
+          <OrdersDateRangePicker />
+        </div>
 
-      <DataTable size="md" useZebraStyles rows={rowData} headers={tableColumns}>
-        {({
-          rows,
-          headers,
-          getHeaderProps,
-          getRowProps,
-          getExpandedRowProps,
-          getTableProps,
-          getTableContainerProps,
-        }) => (
-          <TableContainer className={styles.dataTable} {...getTableContainerProps()}>
-            {rows.length <= 0 && (
-              <EmptyState subTitle={t('NoOrdersFound', 'There are no orders to display for this patient')} />
-            )}
-            {rows.length > 0 && (
-              <Table {...getTableProps()} aria-label="sample table">
-                <TableHead>
-                  <TableRow>
-                    <TableExpandHeader aria-label="expand row" />
-                    {headers.map((header, i) => (
-                      <TableHeader
-                        key={i}
-                        {...getHeaderProps({
-                          header,
-                        })}>
-                        {header.header}
-                      </TableHeader>
+        <DataTable size={responseSize} useZebraStyles rows={rowData} headers={tableColumns}>
+          {({
+            rows,
+            headers,
+            getHeaderProps,
+            getRowProps,
+            getExpandedRowProps,
+            getTableProps,
+            getTableContainerProps,
+          }) => (
+            <TableContainer className={styles.dataTable} {...getTableContainerProps()}>
+              {rows.length <= 0 && (
+                <EmptyState subTitle={t('noProcedureOrdersFound', 'There are no procedure orders to display')} />
+              )}
+              {rows.length > 0 && (
+                <Table {...getTableProps()} aria-label="sample table">
+                  <TableHead>
+                    <TableRow>
+                      <TableExpandHeader aria-label="expand row" />
+                      {headers.map((header, i) => (
+                        <TableHeader
+                          key={i}
+                          {...getHeaderProps({
+                            header,
+                          })}>
+                          {header.header}
+                        </TableHeader>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row) => (
+                      <React.Fragment key={row.id}>
+                        <TableExpandRow
+                          {...getRowProps({
+                            row,
+                          })}>
+                          {row.cells.map((cell) => (
+                            <TableCell key={cell.id}>{cell.value}</TableCell>
+                          ))}
+                        </TableExpandRow>
+                        <TableExpandedRow
+                          colSpan={headers.length + 1}
+                          className="demo-expanded-td"
+                          {...getExpandedRowProps({
+                            row,
+                          })}>
+                          <ListOrderDetails
+                            actions={props.actions}
+                            groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
+                            showActions={props.showActions}
+                            showOrderType={props.showOrderType}
+                            showStartButton={props.showStartButton}
+                            showStatus={props.showStatus}
+                          />
+                        </TableExpandedRow>
+                      </React.Fragment>
                     ))}
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {rows.map((row) => (
-                    <React.Fragment key={row.id}>
-                      <TableExpandRow
-                        {...getRowProps({
-                          row,
-                        })}>
-                        {row.cells.map((cell) => (
-                          <TableCell key={cell.id}>{cell.value}</TableCell>
-                        ))}
-                      </TableExpandRow>
-                      <TableExpandedRow
-                        colSpan={headers.length + 1}
-                        className="demo-expanded-td"
-                        {...getExpandedRowProps({
-                          row,
-                        })}>
-                        <ListOrderDetails
-                          actions={props.actions}
-                          groupedOrders={groupedOrdersByPatient.find((item) => item.patientId === row.id)}
-                          showActions={props.showActions}
-                          showOrderType={props.showOrderType}
-                          showStartButton={props.showStartButton}
-                          showStatus={props.showStatus}
-                        />
-                      </TableExpandedRow>
-                    </React.Fragment>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
-          </TableContainer>
+                  </TableBody>
+                </Table>
+              )}
+            </TableContainer>
+          )}
+        </DataTable>
+        {searchResults.length > 10 && (
+          <Pagination
+            className={styles.paginationOverride}
+            backwardText={t('previousPage', 'Previous page')}
+            forwardText={t('nextPage', 'Next page')}
+            itemsPerPageText="Items per page:"
+            page={1}
+            pageNumberText={t('pageNumber', 'Page Number')}
+            pageSize={currentPageSize}
+            pageSizes={pageSizes}
+            size={responseSize}
+            totalItems={searchResults.length}
+            onChange={({ pageSize, page }) => {
+              goTo(page);
+            }}
+          />
         )}
-      </DataTable>
+      </div>
     </>
   );
 };

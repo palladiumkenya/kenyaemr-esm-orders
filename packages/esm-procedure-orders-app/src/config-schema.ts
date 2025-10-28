@@ -49,6 +49,11 @@ export const configSchema = {
     _description: 'The encounter provider role UUID',
     _default: 'a0b03050-c99b-11e0-9572-0800200c9a66',
   },
+  procedureConceptClassUuid: {
+    _type: Type.String,
+    _description: 'The procedure concept class UUID',
+    _default: '8d490bf4-c2cc-11de-8d13-0010c6dffd0f',
+  },
 };
 
 export interface OrderReason {
@@ -67,6 +72,7 @@ export interface ConfigObject {
     labOrderTypeUuid: string;
     labOrderableConcepts: Array<string>;
   };
+  procedureConceptClassUuid: string;
   conditionConceptClassUuid: string;
   procedureComplicationGroupingConceptUuid: string;
   procedureComplicationConceptUuid: string;

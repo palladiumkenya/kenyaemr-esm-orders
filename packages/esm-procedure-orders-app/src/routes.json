@@ -8,7 +8,7 @@
     {
       "component": "procedureDashboardLink",
       "name": "procedure-dashboard-link",
-      "slot":"homepage-dashboard-slot",
+      "slot": "homepage-dashboard-slot",
       "meta": {
         "name": "procedure",
         "title": "procedure",
@@ -26,96 +26,96 @@
       "slot": "express-procedures-dashboard-slot"
     },
     {
-        "name": "procedures-ordered-tile-component",
-        "slot": "procedure-tiles-slot",
-        "component": "OrderedTileComponent",
-        "meta": {
-            "name": "proceduresOrderedTileSlot",
-            "title": "Active Orders"
-        }
+      "name": "procedures-ordered-tile-component",
+      "slot": "procedure-tiles-slot",
+      "component": "OrderedTileComponent",
+      "meta": {
+        "name": "proceduresOrderedTileSlot",
+        "title": "Active Orders"
+      }
     },
     {
       "name": "procedures-worklist-tile-component",
       "slot": "procedure-tiles-slot",
       "component": "worklistTileComponent",
       "meta": {
-          "name": "worklisTileSlot",
-          "title": "Worklist"
+        "name": "worklisTileSlot",
+        "title": "Worklist"
       }
-  },
-  {
-    "name": "procedures-referred-tile-component",
-    "slot": "procedure-tiles-slot",
-    "component": "referredOutTileComponent",
-    "meta": {
-      "name": "referredTileSlot",
-      "title": "Referred Out"
-    }
-  },
-  {
-    "name": "procedures-not-done-tile-component",
-    "slot": "procedure-tiles-slot",
-    "component": "notDoneTileComponent",
-    "meta": {
-      "name": "notDoneTileSlot",
-      "title": "Not Done"
-    }
-  },
-  {
-    "name": "procedures-completed-tile-component",
-    "slot": "procedure-tiles-slot",
-    "component": "completedTileComponent",
-    "meta": {
+    },
+    {
+      "name": "procedures-referred-tile-component",
+      "slot": "procedure-tiles-slot",
+      "component": "referredOutTileComponent",
+      "meta": {
+        "name": "referredTileSlot",
+        "title": "Referred Out"
+      }
+    },
+    {
+      "name": "procedures-not-done-tile-component",
+      "slot": "procedure-tiles-slot",
+      "component": "notDoneTileComponent",
+      "meta": {
+        "name": "notDoneTileSlot",
+        "title": "Not Done"
+      }
+    },
+    {
+      "name": "procedures-completed-tile-component",
+      "slot": "procedure-tiles-slot",
+      "component": "completedTileComponent",
+      "meta": {
         "name": "completedTileSlot",
         "title": "Completed"
-    }
-},
+      }
+    },
     {
       "name": "procedures-worklist-tab-component",
       "slot": "procedures-panels-slot",
       "component": "worklistProceduresTabComponent",
       "meta": {
-          "name": "proceduresPanelSlot",
-          "title": "Worklist"
+        "name": "proceduresPanelSlot",
+        "title": "Worklist"
       }
-  },
+    },
     {
       "name": "procedures-referred-tab-component",
       "slot": "procedures-panels-slot",
       "component": "referredProceduresTabComponent",
       "meta": {
-          "name": "proceduresPanelSlot",
-          "title": "Referred Out"
+        "name": "proceduresPanelSlot",
+        "title": "Referred Out"
       }
-  },
-  {
-    "name": "procedures-not-done-tab-component",
-    "slot": "procedures-panels-slot",
-    "component": "notDoneProceduresTabComponent",
-    "meta": {
+    },
+    {
+      "name": "procedures-not-done-tab-component",
+      "slot": "procedures-panels-slot",
+      "component": "notDoneProceduresTabComponent",
+      "meta": {
         "name": "proceduresPanelSlot",
         "title": "Not Done"
-    }
-},
-  {
-    "name": "procedures-completed-tab-component",
-    "slot": "procedures-panels-slot",
-    "component": "completedProceduresTabComponent",
-    "meta": {
+      }
+    },
+    {
+      "name": "procedures-completed-tab-component",
+      "slot": "procedures-panels-slot",
+      "component": "completedProceduresTabComponent",
+      "meta": {
         "name": "proceduresPanelSlot",
         "title": "Completed"
-    }
-},
+      }
+    },
     {
-      "name":"procedure-instructions-modal",
+      "name": "procedure-instructions-modal",
       "component": "procedureInstructionsModalComponent"
     },
     {
-      "name":"procedure-reject-reason-modal",
+      "name": "procedure-reject-reason-modal",
       "component": "procedureRejectModalComponent"
     },
     {
-      "name":"add-procedure-to-worklist-dialog",
+      "name": "add-procedure-to-worklist-dialog",
       "component": "addProcedureToWorklistDialogComponent"
     },
     {
@@ -127,6 +127,11 @@
       "component": "proceduresOrderPanel",
       "slot": "order-basket-slot",
       "order": 4
+    },
+    {
+      "name": "procedure-results-component",
+      "component": "procedureResultsComponent",
+      "slot": "ewf-procedures-results-slot"
     }
   ],
   "workspaces": [
@@ -136,14 +141,14 @@
       "title": "Add procedure order",
       "component": "addProceduresOrderWorkspace"
     },
-     {
+    {
       "name": "procedure-report-form",
       "component": "postProcedureResults",
       "title": "Procedure Report Form",
       "type": "form"
     }
   ],
-   "modals": [
+  "modals": [
     {
       "name": "print-procedure-report-modal",
       "component": "printProcedureReportModal"

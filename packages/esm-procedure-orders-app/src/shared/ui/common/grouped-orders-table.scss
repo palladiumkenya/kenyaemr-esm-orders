@@ -22,9 +22,17 @@
   margin-top: layout.$spacing-05;
 }
 
-.elementContainer {
+.dataTableContainer {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-right: layout.$spacing-03;
+  flex-direction: column;
+}
+
+.filtersContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: layout.$spacing-03 layout.$spacing-05 layout.$spacing-02 layout.$spacing-05;
+  column-gap: layout.$spacing-05;
+}
+.paginationOverride {
+  padding: 0 layout.$spacing-05;
 }
