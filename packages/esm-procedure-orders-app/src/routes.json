@@ -146,6 +146,13 @@
       "component": "postProcedureResults",
       "title": "Procedure Report Form",
       "type": "form"
+    },
+    {
+      "name": "procedure-order-search-patient-workspace",
+      "component": "procedureOrderSearchPatientWorkspace",
+      "title": "Search patient",
+      "type": "other-form",
+      "width": "extra-wide"
     }
   ],
   "modals": [
@@ -158,6 +165,15 @@
     {
       "component": "root",
       "route": "procedure"
+    }
+  ],
+  "workspaceGroups": [
+    {
+      "name": "add-procedures-order-workspace-group",
+      "members": [
+        "order-basket",
+        "add-procedures-order"
+      ]
     }
   ]
 }

@@ -2,26 +2,22 @@
 @use '@carbon/type';
 @use '@carbon/colors';
 
-.container {
+.pageHeader {
   border-bottom: 1px solid colors.$gray-20;
 }
 
-
+.pageHeaderActions {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-right: layout.$spacing-05;
+}
 .providerBannerInfoSlot {
   display: flex;
   align-items: center;
   gap: layout.$spacing-05;
 }
-
-svg.iconOverrides {
-  width: 72 !important;
-  height: 72 !important;
-  fill: var(--brand-03);
-}
-
-.svgContainer svg {
-  width: 72px;
-  height: 72px;
-  fill: var(--brand-03);
-  margin-right: 1rem;
+.addImagingOrderButton {
+  margin-bottom: layout.$spacing-03;
 }

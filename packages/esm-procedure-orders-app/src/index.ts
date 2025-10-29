@@ -1,4 +1,5 @@
-import { getAsyncLifecycle, defineConfigSchema, getSyncLifecycle, translateFrom } from '@openmrs/esm-framework';
+import { getAsyncLifecycle, defineConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
+
 import { configSchema } from './config-schema';
 import { createLeftPanelLink } from './left-panel-link';
 import workListProcedures from './procedure-tabs/work-list-tab.component';
@@ -13,7 +14,7 @@ import procedureRejectReasonModal from './procedures-ordered/reject-reason/proce
 import PostProcedureForm from './form/post-procedures/post-procedure-form.component';
 import PrintPreviewModal from './print/print-procedure-results.component';
 import Procedure from './procedure.component';
-import Root from './root.component';
+import SearchPatientWorkspace from './form/search-patient-workspace/search-patient.workspace';
 
 const moduleName = '@kenyaemr/esm-procedure-orders-app';
 
@@ -65,3 +66,4 @@ export const procedureResultsComponent = getAsyncLifecycle(
   () => import('./procedure-results/procedure-results.component'),
   options,
 );
+export const procedureOrderSearchPatientWorkspace = getSyncLifecycle(SearchPatientWorkspace, options);
