@@ -1,23 +1,30 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { mutate } from 'swr';
-import styles from './imaging-report-form.scss';
 import { useTranslation } from 'react-i18next';
 import {
+  createAttachment,
   type DefaultWorkspaceProps,
   ExtensionSlot,
   ResponsiveWrapper,
+  showModal,
   showNotification,
   showSnackbar,
+  type UploadedFile,
   useLayoutType,
   usePatient,
 } from '@openmrs/esm-framework';
-import { type Result } from '../../imaging-tabs/work-list/work-list.resource';
+import { useAllowedFileExtensions } from '@openmrs/esm-patient-common-lib';
+import { Stack, Button, TextArea, ButtonSet, InlineLoading, SkeletonPlaceholder } from '@carbon/react';
+import { DocumentAttachment } from '@carbon/react/icons';
 import { Controller, useForm } from 'react-hook-form';
-import { saveProcedureReport, useGetOrderConceptByUuid } from './imaging.resource';
-import { Stack, Button, TextArea, ButtonSet, InlineLoading } from '@carbon/react';
 import classNames from 'classnames';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+
+import { type Result } from '../../imaging-tabs/work-list/work-list.resource';
+import { saveProcedureReport, useGetOrderConceptByUuid } from './imaging.resource';
+
+import styles from './imaging-report-form.scss';
 
 type ResultFormProps = DefaultWorkspaceProps & {
   patientUuid: string;
@@ -42,6 +49,7 @@ const ImagingReportForm: React.FC<ResultFormProps> = ({
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
   const { patient, isLoading } = usePatient(patientUuid);
+  const { allowedFileExtensions } = useAllowedFileExtensions();
   const { concept, isLoading: isLoadingConcepts } = useGetOrderConceptByUuid(order.concept.uuid);
   const {
     formState: { isSubmitting, errors, isDirty },
@@ -70,6 +78,16 @@ const ImagingReportForm: React.FC<ResultFormProps> = ({
       promptBeforeClosing(() => isDirty);
     }
   }, [promptBeforeClosing, isDirty, closeWorkspace]);
+
+  const showAddAttachmentModal = useCallback(() => {
+    const close = showModal('capture-photo-modal', {
+      saveFile: (file: UploadedFile) => createAttachment(patientUuid, file),
+      allowedExtensions: allowedFileExtensions,
+      closeModal: () => close(),
+      multipleFiles: true,
+      collectDescription: true,
+    });
+  }, [allowedFileExtensions, patientUuid]);
 
   const onSubmit = async (formData: ImagingReportFormData) => {
     const reportPayload = {
@@ -107,6 +125,11 @@ const ImagingReportForm: React.FC<ResultFormProps> = ({
       });
     }
   };
+
+  if (isLoadingConcepts || isLoading) {
+    return <SkeletonPlaceholder />;
+  }
+
   return (
     <>
       {patient ? (
@@ -134,6 +157,9 @@ const ImagingReportForm: React.FC<ResultFormProps> = ({
                 )}
               />
             </ResponsiveWrapper>
+            <Button kind="tertiary" renderIcon={DocumentAttachment} onClick={showAddAttachmentModal}>
+              {t('addAttachment', 'Add attachment')}
+            </Button>
           </Stack>
         </div>
         <ButtonSet className={classNames({ [styles.tablet]: isTablet, [styles.desktop]: !isTablet })}>
