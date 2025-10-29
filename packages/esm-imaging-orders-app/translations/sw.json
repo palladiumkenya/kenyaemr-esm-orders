@@ -1,6 +1,7 @@
 {
   "action": "Action",
   "activeOrders": "Active Orders",
+  "addAttachment": "Add attachment",
   "addImagingOrder": "Add Imaging Order",
   "addImagingOrderWorkspaceTitle": "Add Imaging order",
   "additionalInstructions": "Additional instructions",
