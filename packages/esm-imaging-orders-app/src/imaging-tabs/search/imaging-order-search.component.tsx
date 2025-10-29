@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { mutate } from 'swr';
 import {
@@ -11,6 +11,7 @@ import {
   setCurrentVisit,
   launchWorkspaceGroup,
   useVisit,
+  showToast,
 } from '@openmrs/esm-framework';
 import { getPatientChartStore } from '@openmrs/esm-patient-common-lib';
 import {
@@ -34,7 +35,7 @@ import { Close, FolderOpen } from '@carbon/react/icons';
 import { usePatientOrders } from './search.resource';
 import { type Result } from '../work-list/work-list.resource';
 import ActionButton from '../../shared/ui/common/action-button/action-button.component';
-import { getActionsForStatus } from './action-helpers';
+import { getActionsForStatus, IMAGING_ORDERS_API_URL } from './action-helpers';
 import EmptyPatientSearch from './empty-search/empty-patient-search.component';
 
 import styles from './imaging-order-search.scss';
@@ -47,9 +48,7 @@ const ImagingOrderSearch: React.FC = () => {
 
   useEffect(() => {
     setPatientUuid(params.patientUuid);
-    return () => {
-      setPatientUuid(undefined);
-    };
+    setSelectedOrder(undefined);
   }, [params.patientUuid]);
 
   const handlePatientClose = () => {
@@ -60,39 +59,47 @@ const ImagingOrderSearch: React.FC = () => {
     }
   };
 
+  // Component mapping for the different views
+  const views = {
+    empty: EmptyPatientSearch,
+    orderList: () => (
+      <>
+        <PatientHeader patientUuid={patientUuid!} handleClose={handlePatientClose} />
+        <OrdersTable
+          imagingOrders={orders}
+          isLoading={isLoading}
+          patientUuid={patientUuid!}
+          handleSelectOrder={setSelectedOrder}
+        />
+      </>
+    ),
+    orderDetails: () => (
+      <>
+        <PatientHeader patientUuid={patientUuid!} handleClose={handlePatientClose} />
+        <ImagingOrderDetails imagingOrder={selectedOrder!} />
+      </>
+    ),
+  };
+
+  const getCurrentView = () => {
+    if (!patientUuid) return 'empty';
+    if (selectedOrder) return 'orderDetails';
+    return 'orderList';
+  };
+
+  const CurrentView = views[getCurrentView()];
+
   return (
     <div className={styles.container}>
       <ExtensionSlot
         className={styles.patientSearchBarSlot}
         name="patient-search-bar-slot"
         state={{
-          selectPatientAction: (patientUuid: string) => {
-            setPatientUuid(patientUuid);
-          },
-          buttonProps: {
-            kind: 'secondary',
-          },
+          selectPatientAction: setPatientUuid,
+          buttonProps: { kind: 'secondary' },
         }}
       />
-
-      {!patientUuid && <EmptyPatientSearch />}
-
-      {patientUuid && (
-        <div>
-          <PatientHeader key={patientUuid} patientUuid={patientUuid} handleClose={handlePatientClose} />
-
-          {selectedOrder ? (
-            <ImagingOrderDetails imagingOrder={selectedOrder} />
-          ) : (
-            <OrdersTable
-              imagingOrders={orders}
-              isLoading={isLoading}
-              patientUuid={patientUuid}
-              handleSelectOrder={setSelectedOrder}
-            />
-          )}
-        </div>
-      )}
+      <CurrentView />
     </div>
   );
 };
@@ -111,35 +118,47 @@ const OrdersTable: React.FC<OrderTableProps> = ({ patientUuid, imagingOrders, is
   const responseSize = useLayoutType() === 'tablet' ? 'md' : 'sm';
   const { activeVisit, isLoading: isLoadingVisits } = useVisit(patientUuid);
 
-  const launchAddImagingOrderWorkspace = useCallback((patientUuid: string) => {
-    setCurrentVisit(patientUuid, null);
-    launchWorkspaceGroup('add-imaging-order-workspace-group', {
-      state: {
-        patientUuid,
-      },
-      onWorkspaceGroupLaunch: () => {
-        const store = getPatientChartStore();
-        store.setState({
-          patientUuid,
+  const launchAddImagingOrderWorkspace = useCallback(
+    (patientUuid: string) => {
+      if (!activeVisit) {
+        showToast({
+          kind: 'error',
+          title: 'No active visit',
+          description: 'Start a visit to add an imaging order.',
         });
-      },
-      workspaceToLaunch: {
-        name: 'add-imaging-order',
-      },
-      workspaceGroupCleanup: () => {
-        mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, {
-          revalidate: true,
-        });
-        const store = getPatientChartStore();
-        store.setState({
-          patientUuid: undefined,
-        });
-        setCurrentVisit(null, null);
-      },
-    });
-  }, []);
+        return;
+      }
 
-  if (imagingOrders.length === 0 && !isLoading) {
+      setCurrentVisit(patientUuid, activeVisit.uuid);
+      launchWorkspaceGroup('add-imaging-order-workspace-group', {
+        state: {
+          patientUuid,
+        },
+        onWorkspaceGroupLaunch: () => {
+          const store = getPatientChartStore();
+          store.setState({
+            patientUuid,
+          });
+        },
+        workspaceToLaunch: {
+          name: 'add-imaging-order',
+        },
+        workspaceGroupCleanup: () => {
+          mutate((key) => typeof key === 'string' && key.startsWith(IMAGING_ORDERS_API_URL), undefined, {
+            revalidate: true,
+          });
+          const store = getPatientChartStore();
+          store.setState({
+            patientUuid: undefined,
+          });
+          setCurrentVisit(null, null);
+        },
+      });
+    },
+    [patientUuid, activeVisit],
+  );
+
+  if (imagingOrders.length === 0 && !isLoading && !isLoadingVisits) {
     return (
       <>
         {activeVisit ? (
@@ -186,7 +205,7 @@ const OrdersTable: React.FC<OrderTableProps> = ({ patientUuid, imagingOrders, is
     ),
   }));
 
-  if (isLoading) {
+  if (isLoading || isLoadingVisits) {
     return <DataTableSkeleton size={responseSize} />;
   }
 
@@ -198,7 +217,9 @@ const OrdersTable: React.FC<OrderTableProps> = ({ patientUuid, imagingOrders, is
             <TableHead>
               <TableRow>
                 {headers.map((header) => (
-                  <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
+                  <TableHeader key={header.key} {...getHeaderProps({ header })}>
+                    {header.header}
+                  </TableHeader>
                 ))}
               </TableRow>
             </TableHead>
@@ -224,11 +245,15 @@ type PatientHeaderProps = {
 };
 
 const PatientHeader: React.FC<PatientHeaderProps> = ({ patientUuid, handleClose }) => {
-  const { patient, isLoading } = usePatient(patientUuid);
+  const { patient, isLoading, error } = usePatient(patientUuid);
   const { t } = useTranslation();
 
   if (isLoading) {
     return <TextAreaSkeleton />;
+  }
+
+  if (error) {
+    return <div>{t('errorLoadingPatient', 'Error loading patient: {{error}}', { error: error.message })}</div>;
   }
 
   if (!patient) {
@@ -257,7 +282,6 @@ type ImagingOrderDetailsProps = {
 
 const ImagingOrderDetails: React.FC<ImagingOrderDetailsProps> = ({ imagingOrder }) => {
   const { t } = useTranslation();
-  const responseSize = useLayoutType() === 'tablet' ? 'md' : 'sm';
 
   const currentActions = getActionsForStatus(imagingOrder);
   const hasImagingResults = imagingOrder.procedures.some(
@@ -267,16 +291,19 @@ const ImagingOrderDetails: React.FC<ImagingOrderDetailsProps> = ({ imagingOrder 
   return (
     <div className={styles.imagingOrderDetailsContainer}>
       <div className={styles.imagingOrderDetails}>
-        <ImagingOrderRow title={t('urgency', 'Urgency')} value={imagingOrder.urgency} />
-        <ImagingOrderRow title={t('imagingTestOrdered', 'Imaging Test Ordered')} value={imagingOrder.concept.display} />
+        <ImagingOrderRow title={t('urgency', 'Urgency')} value={imagingOrder.urgency ?? '--'} />
+        <ImagingOrderRow
+          title={t('imagingTestOrdered', 'Imaging Test Ordered')}
+          value={imagingOrder.concept.display ?? '--'}
+        />
         <ImagingOrderRow title={t('orderStatus', 'Order Status')} value={imagingOrder.fulfillerStatus ?? '--'} />
-        <ImagingOrderRow title={t('orderNumber', 'Order Number')} value={imagingOrder.orderNumber} />
+        <ImagingOrderRow title={t('orderNumber', 'Order Number')} value={imagingOrder.orderNumber ?? '--'} />
         <ImagingOrderRow
           title={t('orderDate', 'Order Date')}
-          value={formatDate(parseDate(imagingOrder.dateActivated), { mode: 'standard', noToday: true })}
+          value={formatDate(parseDate(imagingOrder.dateActivated), { mode: 'standard', noToday: true }) ?? '--'}
         />
-        <ImagingOrderRow title={t('orderedBy', 'Ordered By')} value={imagingOrder.orderer.display} />
-        <ImagingOrderRow title={t('instructions', 'Instructions')} value={imagingOrder.instructions} />
+        <ImagingOrderRow title={t('orderedBy', 'Ordered By')} value={imagingOrder.orderer.display ?? '--'} />
+        <ImagingOrderRow title={t('instructions', 'Instructions')} value={imagingOrder.instructions ?? '--'} />
       </div>
       {currentActions.length > 0 && (
         <div className={styles.actionButtons}>
@@ -299,9 +326,9 @@ const ImagingOrderDetails: React.FC<ImagingOrderDetailsProps> = ({ imagingOrder 
             {imagingOrder.procedures.map((procedure) => (
               <div className={styles.procedure} key={procedure.uuid}>
                 <h4>{t('findings', 'Findings')}</h4>
-                <p>{procedure.procedureReport}</p>
-                <h4>{t('impressions')}</h4>
-                <p>{procedure.impressions}</p>
+                <p>{procedure.procedureReport ?? '--'}</p>
+                <h4>{t('impressions', 'Impressions')}</h4>
+                <p>{procedure.impressions ?? '--'}</p>
               </div>
             ))}
           </AccordionItem>

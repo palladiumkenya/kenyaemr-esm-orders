@@ -22,6 +22,7 @@
   "discard": "Discard",
   "enterAnIdNumberOrPatientName": "Enter an ID number or patient name",
   "error": "Error",
+  "errorLoadingPatient": "Error loading patient: {{error}}",
   "errorLoadingTestTypes": "Error occurred when loading test types",
   "errorPicking an order', 'Error Amending an Order": "",
   "errorPicking an order', 'Error Picking an Order": "",

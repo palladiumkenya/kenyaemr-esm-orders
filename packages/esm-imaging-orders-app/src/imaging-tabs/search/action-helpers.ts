@@ -1,5 +1,7 @@
+import { restBaseUrl } from '@openmrs/esm-framework';
 import { type Result } from '../work-list/work-list.resource';
 
+export const IMAGING_ORDERS_API_URL = `${restBaseUrl}/order`;
 export interface Action {
   actionName: string;
   order: number;

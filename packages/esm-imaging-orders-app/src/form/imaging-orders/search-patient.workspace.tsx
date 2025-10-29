@@ -1,41 +1,71 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { mutate } from 'swr';
-import { ExtensionSlot, launchWorkspaceGroup, setCurrentVisit, useVisit } from '@openmrs/esm-framework';
+import { useTranslation } from 'react-i18next';
+import {
+  ExtensionSlot,
+  launchWorkspaceGroup,
+  setCurrentVisit,
+  useVisit,
+  showSnackbar,
+  type DefaultWorkspaceProps,
+} from '@openmrs/esm-framework';
 import { getPatientChartStore } from '@openmrs/esm-patient-common-lib';
 
 import styles from './search-patient-workspace.scss';
 
-const SearchPatientWorkspace = () => {
+const SearchPatientWorkspace: React.FC<DefaultWorkspaceProps> = ({ closeWorkspace }) => {
+  const { t } = useTranslation();
   const [patientUuid, setPatientUuid] = useState<string | undefined>(undefined);
   const { activeVisit, isLoading: isLoadingVisits } = useVisit(patientUuid);
 
-  const launchAddImagingOrderWorkspace = useCallback((patientUuid: string) => {
-    setCurrentVisit(patientUuid, null);
-    launchWorkspaceGroup('add-imaging-order-workspace-group', {
-      state: {
-        patientUuid,
-      },
-      onWorkspaceGroupLaunch: () => {
-        const store = getPatientChartStore();
-        store.setState({
+  const launchAddImagingOrderWorkspace = useCallback(
+    (patientUuid: string) => {
+      if (!activeVisit) {
+        showSnackbar({
+          kind: 'warning',
+          title: t('noActiveVisit', 'No active visit'),
+          subtitle: t('noActiveVisitSubtitle', 'Start a visit to add an imaging order.'),
+          isLowContrast: true,
+          timeoutInMs: 5000,
+        });
+        closeWorkspace();
+        return;
+      }
+
+      setCurrentVisit(patientUuid, activeVisit.uuid);
+      launchWorkspaceGroup('add-imaging-order-workspace-group', {
+        state: {
           patientUuid,
-        });
-      },
-      workspaceToLaunch: {
-        name: 'add-imaging-order',
-      },
-      workspaceGroupCleanup: () => {
-        mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, {
-          revalidate: true,
-        });
-        const store = getPatientChartStore();
-        store.setState({
-          patientUuid: undefined,
-        });
-        setCurrentVisit(null, null);
-      },
-    });
-  }, []);
+        },
+        onWorkspaceGroupLaunch: () => {
+          const store = getPatientChartStore();
+          store.setState({
+            patientUuid,
+          });
+        },
+        workspaceToLaunch: {
+          name: 'add-imaging-order',
+        },
+        workspaceGroupCleanup: () => {
+          mutate((key) => typeof key === 'string' && key.startsWith('/ws/rest/v1/order'), undefined, {
+            revalidate: true,
+          });
+          const store = getPatientChartStore();
+          store.setState({
+            patientUuid: undefined,
+          });
+          setCurrentVisit(null, null);
+        },
+      });
+    },
+    [activeVisit, t, closeWorkspace],
+  );
+
+  useEffect(() => {
+    if (patientUuid && !isLoadingVisits) {
+      launchAddImagingOrderWorkspace(patientUuid);
+    }
+  }, [patientUuid, isLoadingVisits, launchAddImagingOrderWorkspace]);
 
   return (
     <div className={styles.container}>
@@ -44,7 +74,6 @@ const SearchPatientWorkspace = () => {
         state={{
           selectPatientAction: (patientUuid: string) => {
             setPatientUuid(patientUuid);
-            launchAddImagingOrderWorkspace(patientUuid);
           },
           buttonProps: {
             kind: 'primary',
