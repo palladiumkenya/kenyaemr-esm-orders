@@ -9,7 +9,7 @@ import {
   ExtensionSlot,
   launchWorkspace,
 } from '@openmrs/esm-framework';
-import { careSettingUuid, prepImagingOrderPostData, useConceptById } from '../api';
+import { careSettingUuid, prepImagingOrderPostData } from '../api';
 import {
   Button,
   ButtonSet,
@@ -29,7 +29,7 @@ import { useImagingTypes } from './useImagingTypes';
 import { Controller, type FieldErrors, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { moduleName, BLEEDING_SITE } from '../../../constants';
+import { moduleName } from '../../../constants';
 import styles from './imaging-order-form.scss';
 import type { ImagingOrderBasketItem } from '../../../types';
 
@@ -61,9 +61,6 @@ export function ImagingOrderForm({
     { value: 'RIGHT', label: 'Right' },
     { value: 'BILATERAL', label: 'Bilateral' },
   ];
-  const {
-    items: { answers: bodySiteItems = [] },
-  } = useConceptById(BLEEDING_SITE);
 
   const imagingOrderFormSchema = z.object({
     instructions: z.string().optional(),
@@ -80,7 +77,6 @@ export function ImagingOrderForm({
     scheduleDate: z.union([z.string(), z.date(), z.string().optional()]),
     commentsToFulfiller: z.string().optional(),
     laterality: z.string().optional(),
-    bodySite: z.string().optional(),
     orderReasonNonCoded: z.string().min(1, {
       message: translateFrom(moduleName, 'addOrderReasonRequired', 'Order reason is required'),
     }),
@@ -249,30 +245,6 @@ export function ImagingOrderForm({
                       invalid={errors.laterality?.message}
                       invalidText={errors.laterality?.message}
                       itemToString={(item) => item?.label}
-                    />
-                  )}
-                />
-              </InputWrapper>
-            </Column>
-          </Grid>
-          <Grid className={styles.gridRow}>
-            <Column lg={16} md={8} sm={4}>
-              <InputWrapper>
-                <Controller
-                  name="bodySite"
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <ComboBox
-                      size="lg"
-                      id="bodySiteInput"
-                      titleText={t('bodySite', 'Body Site')}
-                      selectedItem={bodySiteItems?.find((option) => option.uuid === value) || null}
-                      items={bodySiteItems}
-                      onBlur={onBlur}
-                      onChange={({ selectedItem }) => onChange(selectedItem?.uuid || '')}
-                      invalid={errors.bodySite?.message}
-                      invalidText={errors.bodySite?.message}
-                      itemToString={(item) => item?.display}
                     />
                   )}
                 />
