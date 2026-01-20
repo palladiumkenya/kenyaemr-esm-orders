@@ -1,7 +1,7 @@
 {
   "name": "@openmrs/esm-orders-app",
   "private": true,
-  "version": "9.2.2",
+  "version": "4.0.6",
   "workspaces": [
     "packages/*"
   ],
